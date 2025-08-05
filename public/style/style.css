@@ -1,0 +1,329 @@
+/*Animation styles*/
+#animation-container {
+    margin:0;
+    height:100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('space.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+#animation-container > .container {
+    font-size: 10px;
+    height: 40em;
+    width: 40em;
+    position: relative;
+}
+.sun {
+    position: absolute;
+    top: 15em;
+    left: 15em;
+    width: 10em;
+    height: 10em;
+    background-color: yellow;
+    border-radius: 50%;
+    box-shadow: 0 0 3em white;
+}
+.earth, .moon {
+    position: absolute;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+    border-width: 0.1em 0.1em 0 0;
+    border-radius: 50%;
+}    
+@keyframes orbit {
+    to {
+        transform: rotate(360deg);
+    }
+}
+.earth {
+    top: 5em;
+    right: 5em;
+    width: 30em;
+    height: 30em;
+    animation: orbit 8s linear infinite;
+}
+.moon {
+    top: 1em;
+    right: 1em;
+    width: 6em;
+    height: 6em;
+    animation: orbit 0.8s linear infinite;
+}
+.mars {
+    position: absolute;
+    top: -3em;        /* xa hơn Trái Đất */
+    right: -3em;
+    width: 44em;
+    height: 44em;
+    border-style: solid;
+    border-color: red transparent transparent transparent;
+    border-width: 0.1em 0.1em 0 0;
+    border-radius: 50%;
+    animation: orbit 12s linear infinite; /* Mars quay lâu hơn Earth */
+}
+.venus {
+    position: absolute;
+    top: 10em;        /* gần hơn Trái Đất */
+    right: 10em;
+    width: 20em;
+    height: 20em;
+    border-style: solid;
+    border-color: rgb(255, 196, 0) transparent transparent transparent;
+    border-width: 0.1em 0.1em 0 0;
+    border-radius: 50%;
+    animation: orbit 4s linear infinite; 
+}
+.mercury {
+    position: absolute;
+    top: 13.5em;
+    right: 13em;
+    width: 14em;
+    height: 14em;
+    border-style: solid;
+    border-color: gray transparent transparent transparent;
+    border-width: 0.1em 0.1em 0 0;
+    border-radius: 50%;
+    animation: orbit 2s linear infinite; /* Mercury quay nhanh nhất */
+}
+.mercury::before {
+    content: '';
+    position: absolute;
+    top: 1.4em;
+    right: 1.4em;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: gray;
+    border-radius: 50%;
+}
+
+.venus::before {
+    content:'';
+    position: absolute;
+    top: 1.8em;
+    right: 1.8em;
+    width: 2.2em;
+    height: 2.2em;
+    background-color: rgb(255, 196, 0);
+    border-radius: 50%;
+}
+
+.mars::before {
+    content: '';
+    position: absolute;
+    top: 5.4em;
+    right: 5.4em;
+    width: 2em;
+    height: 2em;
+    background-color: orangered;
+    border-radius: 50%;
+}
+
+.earth::before,
+.moon::before {
+    content:'';
+    position: absolute;
+    border-radius: 50%;
+}
+.earth::before {
+    top: 2.8em;
+    right: 2.8em;
+    width: 3em;
+    height: 3em;
+    background-color: aqua; 
+}
+.moon::before {
+    top: 0.2em;
+    right: 0.2em;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: silver;
+}
+.fade-out {
+opacity: 0;
+transition: opacity 1s ease;
+}
+
+
+
+
+/* General styles */
+#main-site {
+    scroll-behavior: smooth;
+    background-color: #04153c;
+}
+.blue-text {
+    color:#3274e7;
+}
+.red-text {
+    color: #e73234;
+}
+.green-text {
+    color: #0ba43e;
+}
+.scrolltotop-btn {
+    z-index: 1100;
+    position: fixed;
+}
+/* Navbar section */
+.NavBar {
+    background-color: black;
+}
+.Search_btn {
+    color: white;
+    background-color: #3274e7;
+    border: 1px solid #3274e7;
+}
+.Search_btn:hover {
+    color: white;
+    background-color: #2262cf;
+    border: 1px solid #2262cf;
+}
+
+.navbar-nav > .nav-item {
+    position: relative;
+}
+
+.nav-item::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #327ae7;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-item:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.nav-item :not(:hover)::before {
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+.contact-bar {
+    background-color:#02103d;
+    color:white;
+    padding:1rem;
+    padding-top:5px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+/* Intro Section */
+.Intro {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url("introbg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color:white;
+}
+.Intro .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(27, 26, 26, 0.651);
+    z-index: 1;
+}
+
+.Intro .IntroContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(250px);
+    transition: transform 0.5s ease;
+    z-index: 2;
+    width: 90%;
+}
+
+.IntroContent {
+    position: fixed;
+    z-index: 800;
+    transition: transform 0.3s ease;
+}
+
+
+
+.Membership {
+    position: relative;
+    height: 100vh;
+    background-image: url("membership.jpg");
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.Membership .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.85) 0%,     /* solid dark */
+    rgba(0, 0, 0, 0.6) 30%,     /* start fading */
+    rgba(0, 0, 0, 0.0) 60%,     /* fully transparent by 60% */
+    rgba(0, 0, 0, 0.0) 100%     /* remain transparent */
+  );
+  z-index: 1;
+}
+
+.Membership .container {
+    position: relative;
+    z-index: 2;
+}
+
+.Services {
+    background-color: #020c24;
+    color:white;
+}
+
+.service-card {
+    background-color: rgb(173, 204, 251);
+    transition: 0.3s ease-in-out;
+}
+.service-card:hover {
+    transform: scale(1.05)
+}
+
+
+.Price {
+    position: relative;
+    color:white;
+    scroll-margin-top: 12px;
+}
+.Price .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: 
+        radial-gradient(circle at 25% 30%, rgba(100, 28, 103, 0.4), transparent 40%),
+        radial-gradient(circle at 75% 70%, rgba(17, 102, 133, 0.35), transparent 50%),
+        linear-gradient(to bottom right, #050b1e, #0a122d, #04153c);
+    background-blend-mode: overlay;
+    z-index: 1;
+}
+.Full-Membership {
+    background-color: #2b343e;
+}
+.Associate-Membership {
+    background-color: #1a1a20;
+}
