@@ -122,7 +122,7 @@ app.post('/register', (req, res) => {
         <h2>🌌 Thank you for registering with SPACEAPP!</h2>
         <p>You're all set to begin your journey tracking real-time satellites from Earth.</p>
         <p><strong>Download the latest version here:</strong></p>
-        <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v2.0/SPACEAPP.zip" style="font-size: 16px;">
+        <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v2.5/SPACEAPP.zip" style="font-size: 16px;">
           📦 Click here to download SPACEAPP ZIP
         </a>
         <br><br>
@@ -153,3 +153,4 @@ app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 
 });
+
