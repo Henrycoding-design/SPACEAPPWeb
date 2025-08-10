@@ -160,7 +160,7 @@ transition: opacity 1s ease;
     color:#3274e7;
 }
 .red-text {
-    color: #e73234;
+    color: #da272a;
 }
 .green-text {
     color: #0ba43e;
@@ -257,7 +257,13 @@ transition: opacity 1s ease;
     transition: transform 0.3s ease;
 }
 
-
+.Intro { position: relative; }
+.Intro::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 1; pointer-events: none;
+}
+.Intro > * { position: relative; z-index: 2; }
 
 .Membership {
     position: relative;
