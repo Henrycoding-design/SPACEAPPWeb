@@ -84,7 +84,7 @@
         </nav>
 
         <!-- Intro -->
-        <section class="container-fluid Intro">
+        <section class="container-fluid Intro d-none d-lg-block">
             <section class="overlay"></section>
             <section class="container IntroContent my-3 mb-3">
                 <section class="IntroHeader mb-5 my-5">
@@ -93,14 +93,25 @@
                 </section>
                 <section class="row justify-content-center" style="margin-top: 222px;">
                     <section class="col-md-6 mt-5 mb-3">
-                        <h3 class="text-center text-nowrap" style="opacity: 1;">Welcome To <strong class="blue-text">SPACEAPP</strong></h3>
+                        <h3 class="text-center text-nowrap" style="opacity: 1;">Introducing <strong class="blue-text">SPACEAPP</strong> <strong class="red-text">v4.0</strong></h3>
                         <img src="img/Introscrollimg.webp" alt="Rescue Run to the Riverside" class="img-fluid rounded mb-3" style="opacity: 0.8;">
-                        <p class="text-center" style="opacity: 1;">Monitor real-time satellite positions, view their orbital paths, and understand the fundamentals of how satellites move above Earth. Whether you're a student, space enthusiast, or data analyst, SPACEAPP makes space exploration accessible and meaningful.</p>
-                        <button class="btn btn-info w-100" type="button" style="opacity: 0.8; margin-top: 5px;" onclick="window.open('freeform.html', '_blank')">Download Now!</button>
+                        <p class="text-center" style="opacity: 1;">Introducing SPACEAPP v4: dual API modes, multi-account keys, and true multi-sat tracking. Click to launch the new full-screen map with smooth fly-to navigation and live ring effects.</p>
+                        <button class="btn btn-info w-100" type="button" style="opacity: 0.8; margin-top: 5px;" onclick="window.open('newverintro.html', '_blank')">Learn More!</button>
                     </section>
                 </section>
             </section>
         </section>
+        
+        <!-- Intro Mobile -->
+        <section class="Intro d-block d-lg-none">
+            <section class="overlay"></section>
+            <section class="container py-5">
+                <h1 class="text-center mb-4"><img src="img/logo.webp" alt="Logo" width="300" height="100" class="d-inline-block align-text-center"></h1>
+                <p class="text-center mb-5">SPACEAPP bridges the gap between complex aerospace data and everyday users by offering a sleek, intuitive platform to explore real-time satellite activity, orbital mechanics, and live telemetry — all from the palm of your hand.</p>
+                <button class="btn btn-info w-100" type="button" style="opacity: 0.8; margin-top: 5px;" onclick="window.open('freeform.html', '_blank')">Download Now!</button>
+            </section>
+        </section>
+
         <section class="contact-bar mt-2">
             <section class="contact-item d-flex align-items-center">
                 <i class="bi bi-telephone-fill me-2"></i>
@@ -126,9 +137,9 @@
                             Satellite trackers are digital tools that follow artificial objects orbiting Earth — like communication, weather, or research satellites. SPACEAPP is a satellite tracker reimagined for modern users: it collects orbital data from verified databases like NORAD and visualizes the real-time latitude, longitude, altitude, and speed of thousands of active satellites. Users can identify satellites, explore their missions, and even analyze their time spent in space through a clean, user-friendly interface.
                         </p>
                         <button class="btn btn-primary mt-3" onclick="window.open('freeform.html', '_blank')">DOWNLOAD NOW!</button>
-                        <p class="mt-3 small">This application is currently free and open source*<br><br><a href="#Guide" class="text-white text-decoration-underline">Click here</a> to see guidance of using our app*.</p>
+                        <p class="mt-3 small">SPACEAPP v2.5 is currently free and open source*<br><br><a href="#Guide" class="text-white text-decoration-underline">Click here</a> to see guidance of using our app*.</p>
                     </section>
-                    <section class="col col-md-6 text-center ml-5">
+                    <section class="col col-md-6 text-center ml-5 d-none d-md-block">
                         <img src="img/Introimg.webp" class="img-fluid rounded shadow" alt="Logo" style="background-color: rgba(255, 255, 255, 0.158);"/>
                     </section>
                 </section>
@@ -207,7 +218,7 @@
             <section class="overlay"></section>
             <section class="container text-white z-2">
                 <section class="row align-items-center">
-                    <section class="col col-md-4">
+                    <section class="col col-md-4 d-none d-md-block">
                         <section class="position-relative w-100">
                             <img class="w-100" src="img/priceimg.webp" alt="PricePicture" style="min-height: 750px;">
                             <button class="btn btn-danger position-absolute bottom-0 start-50 translate-middle-x mb-3 text-nowrap" onclick="window.open('freeform.html', '_blank')">
@@ -216,7 +227,7 @@
                         </section>
                     </section>
                     <section class="col col-md-8">
-                        <h4 class="headlines mb-4 mt-3">Take a look at our App Guidance</h4>
+                        <h4 class="headlines mb-4 mt-3">Take a look at our SPACEAPP v2.5 Guidance</h4>
                         <section class="row">
                             <section class="col col-md-6 Full-Membership ml-0">
                                 <h6 class="headlines mt-3 mb-3">User Guidance</h6>
@@ -380,146 +391,172 @@
         </footer>
     </main>
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const animationContainer = document.getElementById('animation-container');
-                const mainSite = document.getElementById('main-site');
+            (() => {
+                if (window.innerWidth < 992) {
+                    document.getElementById('animation-container')?.style && (document.getElementById('animation-container').style.display = 'none');
+                    document.getElementById('main-site')?.style && (document.getElementById('main-site').style.display = 'block');
+                    return;
+                }
+                
+                document.addEventListener('DOMContentLoaded', () => {
+                    const animationContainer = document.getElementById('animation-container');
+                    const mainSite = document.getElementById('main-site');
 
-                // Check if splash was already shown this session
-                const hasSeenAnimation = sessionStorage.getItem('hasSeenAnimation');
+                    // Check if splash was already shown this session
+                    const hasSeenAnimation = sessionStorage.getItem('hasSeenAnimation');
 
-                if (hasSeenAnimation) {
-                // Skip animation, show site directly
-                animationContainer.style.display = 'none';
-                mainSite.style.display = 'block';
-                } else {
-                // Show animation
-                animationContainer.style.display = 'flex';
-                mainSite.style.display = 'none';
-
-                setTimeout(() => {
-                    animationContainer.classList.add('fade-out');
-
-                    setTimeout(() => {
+                    if (hasSeenAnimation) {
+                    // Skip animation, show site directly
                     animationContainer.style.display = 'none';
                     mainSite.style.display = 'block';
+                    } else {
+                    // Show animation
+                    animationContainer.style.display = 'flex';
+                    mainSite.style.display = 'none';
 
-                    // Mark that animation has been shown
-                    sessionStorage.setItem('hasSeenAnimation', 'true');
-                    }, 1000); // wait for fade-out
-                }, 4000); // animation duration
-                }
-            });
+                    setTimeout(() => {
+                        animationContainer.classList.add('fade-out');
+
+                        setTimeout(() => {
+                        animationContainer.style.display = 'none';
+                        mainSite.style.display = 'block';
+
+                        // Mark that animation has been shown
+                        sessionStorage.setItem('hasSeenAnimation', 'true');
+                        }, 1000); // wait for fade-out
+                    }, 4000); // animation duration
+                    }
+                });
+            })();
         </script>
         <script>
-            let scrollPos = 0;
-            const introContent = document.querySelector('.IntroContent');
-            let isUnlocked = false;
-            let hasAnimated = false;
-            const goUpBtn = document.querySelector('.scrolltotop-btn');
-            goUpBtn.style.display = 'none';
-            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+            (() => {
+                let scrollPos = 0;
+                const introContent = document.querySelector('.IntroContent');
+                let isUnlocked = false;
+                let hasAnimated = false;
+                const goUpBtn = document.querySelector('.scrolltotop-btn');
+                goUpBtn.style.display = 'none';
+                const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
 
-            window.addEventListener('wheel', (e) => {
-                // Allow re-animation only when exactly scrolled back to top
-                if (scrollPos === 500 && window.scrollY <= 5 && e.deltaY < 0) {
-                    hasAnimated = false;
-                    isUnlocked = false;
-                    scrollPos = 0;
-                    goUpBtn.style.display = 'none';
+                function unlockIntro() {
+                    scrollPos = 500;
+                    introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
+                    document.documentElement.style.overflow = 'auto';
+                    document.body.style.overflow = 'auto';
+                    isUnlocked = true;
+                    hasAnimated = true;
+                    goUpBtn.style.display = 'block';
+                }
+                window.SPACEAPP = window.SPACEAPP || {};
+                window.SPACEAPP.unlockIntro = unlockIntro;
 
-                    // Reset transform immediately
-                    introContent.style.transform = `translate(-50%, -50%) translateY(250px)`;
-
-                    e.preventDefault();
+                if (window.innerWidth < 992) {
                     return;
                 }
 
+                window.addEventListener('wheel', (e) => {
+                    // Allow re-animation only when exactly scrolled back to top
+                    if (scrollPos === 500 && window.scrollY <= 5 && e.deltaY < 0) {
+                        hasAnimated = false;
+                        isUnlocked = false;
+                        scrollPos = 0;
+                        goUpBtn.style.display = 'none';
 
-                if (!hasAnimated) {
-                    if (scrollPos < 500 && e.deltaY > 0) {
-                        scrollPos += e.deltaY;
-                        scrollPos = Math.min(scrollPos, 500);
-                        introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
+                        // Reset transform immediately
+                        introContent.style.transform = `translate(-50%, -50%) translateY(250px)`;
+
                         e.preventDefault();
-                    } 
-                    else if (scrollPos > 0 && e.deltaY < 0) {
-                        scrollPos += e.deltaY;
-                        scrollPos = Math.max(scrollPos, 0);
-                        introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
-                        e.preventDefault();
+                        return;
                     }
 
-                    if (scrollPos >= 500 && !isUnlocked) {
-                        document.body.style.overflow = 'auto';
-                        document.documentElement.style.overflow = 'auto';
-                        isUnlocked = true;
-                        hasAnimated = true;
-                        goUpBtn.style.display = 'block';
-                    }
 
-                    if (!isUnlocked) {
-                        document.body.style.overflow = 'hidden';
-                        document.documentElement.style.overflow = 'hidden';
-                        e.preventDefault();
-                    }
-                }
-            }, { passive: false });
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    if (scrollPos < 500) {
-                        scrollPos = 500;
-                        introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
-                        document.body.style.overflow = 'auto';
-                        document.documentElement.style.overflow = 'auto';
-                        isUnlocked = true;
-                        hasAnimated = true;
-                        goUpBtn.style.display = 'block';
-                    }
-                });
-            });
+                    if (!hasAnimated) {
+                        if (scrollPos < 500 && e.deltaY > 0) {
+                            scrollPos += e.deltaY;
+                            scrollPos = Math.min(scrollPos, 500);
+                            introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
+                            e.preventDefault();
+                        } 
+                        else if (scrollPos > 0 && e.deltaY < 0) {
+                            scrollPos += e.deltaY;
+                            scrollPos = Math.max(scrollPos, 0);
+                            introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
+                            e.preventDefault();
+                        }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                // Hash links stuck error handle
-                const hash = window.location.hash;
+                        if (scrollPos >= 500 && !isUnlocked) {
+                            document.body.style.overflow = 'auto';
+                            document.documentElement.style.overflow = 'auto';
+                            isUnlocked = true;
+                            hasAnimated = true;
+                            goUpBtn.style.display = 'block';
+                        }
 
-                const shouldSkip = !!hash;
-                if (shouldSkip) {
-                    scrollPos = 500;
-                    isUnlocked = true;
-                    hasAnimated = true;
-                    introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
-                    document.body.style.overflow = 'auto';
-                    document.documentElement.style.overflow = 'auto';
-                    goUpBtn.style.display = 'block';
-
-                    // SCROLL to hash manually after scroll is unlocked
-                    if (hash) {
-                        const target = document.querySelector(hash);
-                        if (target) {
-                            // Use requestAnimationFrame to ensure DOM is ready & scroll is unlocked
-                            requestAnimationFrame(() => {
-                                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            });
+                        if (!isUnlocked) {
+                            document.body.style.overflow = 'hidden';
+                            document.documentElement.style.overflow = 'hidden';
+                            e.preventDefault();
                         }
                     }
-                } else {
-                    scrollPos = 0;
-                    isUnlocked = false;
-                    hasAnimated = false;
-                    window.scrollTo(0, 0);
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
-                }
+                }, { passive: false });
                 
-            });
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        if (scrollPos < 500) {
+                            scrollPos = 500;
+                            introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
+                            document.body.style.overflow = 'auto';
+                            document.documentElement.style.overflow = 'auto';
+                            isUnlocked = true;
+                            hasAnimated = true;
+                            goUpBtn.style.display = 'block';
+                        }
+                    });
+                });
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Hash links stuck error handle
+                    const hash = window.location.hash;
+
+                    const shouldSkip = !!hash;
+                    if (shouldSkip) {
+                        scrollPos = 500;
+                        isUnlocked = true;
+                        hasAnimated = true;
+                        introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
+                        document.body.style.overflow = 'auto';
+                        document.documentElement.style.overflow = 'auto';
+                        goUpBtn.style.display = 'block';
+
+                        // SCROLL to hash manually after scroll is unlocked
+                        if (hash) {
+                            const target = document.querySelector(hash);
+                            if (target) {
+                                // Use requestAnimationFrame to ensure DOM is ready & scroll is unlocked
+                                requestAnimationFrame(() => {
+                                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                });
+                            }
+                        }
+                    } else {
+                        scrollPos = 0;
+                        isUnlocked = false;
+                        hasAnimated = false;
+                        window.scrollTo(0, 0);
+                        document.body.style.overflow = 'hidden';
+                        document.documentElement.style.overflow = 'hidden';
+                    }
+                    
+                });
+            })();
         </script>
 
 
-        <script>
+        <script> //problem here
             document.querySelector(".Search_btn").addEventListener("click", function(e) {
                 e.preventDefault()
-
+                const introContent = document.querySelector('.IntroContent');
                 const input = document.querySelector('input[type=search]').value.toLowerCase().trim();
                 const keywords = input.split(/\s+/); //split by white spaces (also multiple white spaces)
                 const headlines = document.querySelectorAll('.headlines');
@@ -533,15 +570,7 @@
                         h.style.backgroundColor = 'orange';
                         setTimeout(() => h.style.backgroundColor='', 1000);
                         found = true;
-                        if (scrollPos < 500) {
-                            scrollPos=500;
-                            introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
-                            document.documentElement.style.overflow = 'auto';
-                            document.body.style.overflow = 'auto';
-                            isUnlocked = true;
-                            hasAnimated = true;
-                            goUpBtn.style.display = 'block';
-                        }
+                        window.SPACEAPP?.unlockIntro?.();
                     }
                 });
                 if (!found) {
@@ -572,8 +601,8 @@
                 });
             });
         </script>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
+
 
