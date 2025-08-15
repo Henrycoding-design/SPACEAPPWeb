@@ -1,111 +1,124 @@
 const express = require('express');
-const fs = require('fs');
 const bodyParser = require('body-parser');
-
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
-
 const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
+require('dotenv').config();
+
+const { pool } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// ---------- Middleware ----------
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('trust proxy', 1);
 app.use(cookieParser());
 app.use(session({
-  secret: 'spaceapp_super_secret',   // use a secure secret in production
+  secret: process.env.SESSION_SECRET || 'spaceapp_super_secret',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: process.env.NODE_ENV === 'production' } // this will auto set to false if not on https (localhost) and turn sercure to true when run on render,...
-  // cookie: { sercure: false}
+  cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
-// JSON data file
-const filePath = path.join(__dirname, 'user_data.json');
+// ---------- One-time table ensure on boot ----------
+async function ensureSchema() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
+}
+ensureSchema().catch(err => {
+  console.error('Failed to ensure schema:', err);
+  process.exit(1);
+});
 
-// Utility function to load users
-function loadUsers() {
-  if (!fs.existsSync(filePath)) return [];
+// ---------- SIGNUP ----------
+app.post('/signup', async (req, res) => {
+  const { email = '', password = '' } = req.body;
+
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!isValidEmail || !password) {
+    return res.redirect('/signup.html?error=Invalid email or password');
+  }
 
   try {
-    const data = fs.readFileSync(filePath, 'utf-8');
-    const parsed = JSON.parse(data);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
-    console.error("Failed to read user data:", err);
-    return [];
-  }
-}
-
-// ✨ Handle SIGNUP
-app.post('/signup', (req, res) => {
-  const { email, password } = req.body;
-  const users = loadUsers();
-
-  const alreadyExists = users.some(u => u.email === email);
-  if (alreadyExists) {
-    // Email already exists, show error page
-    return res.redirect('/signup.html?error=Email already exists');
-  }
-
-  users.push({ email, password });
-  fs.writeFileSync(filePath, JSON.stringify(users, null, 2), 'utf-8');
-  req.session.user = { email };
-  res.redirect('/');
-});
-
-// ✨ Handle LOGIN
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  const users = loadUsers();
-
-  const match = users.find(u => u.email === email && u.password === password);
-
-  if (!match) {
-    // Invalid credentials → back to login with query
-    return res.redirect('/login.html?error=Wrong email or password');
-  }
-
-  // Successful login → go to thank you or dashboard
-  req.session.user = { email };
-  res.redirect('/');
-});
-
-// check logged in and log out
-app.get('/api/isLoggedIn', (req, res) => {
-    if (req.session.user) {
-        res.json({ loggedIn: true, user: req.session.user });
-    } else {
-        res.json({ loggedIn: false });
+    const hash = await bcrypt.hash(password, 12);
+    const q = `
+      INSERT INTO users (email, password_hash)
+      VALUES ($1, $2)
+      RETURNING id, email, created_at
+    `;
+    const { rows } = await pool.query(q, [email, hash]);
+    req.session.user = { id: rows[0].id, email: rows[0].email };
+    return res.redirect('/');
+  } catch (e) {
+    if (e.code === '23505') {
+      return res.redirect('/signup.html?error=Email already exists');
     }
+    console.error('Signup error:', e);
+    return res.redirect('/signup.html?error=Server+error');
+  }
+});
+
+// ---------- LOGIN ----------
+app.post('/login', async (req, res) => {
+  const { email = '', password = '' } = req.body;
+
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, email, password_hash FROM users WHERE email = $1',
+      [email]
+    );
+    if (rows.length === 0) {
+      return res.redirect('/login.html?error=Wrong email or password');
+    }
+
+    const ok = await bcrypt.compare(password, rows[0].password_hash);
+    if (!ok) {
+      return res.redirect('/login.html?error=Wrong email or password');
+    }
+
+    req.session.user = { id: rows[0].id, email: rows[0].email };
+    return res.redirect('/');
+  } catch (e) {
+    console.error('Login error:', e);
+    return res.redirect('/login.html?error=Server+error');
+  }
+});
+
+// ---------- Session helpers ----------
+app.get('/api/isLoggedIn', (req, res) => {
+  if (req.session.user) {
+    res.json({ loggedIn: true, user: req.session.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
 });
 
 app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        res.clearCookie('connect.sid'); // remove session cookie
-        res.redirect('/');
-    });
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
 });
 
-require('dotenv').config();
-//2. Create transporter (use your real Gmail and App Password)
+// ---------- Email (unchanged) ----------
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS      
-  },
+  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
   tls: { rejectUnauthorized: false }
 });
 
-// ✅ 3. Add this POST handler below your login/signup routes:
 app.post('/freeregister', (req, res) => {
-  // ONLY extract the email field safely from body
   const email = req.body.inputEmail || '';
   const firstName = req.body.inputFirstName || '';
   const lastName = req.body.inputLastName || '';
@@ -113,18 +126,8 @@ app.post('/freeregister', (req, res) => {
   const userType = req.body.flexRadioDefault || 'User';
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  if (!isValidEmail) {
-    return res.status(400).send('Invalid email address');
-  }
-  // debugging
-  // console.log('✔️ Form data received:', {
-  //   email,
-  //   firstName,
-  //   lastName,
-  //   userType
-  // });
+  if (!isValidEmail) return res.status(400).send('Invalid email address');
 
-  // 📤 Email content
   const mailOptions = {
     from: 'SPACEAPP <tanbinhvo.hcm@gmail.com>',
     to: email,
@@ -150,8 +153,6 @@ app.post('/freeregister', (req, res) => {
     `
   };
 
-
-  // 📬 Send the email
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       console.error('❌ Failed to send registration email:', err);
@@ -160,6 +161,16 @@ app.post('/freeregister', (req, res) => {
     console.log('✅ Registration email sent:', info.response);
     res.redirect('/thankyou.html');
   });
+});
+
+// ---------- Health endpoint to verify DB quickly ----------
+app.get('/admin/db-ping', async (req, res) => {
+  try {
+    const r = await pool.query('SELECT NOW() as now');
+    res.json({ ok: true, now: r.rows[0].now });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
 });
 
 app.listen(PORT, () => {
