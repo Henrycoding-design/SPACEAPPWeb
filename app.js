@@ -52,18 +52,23 @@ app.post('/signup', async (req, res) => {
 
   try {
     const hash = await bcrypt.hash(password, 12);
+
     const q = `
       INSERT INTO users (email, password_hash)
       VALUES ($1, $2)
+      ON CONFLICT (email) DO NOTHING
       RETURNING id, email, created_at
     `;
     const { rows } = await pool.query(q, [email, hash]);
+
+    if (rows.length === 0) {
+      // Duplicate email (no new row created)
+      return res.redirect('/signup.html?error=Email already exists');
+    }
+
     req.session.user = { id: rows[0].id, email: rows[0].email };
     return res.redirect('/');
   } catch (e) {
-    if (e.code === '23505') {
-      return res.redirect('/signup.html?error=Email already exists');
-    }
     console.error('Signup error:', e);
     return res.redirect('/signup.html?error=Server+error');
   }
@@ -176,4 +181,5 @@ app.get('/admin/db-ping', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
+
 
