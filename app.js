@@ -41,6 +41,7 @@ ensureSchema().catch(err => {
   process.exit(1);
 });
 
+
 // ---------- SIGNUP ----------
 app.post('/signup', async (req, res) => {
   const { email = '', password = '' } = req.body;
@@ -73,6 +74,7 @@ app.post('/signup', async (req, res) => {
     return res.redirect('/signup.html?error=Server+error');
   }
 });
+
 
 // ---------- LOGIN ----------
 app.post('/login', async (req, res) => {
@@ -116,22 +118,38 @@ app.get('/logout', (req, res) => {
   });
 });
 
-// ---------- Email (unchanged) ----------
+// ---------- Email ----------
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
   tls: { rejectUnauthorized: false }
 });
 
-app.post('/freeregister', (req, res) => {
+app.post('/freeregister', async(req, res) => {
   const email = req.body.inputEmail || '';
   const firstName = req.body.inputFirstName || '';
   const lastName = req.body.inputLastName || '';
   const name = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : 'User';
   const userType = req.body.flexRadioDefault || 'User';
 
+  const address = req.body.inputAddress || '';
+  const city = req.body.inputCity || '';
+  const country = req.body.inputCountry || '';
+
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!isValidEmail) return res.status(400).send('Invalid email address');
+
+  const q = `
+      INSERT INTO register (email, name, address, city, country)
+      VALUES ($1, $2, $3, $4, $5)
+      ON CONFLICT (email) DO NOTHING
+      RETURNING id, email, name, created_at
+    `;
+
+  const { rows } = await pool.query(q, [email, name, address, city, country]);
+  if (rows.length === 0) {
+    console.log('Email already registered:', email);
+  }
 
   const mailOptions = {
     from: 'SPACEAPP <tanbinhvo.hcm@gmail.com>',
@@ -181,5 +199,6 @@ app.get('/admin/db-ping', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
+
 
 
