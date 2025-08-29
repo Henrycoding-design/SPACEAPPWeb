@@ -398,7 +398,7 @@ transition: opacity 1s ease;
 }
 
 .sa-cell{
-    min-width:75px;
+    /* min-width:75px; */
     padding:var(--pad);
     border-radius:var(--radius);
     border:1px solid #cee3f8;
@@ -424,7 +424,9 @@ transition: opacity 1s ease;
     font-size:.9rem
 }
 
-@media (max-width:440px){
-    .sa-cell{min-width:70px}
-    .sa-cell span{font-size:1.5rem}
+
+@media (min-width: 1200px) {
+    .sa-cell {
+        min-width: 75px;
+    }
 }
