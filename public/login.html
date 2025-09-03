@@ -80,7 +80,14 @@
         const box = document.getElementById("error-box");
         const text = document.getElementById("error-text");
         box.classList.remove("d-none");
+        box.classList.add("show");
         text.textContent = params.get("error");
+        setTimeout(() => {
+          box.classList.remove("show");
+          setTimeout(() =>{
+            box.classList.add("d-none");
+          }, 200);
+        }, 5000);
       }
 
       // bootstrap validation (no stray checkMatch() call here)
@@ -112,3 +119,4 @@
   </body>
 
 </html>
+
