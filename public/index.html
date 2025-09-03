@@ -89,7 +89,7 @@
             <section class="container IntroContent my-3 mb-3">
                 <section class="IntroHeader mb-5 my-5">
                     <h1 class="text-center mb-4"><img src="img/logo.webp" alt="Logo" width="300" height="100" class="d-inline-block align-text-center"></h1>
-                    <p class="text-center mb-5">SPACEAPP bridges the gap between complex aerospace data and everyday users by offering a sleek, intuitive platform to explore real-time satellite activity, orbital mechanics, and live telemetry — all from the palm of your hand.</p>
+                    <p class="text-center mb-5">Built by Vo Tan Binh. SPACEAPP bridges the gap between complex aerospace data and everyday users by offering a sleek, intuitive platform to explore real-time satellite activity, orbital mechanics, and live telemetry — all from the palm of your hand.</p>
                 </section>
                 <section class="row justify-content-center" style="margin-top: 222px;">
                     <section class="col-md-6 mt-5 mb-3">
@@ -107,7 +107,7 @@
             <section class="overlay"></section>
             <section class="container py-5">
                 <h1 class="text-center mb-4"><img src="img/logo.webp" alt="Logo" width="300" height="100" class="d-inline-block align-text-center"></h1>
-                <p class="text-center mb-5">SPACEAPP bridges the gap between complex aerospace data and everyday users by offering a sleek, intuitive platform to explore real-time satellite activity, orbital mechanics, and live telemetry — all from the palm of your hand.</p>
+                <p class="text-center mb-5">Built by Vo Tan Binh. SPACEAPP bridges the gap between complex aerospace data and everyday users by offering a sleek, intuitive platform to explore real-time satellite activity, orbital mechanics, and live telemetry — all from the palm of your hand.</p>
                 <button class="btn btn-info w-100" type="button" style="opacity: 0.8; margin-top: 5px;" onclick="window.open('freeform.html', '_blank')">Download Now!</button>
             </section>
         </section>
@@ -407,7 +407,7 @@
                     </section>
                 </section>
                 <hr>
-                <p class="headlines mb-0 pb-3 mt-0 text-info">© 2025 SPACE APP Organization. All rights reserved.</p>
+                <p class="headlines mb-0 pb-3 mt-0 text-info">© 2025 SPACE APP Organization by Vo Tan Binh. All rights reserved.</p>
             </section>
         </footer>
     </main>
@@ -460,6 +460,7 @@
                 // const buyMeaCoffeeBtn = document.querySelector('.buyMeaCoffee-btn');
                 goUpBtn.style.display = 'none';
                 const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+                // const hash = window.location.hash;
 
                 function unlockIntro() {
                     scrollPos = 500;
@@ -470,6 +471,7 @@
                     hasAnimated = true;
                     goUpBtn.style.display = 'block';
                 }
+
                 window.SPACEAPP = window.SPACEAPP || {};
                 window.SPACEAPP.unlockIntro = unlockIntro;
 
@@ -496,7 +498,7 @@
                     if (!hasAnimated) {
                         if (scrollPos < 500 && e.deltaY > 0) {
                             scrollPos += e.deltaY;
-                            scrollPos = Math.min(scrollPos, 500);
+                            scrollPos = Math.min(scrollPos, 500); // ensure that it works even when scrollPos > 500
                             introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
                             e.preventDefault();
                         } 
@@ -537,20 +539,26 @@
                     });
                 });
 
-                document.addEventListener('DOMContentLoaded', () => {
+                document.addEventListener('DOMContentLoaded', (e) => {
+                    e.preventDefault();
                     // Hash links stuck error handle
                     const hash = window.location.hash;
 
                     const shouldSkip = !!hash;
                     if (shouldSkip) {
+                        e.preventDefault();
                         scrollPos = 500;
-                        isUnlocked = true;
-                        hasAnimated = true;
-                        introContent.style.transform = `translate(-50%, -50%) translateY(${250 - scrollPos}px)`;
+                        introContent.style.transform = `translate(-50%, -50%) translateY(${-250}px)`;
                         document.body.style.overflow = 'auto';
                         document.documentElement.style.overflow = 'auto';
+                        isUnlocked = true;
+                        hasAnimated = true;
                         goUpBtn.style.display = 'block';
+                        // console.log(scrollPos);
+                        // console.log(introContent);
+                        // console.log(isUnlocked);
 
+                    
                         // SCROLL to hash manually after scroll is unlocked
                         if (hash) {
                             const target = document.querySelector(hash);
@@ -561,6 +569,7 @@
                                 });
                             }
                         }
+
                     } else {
                         scrollPos = 0;
                         isUnlocked = false;
@@ -589,11 +598,11 @@
                 const now = new Date();
                 let ms = deadline - now;
                 if (ms <= 0) {
-                clearInterval(timer);
-                root.innerHTML = `
-                    <strong class="sa-title">SPACEAPP v2.5 availability has ended</strong>
-                    <p class="sa-note">Ended on Sep 14, 2025 (GMT+7)</p>`;
-                return;
+                    clearInterval(timer);
+                    root.innerHTML = `
+                        <strong class="sa-title">SPACEAPP v2.5 availability has ended</strong>
+                        <p class="sa-note">Ended on Sep 14, 2025 (GMT+7)</p>`;
+                    return;
                 }
                 const sec = Math.floor(ms / 1000);
                 const days = Math.floor(sec / 86400);
@@ -666,5 +675,4 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
-
 
