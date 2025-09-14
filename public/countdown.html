@@ -1,0 +1,69 @@
+<!-- Countdown box -->
+<section class="sa-countdown" role="timer" aria-live="polite"
+         data-deadline="2025-09-14T23:59:59+07:00">
+  <strong class="sa-title">SPACEAPP v2.5 available for</strong>
+  <div class="sa-grid">
+    <div class="sa-cell"><span id="cd-days">0</span><small>Days</small></div>
+    <div class="sa-cell"><span id="cd-hours">00</span><small>Hours</small></div>
+    <div class="sa-cell"><span id="cd-mins">00</span><small>Mins</small></div>
+    <div class="sa-cell"><span id="cd-secs">00</span><small>Secs</small></div>
+  </div>
+  <p class="sa-note">Ends on Sep 14, 2025 (GMT+7)</p>
+</section>
+
+<style>
+  .sa-countdown{--gap:.75rem;--pad:.75rem;--radius:1rem;--shadow:0 6px 20px rgba(0,0,0,.08);
+    display:grid;gap:var(--gap);justify-items:center;padding:1rem;border-radius:var(--radius);
+    box-shadow:var(--shadow);background:#fff;color:#111;max-width:fit-content;margin:auto}
+  .sa-title{font-size:1.05rem}
+  .sa-grid{display:flex;gap:var(--gap)}
+  .sa-cell{min-width:80px;padding:var(--pad);border-radius:var(--radius);
+    border:1px solid #e9ecef;text-align:center}
+  .sa-cell span{display:block;font-size:1.8rem;font-weight:700;line-height:1}
+  .sa-cell small{display:block;opacity:.7;margin-top:.25rem}
+  .sa-note{margin:0;opacity:.7;font-size:.9rem}
+  @media (max-width:440px){.sa-cell{min-width:70px}.sa-cell span{font-size:1.5rem}}
+</style>
+
+<script>
+(() => {
+  const root = document.querySelector('.sa-countdown');
+  if (!root) return;
+  const deadlineStr = root.dataset.deadline;
+  const deadline = new Date(deadlineStr);            // ISO with +07:00 offset
+  const $ = id => root.querySelector(id);
+  const dEl = $('#cd-days'), hEl = $('#cd-hours'), mEl = $('#cd-mins'), sEl = $('#cd-secs');
+
+  const pad = n => String(n).padStart(2, '0');
+
+  function tick() {
+    const now = new Date();
+    let ms = deadline - now;
+    if (ms <= 0) {
+      clearInterval(timer);
+      root.innerHTML = `
+        <strong class="sa-title">SPACEAPP v2.5 availability has ended</strong>
+        <p class="sa-note">Ended on Sep 14, 2025 (GMT+7)</p>`;
+      return;
+    }
+    const sec = Math.floor(ms / 1000);
+    const days = Math.floor(sec / 86400);
+    const hours = Math.floor((sec % 86400) / 3600);
+    const mins = Math.floor((sec % 3600) / 60);
+    const secs = sec % 60;
+
+    dEl.textContent = days;
+    hEl.textContent = pad(hours);
+    mEl.textContent = pad(mins);
+    sEl.textContent = pad(secs);
+
+    root.setAttribute('aria-label',
+      `${days} days, ${hours} hours, ${mins} minutes, and ${secs} seconds remaining until September 14, 2025`);
+  }
+
+  tick();
+  const timer = setInterval(tick, 1000);
+})();
+</script>
+
+<noscript>SPACEAPP v2.5 ends on Sep 14, 2025 (GMT+7).</noscript>
