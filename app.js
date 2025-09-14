@@ -35,19 +35,40 @@ async function ensureSchema() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS register (
+      id SERIAL PRIMARY KEY,
+      email TEXT UNIQUE NOT NULL,
+      name TEXT,
+      address TEXT,
+      city TEXT,
+      country TEXT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
 }
 ensureSchema().catch(err => {
   console.error('Failed to ensure schema:', err);
   process.exit(1);
 });
 
+// ---------- Nodemailer setup with SendGrid ----------
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-  tls: { rejectUnauthorized: false },
-  logger: true,   // log to console
-  debug: true     // show SMTP traffic
+  host: 'smtp.sendgrid.net',
+  port: 2525,
+  secure: false,
+  auth: {
+    user: 'apikey',
+    pass: process.env.SENDGRID_API_KEY
+  },
+  logger: true,
+  debug: true
 });
+// ---------- Nodemailer (SendGrid) ensure on boot ----------
+transporter.verify()
+  .then(() => console.log('📮 SendGrid ready'))
+  .catch(e => console.error('📮 SendGrid not ready:', e?.response?.body || e)); //e.response.body is just in case of switching into SendGrid Web API, for now we are just using SMTP
+
 
 let otpStore = {};
 
@@ -84,7 +105,7 @@ app.post('/signup', async (req, res) => {
     };
 
     const mailOptions = {
-      from: 'SPACEAPP <tanbinhvo.hcm@gmail.com>',
+      from: `${process.env.FROM_NAME || 'SPACEAPP'} <${process.env.FROM_EMAIL}>`,
       to: email,
       subject: "🔐 Verify Your SPACEAPP Account",
       html: `
@@ -107,20 +128,27 @@ app.post('/signup', async (req, res) => {
           <p style="font-size: 12px; color: #888;">— SPACEAPP Team — Vo Tan Binh</p>
           <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
         </div>
-      `
+      `,
+      headers: {
+        'X-SMTPAPI': JSON.stringify({
+          filters: {
+            clicktrack: { settings: { enable: 0 } },
+            opentrack: { settings: { enable: 0 } }
+          }
+        })
+      },
+      replyTo: 'tanbinhvo.hcm+support@gmail.com'
     };
 
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log('❌ OTP Error:', err);
-        return res.status(500).json({ error: "Failed to send email" });
-      }
-      console.log('✅ OTP email sent:', info.response);
-    });
-
-    req.session.pendingEmail = email;
-
-    return res.redirect('/otp.html');
+    try {
+      await transporter.sendMail(mailOptions);    // wait for SendGrid
+      console.log('✅ OTP email sent');
+      req.session.pendingEmail = email;
+      return res.redirect('/otp.html');           // respond once
+    } catch (err) {
+      console.error('❌ OTP Error:', err?.response?.body || err);
+      return res.status(500).json({ error: "Failed to send email" }); // single response
+    }
 
   } catch (e) {
     console.error('Signup error:', e);
@@ -141,7 +169,7 @@ app.get('/resend-otp', async (req, res) => {
   otpStore[email].otp = otp;
   otpStore[email].expires = Date.now() + 5 * 60 * 1000;
   const mailOptions = {
-    from: 'SPACEAPP <tanbinhvo.hcm@gmail.com>',
+    from: `${process.env.FROM_NAME || 'SPACEAPP'} <${process.env.FROM_EMAIL}>`,
     to: email,
     subject: "🔐 Verify Your SPACEAPP Account",
     html: `
@@ -164,7 +192,16 @@ app.get('/resend-otp', async (req, res) => {
         <p style="font-size: 12px; color: #888;">— SPACEAPP Team — Vo Tan Binh</p>
         <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
       </div>
-    `
+    `,
+    headers: {
+        'X-SMTPAPI': JSON.stringify({
+          filters: {
+            clicktrack: { settings: { enable: 0 } },
+            opentrack: { settings: { enable: 0 } }
+          }
+        })
+      },
+    replyTo: 'tanbinhvo.hcm+support@gmail.com'
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
@@ -289,7 +326,7 @@ app.post('/freeregister', async(req, res) => {
   }
 
   const mailOptions = {
-    from: 'SPACEAPP <tanbinhvo.hcm@gmail.com>',
+    from: `${process.env.FROM_NAME || 'SPACEAPP'} <${process.env.FROM_EMAIL}>`,
     to: email,
     subject: '🚀 Welcome to SPACEAPP!',
     html: `
@@ -323,7 +360,16 @@ app.post('/freeregister', async(req, res) => {
 
         <p style="font-size: 12px; color: #888; margin: 0;">— SPACEAPP Team — Vo Tan Binh</p>
         <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
-    `
+    `,
+    headers: {
+        'X-SMTPAPI': JSON.stringify({
+          filters: {
+            clicktrack: { settings: { enable: 0 } },
+            opentrack: { settings: { enable: 0 } }
+          }
+        })
+      },
+    replyTo: 'tanbinhvo.hcm+support@gmail.com'
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
@@ -348,5 +394,5 @@ app.get('/admin/db-ping', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
-
 });
+
