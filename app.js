@@ -44,7 +44,9 @@ ensureSchema().catch(err => {
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-  tls: { rejectUnauthorized: false }
+  tls: { rejectUnauthorized: false },
+  logger: true,   // log to console
+  debug: true     // show SMTP traffic
 });
 
 let otpStore = {};
@@ -346,4 +348,5 @@ app.get('/admin/db-ping', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
+
 });
