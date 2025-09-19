@@ -53,24 +53,6 @@ ensureSchema().catch(err => {
   process.exit(1);
 });
 
-// // ---------- Nodemailer setup with SendGrid ----------
-// const transporter = nodemailer.createTransport({
-//   host: 'smtp.sendgrid.net',
-//   port: 2525,
-//   secure: false,
-//   auth: {
-//     user: 'apikey',
-//     pass: process.env.SENDGRID_API_KEY
-//   },
-//   logger: true,
-//   debug: true
-// });
-// // ---------- Nodemailer (SendGrid) ensure on boot ----------
-// transporter.verify()
-//   .then(() => console.log('📮 SendGrid ready'))
-//   .catch(e => console.error('📮 SendGrid not ready:', e?.response?.body || e)); //e.response.body is just in case of switching into SendGrid Web API, for now we are just using SMTP
-
-
 let otpStore = {};
 
 // ---------- SIGNUP ----------
@@ -383,3 +365,4 @@ app.get('/admin/db-ping', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
+
