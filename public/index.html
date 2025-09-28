@@ -67,7 +67,7 @@
                         </li>
                         <li class="mx-2 no-underline d-none d-lg-block">
                             <a class="nav-link" href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases" rel="noopener noreferrer" target="_blank">
-                                <i class="bi bi-github" style="font-size: 1.2rem; color: white"></i>
+                                <i class="bi bi-github GithubIcon"></i>
                             </a>
                         </li>
                     </ul>
@@ -350,7 +350,7 @@
                         <h5 class="headlines text-info">Follow Us:</h5>
                         <section class="row">
                             <section class="col-md-4 mb-4">
-                                <a href="https://www.facebook.com" rel="noopener noreferrer" class="headlines text-decoration-none" target="_blank">
+                                <a href="https://www.facebook.com/profile.php?id=100094717359908" rel="noopener noreferrer" class="headlines text-decoration-none" target="_blank">
                                     <i class="bi bi-facebook me-2"></i>Facebook
                                 </a>
                             </section>
@@ -662,7 +662,7 @@
                 .catch(err => console.error("Login check failed:", err))
                 .then(res => res.json())
                 .then(data => {
-                    signInBtn.innerHTML = `<i class="bi ${data.loggedIn ? "bi-box-arrow-right" : "bi-box-arrow-in-right"}" id="LogIcon"></i> ${data.loggedIn ? "Log Out" : "Log In"}`;
+                    signInBtn.innerHTML = `<i class="bi ${data.loggedIn ? "bi-box-arrow-right" : "bi-box-arrow-in-right"}"></i> ${data.loggedIn ? "Log Out" : "Log In"}`;
                     if (data.loggedIn) {
                         // signInBtn.classList.remove("btn-outline-danger");
                         // signInBtn.classList.add("btn-outline-warning");
@@ -679,6 +679,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
+
 
 
 
