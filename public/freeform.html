@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Vo Tan Binh from SPACEAPP Team" />
+        <meta name="description" content="Package Registration Page">
+        <title>SPACEAPP | Free Registration</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="style/formstyle.css">
+        <link rel="icon" href="img/webicon.webp">
+    </head>
+    <body>
+        <main>
+            <section class="container py-3">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-12 col-lg-10 col-xl-9">
+                        <h1 class="mb-2 Title text-center">SPACEAPP</h1>
+
+                        <div class="card rounded-3 shadow mt-2 p-3 p-md-4 mx-auto">
+                        <div class="card-body">
+                            <h4 class="card-title label mb-3">Information</h4>
+
+                            <form class="needs-validation" novalidate action="/freeregister" method="post">
+                            <p class="mb-2">Which version would you like to have?</p>
+
+                            <div class="d-flex flex-column flex-sm-row gap-3 mb-3" role="radiogroup" aria-label="Version selection">
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" id="v4.2" name="flexRadioDefault" value="v4.2" checked>
+                                <label class="form-check-label" for="v4.2">v4.2</label>
+                                </div>
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" id="v4.0" name="flexRadioDefault" value="v4.0">
+                                <label class="form-check-label" for="v4.0">v4.0</label>
+                                </div>
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" id="v3.0" name="flexRadioDefault" value="v3.0">
+                                <label class="form-check-label" for="v3.0">v3.0</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                <label class="label" for="inputFirstName">First name</label>
+                                <input type="text" class="form-control" id="inputFirstName" name="inputFirstName"
+                                        autocomplete="given-name" autocapitalize="words" required>
+                                <div class="invalid-feedback">Please enter your first name.</div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                <label class="label" for="inputLastName">Last name</label>
+                                <input type="text" class="form-control" id="inputLastName" name="inputLastName"
+                                        autocomplete="family-name" autocapitalize="words" required>
+                                <div class="invalid-feedback">Please enter your last name.</div>
+                                </div>
+
+                                <div class="col-12">
+                                <label class="label" for="inputEmail">Email</label>
+                                <input type="email" class="form-control" id="inputEmail" name="inputEmail"
+                                        placeholder="example@gmail.com" autocomplete="email" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email. We will send your download link here.
+                                </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                <label class="label" for="inputAddress">Address (optional)</label>
+                                <input type="text" class="form-control" id="inputAddress" name="inputAddress"
+                                        placeholder="1234 Main St" autocomplete="address-line1">
+                                </div>
+                                <div class="col-12 col-md-6">
+                                <label class="label" for="inputCity">City (optional)</label>
+                                <input type="text" class="form-control" id="inputCity" name="inputCity"
+                                        placeholder="Los Angeles" autocomplete="address-level2">
+                                </div>
+
+                                <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label" for="inputCountry">Country (optional)</label>
+                                <input type="text" class="form-control" id="inputCountry" name="inputCountry"
+                                        placeholder="USA" autocomplete="country-name">
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label" for="inputState">State (optional)</label>
+                                <select id="inputState" name="inputState" class="form-select" autocomplete="address-level1">
+                                    <option value="">Choose…</option>
+                                    <option>California</option>
+                                    <!-- other options here -->
+                                </select>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                <label class="label" for="inputZip">Zip (optional)</label>
+                                <input type="text" class="form-control" id="inputZip" name="inputZip"
+                                        inputmode="numeric" autocomplete="postal-code" minlength="5" maxlength="9">
+                                </div>
+                            </div>
+
+                            <div class="form-check my-4 ms-1">
+                                <input class="form-check-input" type="checkbox" id="gridCheck" name="agree" required>
+                                <label class="form-check-label" for="gridCheck">
+                                You agree with our
+                                <a href="PrivatePolicy.html" target="policy" class="text-decoration-none" onclick="window.open('', 'policy')">Terms</a>
+                                </label>
+                                <div class="invalid-feedback">You must agree to continue.</div>
+                            </div>
+
+                            <div class="d-grid gap-3">
+                                <button type="submit" class="btn btn-primary btn-lg">Continue to Checkout</button>
+                            </div>
+
+                            <p class="mt-3 text-center">
+                                <a class="text-nowrap login_btn" href="signup.html" target="signup" onclick="window.open('', 'signup')">
+                                Don't have an account yet? Make one now!
+                                </a>
+                            </p>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script>
+            // Bootstrap validation script
+            (function () {
+                'use strict'
+                const forms = document.querySelectorAll('.needs-validation')
+                Array.from(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+                })
+            })();
+        </script>
+    </body>
+</html>
