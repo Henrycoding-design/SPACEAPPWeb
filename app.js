@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const { gmailSend } = require('./gmail');
 const { pool } = require('./db');
@@ -52,6 +52,24 @@ ensureSchema().catch(err => {
   console.error('Failed to ensure schema:', err);
   process.exit(1);
 });
+
+// // ---------- Nodemailer setup with SendGrid ----------
+// const transporter = nodemailer.createTransport({
+//   host: 'smtp.sendgrid.net',
+//   port: 2525,
+//   secure: false,
+//   auth: {
+//     user: 'apikey',
+//     pass: process.env.SENDGRID_API_KEY
+//   },
+//   logger: true,
+//   debug: true
+// });
+// // ---------- Nodemailer (SendGrid) ensure on boot ----------
+// transporter.verify()
+//   .then(() => console.log('📮 SendGrid ready'))
+//   .catch(e => console.error('📮 SendGrid not ready:', e?.response?.body || e)); //e.response.body is just in case of switching into SendGrid Web API, for now we are just using SMTP
+
 
 let otpStore = {};
 
@@ -113,7 +131,7 @@ app.post('/signup', async (req, res) => {
           <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
         </div>
       `,
-      replyTo: 'tanbinhvo.hcm+support@gmail.com'
+      replyTo: 'tanbinhvo.hcm@gmail.com'
     };
 
     try {
@@ -170,7 +188,7 @@ app.get('/resend-otp', async (req, res) => {
         <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
       </div>
     `,
-    replyTo: 'tanbinhvo.hcm+support@gmail.com'
+    replyTo: 'tanbinhvo.hcm@gmail.com'
   };
 
   try {
@@ -235,7 +253,9 @@ app.post('/login', async (req, res) => {
     }
 
     req.session.user = { id: rows[0].id, email: rows[0].email };
-    return res.redirect('/');
+    const next = encodeURIComponent('/');
+    return res.redirect(`/auth-complete.html?next=${next}`);
+    // return res.redirect('/');
   } catch (e) {
     console.error('Login error:', e);
     return res.redirect('/login.html?error=Server+error');
@@ -331,7 +351,7 @@ app.post('/freeregister', async(req, res) => {
         <p style="font-size: 12px; color: #888; margin: 0;">— SPACEAPP Team — Vo Tan Binh</p>
         <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
     `,
-    replyTo: 'tanbinhvo.hcm+support@gmail.com'
+    replyTo: 'tanbinhvo.hcm@gmail.com'
   };
 
   // transporter.sendMail(mailOptions, (err, info) => {
