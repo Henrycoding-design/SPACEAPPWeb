@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Signing you in…</title>
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <style>
+    body { font-family: system-ui, sans-serif; display:flex; height:100vh; align-items:center; justify-content:center; }
+  </style>
+</head>
+<body>
+  <div>Signing you in…</div>
+  <script>
+    (function () {
+      const params = new URLSearchParams(location.search);
+      const next = params.get('next') || '/';
+
+      // Approach A: If this window was opened by the main site (no 'noopener'), use opener:
+      try {
+        if (window.opener && !window.opener.closed) {
+          // Refresh or navigate the opener to the desired page
+          window.opener.location.href = next;
+          window.opener.focus();
+        } else {
+          // Approach B: If no opener (e.g., opened with 'noopener' or in a named tab),
+          // send the main site to 'next' using a named window:
+          const main = window.open('', 'main-site');
+          if (!main || main.closed) window.open('about:blank', 'main-site');
+          try { window.open(next, 'main-site'); } catch (e) {}
+        }
+      } catch (e) {
+        // Cross-origin protections or other issues; just navigate this window instead.
+        location.replace(next);
+        return;
+      }
+
+      // Try to close the popup/tab (works only if script-opened):
+      window.close();
+
+      // Fallback: if close is blocked, at least land the user on 'next' here.
+      setTimeout(() => {
+        if (!window.closed) location.replace(next);
+      }, 50);
+    })();
+  </script>
+</body>
+</html>
