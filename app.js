@@ -293,7 +293,8 @@ app.post('/freeregister', async(req, res) => {
   const downloadLinks = {
     'v3.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v3.0/v3.0.noopensrc.zip',
     'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/v4.0.noopensrc.zip',
-    'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/v4.2.closedsrc.zip'
+    'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/v4.2.closedsrc.zip',
+    'NextGenv1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/NextGen/SPACEAPPNextGenv1.zip'
   };
 
   const downloadLink = downloadLinks[versionSelected];
@@ -330,7 +331,7 @@ app.post('/freeregister', async(req, res) => {
           🌌 Thank you for registering!
         </h2>
 
-        <p>You chose SPACEAPP <strong>${versionSelected}</strong>. You're all set to begin your journey tracking real-time satellites from Earth.</p>
+        <p>You chose SPACEAPP <strong>${versionSelected}</strong>. ${versionSelected === 'NextGenv1' ? "Please note that this is a pre-release of NextGenv1. If there is any issues during use, please contact us by the information provided below." : "You're all set to begin your journey tracking real-time satellites from Earth."}</p>
 
         <div style="text-align: center; margin: 20px 0;">
           <a href="${downloadLink}" target="_blank" rel="noopener noreferrer"
@@ -350,6 +351,7 @@ app.post('/freeregister', async(req, res) => {
 
         <p style="font-size: 12px; color: #888; margin: 0;">— SPACEAPP Team — Vo Tan Binh</p>
         <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
+        <p style="font-size: 12px; color: #888;">Contact: <a href="mailto:tanbinhvo.hcm@gmail.com" style="color: #4A90E2;">tanbinhvo.hcm@gmail.com</a></p>
     `,
     replyTo: 'tanbinhvo.hcm@gmail.com'
   };
@@ -385,4 +387,3 @@ app.get('/admin/db-ping', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
-
