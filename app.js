@@ -292,8 +292,8 @@ app.post('/freeregister', async(req, res) => {
 
   const downloadLinks = {
     'v3.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v3.0/v3.0.noopensrc.zip',
-    'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/v4.0.noopensrc.zip',
-    'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/v4.2.closedsrc.zip',
+    'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
+    'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/SPACEAPPv4.2.zip',
     'NextGenv1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/NextGen/SPACEAPPNextGenv1.zip'
   };
 
@@ -331,7 +331,9 @@ app.post('/freeregister', async(req, res) => {
           🌌 Thank you for registering!
         </h2>
 
-        <p>You chose SPACEAPP <strong>${versionSelected}</strong>. ${versionSelected === 'NextGenv1' ? "Please note that this is a pre-release of NextGenv1. If there is any issues during use, please contact us by the information provided below." : "You're all set to begin your journey tracking real-time satellites from Earth."}</p>
+        <p>You chose SPACEAPP <strong>${versionSelected}</strong>. 
+        ${versionSelected === 'NextGenv1' ? "Please note that this is a pre-release of NextGenv1. If there is any issues during use, please contact us through the information provided below." : "You're all set to begin your journey tracking real-time satellites from Earth."}
+        </p>
 
         <div style="text-align: center; margin: 20px 0;">
           <a href="${downloadLink}" target="_blank" rel="noopener noreferrer"
@@ -345,7 +347,8 @@ app.post('/freeregister', async(req, res) => {
           and paste it inside your <code>.env</code> file. See more instructions in the README.
         </p>
 
-        <p>Feel free to contact us with any questions. Enjoy exploring the stars!</p>
+        <p>${versionSelected === "v3.0" ? "Please note that SPACEAPP v3.0 is now considered an earlier release, with several components that have not been updated since September 2025. At the time of its publication, a placeholder NASA logo was temporarily used as we had not yet finalized our own branding — we sincerely apologize for this oversight. \nAdditionally, a few known vulnerabilities were later identified in this version. However, since v3.0 does not handle sensitive user data, it remains safe for general use. We plan to continue supporting it until December 2025, after which it will be officially retired in preparation for the upcoming NextGen releases.":""}
+        Feel free to contact us with any questions. Enjoy exploring the stars!</p>
 
         <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
 
