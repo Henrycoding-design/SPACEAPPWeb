@@ -316,6 +316,27 @@ transition: opacity 1s ease;
 }
 .Intro > * { position: relative; z-index: 2; }
 
+/* Custom display of buttons in smaller screens (<412px) */
+.btn-group-responsive {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (max-width: 412px) {
+    .btn-group-responsive {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-group-responsive button, 
+    .btn-group-responsive a {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 .Membership {
     position: relative;
     height: 100vh;
@@ -459,4 +480,5 @@ transition: opacity 1s ease;
   .sa-cell span {
     font-size: 1.4rem;
   }
+
 } */
