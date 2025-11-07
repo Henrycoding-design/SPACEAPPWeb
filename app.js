@@ -135,7 +135,7 @@ app.post('/signup', async (req, res) => {
     };
 
     try {
-      await gmailSend(mailOptions);    // wait for SendGrid
+      await gmailSend(mailOptions);   
       console.log('✅ OTP email sent');
       req.session.pendingEmail = email;
       return res.redirect('/otp.html');           // respond once
@@ -294,7 +294,7 @@ app.post('/freeregister', async(req, res) => {
     'v3.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v3.0/v3.0.noopensrc.zip',
     'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
     'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/SPACEAPPv4.2.zip',
-    'NextGenv1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/NextGen/SPACEAPPNextGenv1.zip'
+    'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip'
   };
 
   const downloadLink = downloadLinks[versionSelected];
@@ -332,7 +332,7 @@ app.post('/freeregister', async(req, res) => {
         </h2>
 
         <p>You chose SPACEAPP <strong>${versionSelected}</strong>. 
-        ${versionSelected === 'NextGenv1' ? "Please note that this is a pre-release of NextGenv1. If there is any issues during use, please contact us through the information provided below." : "You're all set to begin your journey tracking real-time satellites from Earth."}
+        ${versionSelected === 'v5.0' ? "You’ve chosen SPACEAPP v5.0: the most refined and internationally capable build to date, engineered for precision and endurance." : "You're all set to begin your journey tracking real-time satellites from Earth."}
         </p>
 
         <div style="text-align: center; margin: 20px 0;">
