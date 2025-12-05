@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Meta -->
+  <meta name="description" content="Where to explore SPACEAPP’s open-source GitHub projects, submit feature requests, and get answers from our comprehensive FAQ." />
+  <meta name="keywords" content="spaceapp open-source, spaceapp q&a, spaceappweb community, spaceappweb, spapp, spaceapp, satellite tracker, NORAD ID, orbital data, space app, space visualization, live satellite position" />
+  <meta name="author" content="Vo Tan Binh from SPACEAPP Team" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="SPACEAPP – Real-Time Satellite Tracker Community" />
+  <meta property="og:description" content="Explore SPACEAPP’s open-source GitHub projects, submit feature requests, and get answers from our comprehensive FAQ." />
+  <meta property="og:image" content="https://spaceappweb.onrender.com/img/web-img-preview.png" />
+  <meta property="og:url" content="" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SPACEAPP – Real-Time Satellite Tracker Community" />
+  <meta property="og:description" content="Explore SPACEAPP’s open-source GitHub projects, submit feature requests, and get answers from our comprehensive FAQ." />
+  <meta name="twitter:image" content="https://spaceappweb.onrender.com/img/web-img-preview.png" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="icon" href="img/APPICON.webp">
+  <link rel="stylesheet" href="style/community.css">
+
+  <title>SPACEAPP | Community Page</title>
+
+  <!-- Simple front-end gate: redirect to login if not authenticated -->
+  <script>
+    (async function gate() {
+      try {
+        const res = await fetch('api/isLoggedIn', { credentials: 'include' });
+        const data = await res.json();
+        if (!data?.loggedIn) {
+          const redir = encodeURIComponent('community.html');
+          window.location.replace(`login.html?redirect=${redir}`);
+        }
+      } catch (e) {
+        console.warn('Login check failed; staying on page (dev mode).', e);
+      }
+    })();
+  </script>
+  <!-- Status: Structure and backend logics are in place, but contents may need adjustment and polishing-->
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navbarNav" data-bs-offset="90" tabindex="0">
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg NavBar sticky-top" style="min-height:64px;">
+    <section class="container-fluid">
+      <a class="navbar-brand me-2 d-flex align-items-center gap-2" href="#">
+        <img src="img/SPACEAPPicon.webp" alt="Logo" width="200" height="30" class="d-inline-block align-text-center mt-2">
+        <span class="badge bg-danger mb-3">.Inc</span>
+      </a>
+
+      <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <section class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav flex-even flex-grow-1 order-1 justify-content-evenly me-3 me-xl-0">
+          <li class="nav-item mx-2">
+            <a class="nav-link" style="color:white; text-decoration: none;" href="index.html">Home</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link text-nowrap" style="color:white; text-decoration: none;" href="#SourceCode">Source Code</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" style="color:white; text-decoration: none;" href="#QA">Q&A</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" style="color:white; text-decoration: none;" href="#Contact">Contact</a>
+          </li>
+          <li class="mx-2 no-underline d-none d-lg-block">
+            <a class="nav-link" href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases" rel="noopener noreferrer" target="githubrepo" onclick="window.open('', 'githubrepo')">
+              <i class="bi bi-github GithubIcon"></i>
+            </a>
+          </li>
+        </ul>
+
+        <form class="order-2 d-none d-xl-flex mx-3" role="search">
+            <input class="form-control me-2" type="search" placeholder="Ask Something" aria-label="Search"/>
+            <button class="btn Search_btn" type="submit" autocomplete="off">Search</button>
+        </form>
+
+        <section class="order-3 d-flex ms-auto ms-xl-5 align-items-center justify-content-center me-3 me-xl-2 gap-2">
+          <!-- <a class="btn btn-outline-light btn-sm d-none d-md-inline-flex" href="/auth/google">
+            <i class="bi bi-google"></i>&nbsp;Sign in with Google
+          </a> -->
+          <button class="btn btn-outline-danger SignIn_btn text-nowrap" type="button">
+            <i class="bi bi-box-arrow-in-right"></i> Log In
+          </button>
+          <!-- <button class="btn btn-primary SignUp_btn" type="button" onclick="window.open('freeform.html','download')">
+            <i class="bi bi-windows"></i> <span style="color:white">Download</span>
+          </button> -->
+        </section>
+      </section>
+    </section>
+  </nav>
+
+  <!-- INTRO -->
+  <header class="IntroContent container mt-3 p-4 rounded-3 glass">
+    <h2 class="mb-2 headlines">Welcome to the SPACEAPP Community Page!</h2>
+    <p class="mb-0">Find answers to frequent questions, explore our open-source stack, and connect with the original SPACEAPP developer. Students, researchers, and enthusiasts are all welcome.</p>
+  </header>
+
+  <!-- OPEN-SOURCE MODELS / SOURCE CODE -->
+  <main class="container my-5">
+    <section id="SourceCode" class="mb-5">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="headlines mb-0">Open-Source Models & Resources</h3>
+        <div class="d-flex gap-2">
+          <a class="btn btn-outline-light btn-sm" href="https://github.com/Henrycoding-design/SpaceappwebOpenSrc" target="github-opensrc" rel="noopener">
+            <i class="bi bi-github"></i> Open-Src Repo
+          </a>
+          <a class="btn btn-outline-light btn-sm" href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases" target="github-release" rel="noopener">
+            <i class="bi bi-box-arrow-down"></i> Official Releases
+          </a>
+          <a class="btn btn-outline-light btn-sm" href="docs.html" target="docs">
+            <i class="bi bi-journal-bookmark"></i> Docs
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Options -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <article class="card h-100 soft">
+            <div class="card-body">
+              <h5 class="card-title">Options</h5>
+              <p class="card-text">Choose prebuilt bundles or customize modules (API worker, Core Engine, Map, one-dir).</p>
+              <ul class="small mb-3" style="color:#b8c2e0;">
+                <li>Core (smallest, beginner-friendly)</li>
+                <li>Standard (bigger, junior-friendly)</li>
+                <li>Expert (largest, senior-friendly)</li>
+              </ul>
+              <a class="btn btn-outline-primary btn-sm" href="docs.html#open-src" target="docs">See options</a>
+            </div>
+          </article>
+        </div>
+
+        <!-- Info -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <article class="card h-100 soft">
+            <div class="card-body">
+              <h5 class="card-title">Info</h5>
+              <p class="card-text">Architecture overview, modules, and data flow (from API → Processing → visualization).</p>
+              <a class="btn btn-outline-primary btn-sm" href="docs.html#architect" target="docs">Architecture</a>
+            </div>
+          </article>
+        </div>
+
+        <!-- Docs -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <article class="card h-100 soft">
+            <div class="card-body">
+              <h5 class="card-title">Docs</h5>
+              <p class="card-text">Install, quick start, Guidance, API references, and troubleshooting.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-outline-primary btn-sm" href="docs.html#getstarted" target="docs">Get Started</a>
+                <a class="btn btn-outline-primary btn-sm" href="docs.html#api" target="docs">API</a>
+                <a class="btn btn-outline-primary btn-sm" href="docs.html#faq" target="docs">FAQ</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Direct Delivery (Email) -->
+        <div class="col-12 col-lg-6">
+          <article class="card h-100 soft">
+            <div class="card-body">
+              <h5 class="card-title">Direct Delivery via Email</h5>
+              <p class="card-text">Get a build delivered to your inbox. <br>v3.0 modules will be free while v4.0 & v4.2 ones need to be paid</p>
+
+              <form id="deliveryForm" class="row g-2" action="/api/delivery" method="POST">
+                <div class="col-12 col-md-6">
+                  <label class="form-label small" >Email</label>
+                  <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+                </div>
+                <div class="col-6 col-md-3">
+                  <label class="form-label small">Module</label>
+                  <select name="module" class="form-select" id="moduleSelect">
+                    <option value="placeholder">-- Choose a Module --</option>
+                    <option value="api_worker">API Worker</option>
+                    <option value="core_engine">Core Engine</option>
+                    <option value="map">Map and Marker</option>
+                    <option value="full_stack">Full Stack</option>
+                  </select>
+                </div>
+                <div class="col-6 col-md-3">
+                  <label class="form-label small">Version</label>
+                  <select name="version" class="form-select" id="versionSelect">
+                    <option value="placeholder">-- Choose a Module --</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small">Uses (optional)</label>
+                  <textarea class="form-control" name="use" rows="2" placeholder="Learning, testing, ..."></textarea>
+                </div>
+                <div class="col-12 d-flex gap-2 mt-4">
+                  <button class="btn btn-primary" type="submit"><i class="bi bi-send"></i> Automated Delivery</button>
+                  <a class="btn btn-outline-light" href="mailto:tanbinhvo.hcm@gmail.com?subject=SPACEAPP%20Delivery%20Request&body=Name:%20%0D%0AModule:%20YourChosenModule%0D%0AVersion:%20YourChosenVersion%0D%0ANotes:%20" rel="noopener">
+                    <i class="bi bi-envelope"></i> Mail instead
+                  </a>
+                </div>
+              </form>
+
+              <small class="d-block mt-3" style="color: #b8c2e0">We’ll send you a response in 12–48 hours for Mail request options.</small>
+            </div>
+          </article>
+        </div>
+
+        <!-- Support Links -->
+        <div class="col-12 col-lg-6">
+          <article class="card h-100 soft">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Support the project</h5>
+              <p class="card-text">Help keep SPACEAPP open and accessible.</p>
+              <div class="d-flex flex-wrap gap-3 align-items-center">
+                <a class="btn btn-warning buyMeaCoffee-btn" onclick="window.open('https://buymeacoffee.com/VoTanBinh', 'buymeacoffee');" target="_blank" rel="noopener noreferrer">
+                  <img src="https://cdn.buymeacoffee.com/widget/assets/coffee%20cup.svg" alt="coffee cup" width="24" height="24" style="padding-right: 8px;">
+                  <span> Buy Me a Coffee</span>
+                </a>
+                <a class="btn btn-primary" onclick="window.open('https://www.facebook.com/share/p/1D6bYETpNz/', 'facebook');" target="_blank" rel="noopener noreferrer">
+                  <i class="bi bi-facebook"></i> Facebook
+                </a>
+                <a class="btn btn-danger" onclick="window.open('https://www.producthunt.com/products/spaceapp?utm_source=other&utm_medium=social', 'producthunt');" target="_blank" rel="noopener noreferrer">
+                  <i class="bi bi-bullseye"></i> Product Hunt
+                </a>
+              </div>
+              <div class="mt-auto pt-3">
+                <small style="color: #b8c2e0">Star the repo, share with friends, or contribute PRs: everything helps!</small>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q&A -->
+    <section id="QA" class="mb-5">
+      <h3 class="mb-3 headlines">Community FAQs</h3>
+
+      <div class="accordion soft" id="qaAccordion">
+        <!-- 1 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q1">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="false" aria-controls="a1">
+              How is SPACEAPP working?
+            </button>
+          </h2>
+          <div id="a1" class="accordion-collapse collapse" aria-labelledby="q1" data-bs-parent="#qaAccordion">
+            <div class="accordion-body">
+              SPACEAPP ingests TLEs, propagates orbits, and renders live positions. Modules: fetcher (TLE), propagator, visualizer, alerts. Works online to keep TLE sync.
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q2">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
+              What’s next on the roadmap?
+            </button>
+          </h2>
+        <div id="a2" class="accordion-collapse collapse" aria-labelledby="q2" data-bs-parent="#qaAccordion">
+          <div class="accordion-body">
+            We are planning to have <code>SPACEAPPv5.0-beta-x</code> versions for testing new database structures, smoother, and more optimized performance. These test prototypes can then be applied to the next release of <code>v5.x.</code>
+          </div>
+        </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q3">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
+              What’s the story behind SPACEAPP?
+            </button>
+          </h2>
+          <div id="a3" class="accordion-collapse collapse" aria-labelledby="q3" data-bs-parent="#qaAccordion">
+            <div class="accordion-body">
+              A solely CS student decided to work orbital mechanics and make it approachable and hands-on. Everything all started since June, 2025. After several months, by August, the project is finally live and now distributed on various platforms: Google, ProductHunt, Github, BuyMeACoffee, FaceBook,...
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
+              How can I support?
+            </button>
+          </h2>
+          <div id="a4" class="accordion-collapse collapse" aria-labelledby="q4" data-bs-parent="#qaAccordion">
+            <div class="accordion-body">
+              Let's contribute to our open-src repo on <a href="https://github.com/Henrycoding-design/SpaceappwebOpenSrc" target="_blank" rel="noreferrer noopener">Github</a> or sponsor on <a href="#deliveryForm">BuyMeACoffee / Product Hunt</a>.
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q5">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a5" aria-expanded="false" aria-controls="a5">
+              Which versions are best for me?
+            </button>
+          </h2>
+          <div id="a5" class="accordion-collapse collapse" aria-labelledby="q5" data-bs-parent="#qaAccordion">
+            <div class="accordion-body">
+              <strong>Lite:</strong> <code>SPACEAPPv4.0</code> <strong>Standard:</strong> <code>SPACEAPPv4.2</code> <strong>Research:</strong> <code>SPACEAPPv5.x.</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q6">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a6" aria-expanded="false" aria-controls="a6">
+              What are the main purposes?
+            </button>
+          </h2>
+          <div id="a6" class="accordion-collapse collapse" aria-labelledby="q6" data-bs-parent="#qaAccordion">
+            <div class="accordion-body">
+              Teaching, exploration, and research—SPACEAPP bridges theory and real-time data.
+            </div>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q7">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a7" aria-expanded="false" aria-controls="a7">
+              How do I report bugs or request features?
+            </button>
+          </h2>
+          <div id="a7" class="accordion-collapse collapse" aria-labelledby="q7" data-bs-parent="#qaAccordion">
+            <div class="accordion-body">
+              We offer <a href="https://github.com/Henrycoding-design/SpaceappwebOpenSrc" target="_blank" rel="noreferrer noopener"></a>SPACEAPPv3.0 OpenSrc repo on Github, where you can clone modules or start an issue. If you want access to more recent versions, please fill in the <a href="#deliveryForm">Delivery Form</a> and complete your payment in the BuyMeACoffee link we'll send you via email.
+            </div>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="accordion-item bg-transparent border-light-subtle">
+          <h2 class="accordion-header" id="q8">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a8" aria-expanded="false" aria-controls="a8">
+              Where to find my API keys when I forgot them?
+            </button>
+          </h2>
+          <div id="a8" class="accordion-collapse collapse" aria-labelledby="q8" data-bs-parent="#qaAccordion">
+            <div class="accordion-body">
+              You can retrieve your API keys by logging into your n2yo.com account or click <a href="https://www.n2yo.com/login/edit/" target="_blank" rel="noreferrer noopener">here</a>. Your API key of the account is displayed at the "License Key" section.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="Contact" class="mb-5">
+      <h3 class="mb-3 headlines">Contact</h3>
+      <div class="row g-4">
+        <div class="col-12 col-md-6">
+          <div class="card soft">
+            <div class="card-body">
+              <h5 class="card-title">Community Links</h5>
+              <p class="card-text">Join the conversation and find updates.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-primary" href="https://www.facebook.com/" target="_blank" rel="noopener noopener"><i class="bi bi-facebook"></i> Facebook</a>
+                <a class="btn btn-danger" href="https://www.producthunt.com/" target="_blank" rel="noopener noreferrer"><i class="bi bi-bullseye"></i> Product Hunt</a>
+                <a class="btn btn-outline-light" href="https://github.com/Henrycoding-design/SPACEAPPEXE" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i> GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="card soft">
+            <div class="card-body">
+              <h5 class="card-title">Press & Collaboration</h5>
+              <p class="card-text">Write to us for collaborations, workshops, or student clubs.</p>
+              <a class="btn btn-outline-light" href="mailto:tanbinhvo.hcm@gmail.com"><i class="bi bi-envelope"></i> tanbinhvo.hcm@gmail.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="contact-bar mt-5">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+      <span>© <span id="year"></span> SPACEAPP</span>
+      <span class="small">Made with 💫 by the SPACEAPP Team: Vo Tan Binh</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const NAME = "community";
+      if (window.top === window && window.name !== NAME) {
+        window.name = NAME; // give this tab a global name
+        // console.log("window.name is:", window.name); debug only
+      }
+    })();
+  </script>
+
+  <!-- SEARCH / AUTH SCRIPTS -->
+  <script>
+    document.querySelector(".Search_btn").addEventListener("click", function(e) {
+        e.preventDefault()
+        const introContent = document.querySelector('.IntroContent');
+        const input = document.querySelector('input[type=search]').value.toLowerCase().trim();
+        const keywords = input.split(/\s+/); //split by white spaces (also multiple white spaces)
+        const headlines = document.querySelectorAll('.headlines');
+
+        let found = false
+        headlines.forEach(h =>{
+            const text = h.textContent.toLowerCase();
+            const allMatched = keywords.every(word=>text.includes(word))
+            if (allMatched) {
+                h.scrollIntoView({behavior: 'smooth', block: 'center'});
+                h.style.backgroundColor = 'orange';
+                setTimeout(() => h.style.backgroundColor='', 1000);
+                found = true;
+                window.SPACEAPP?.unlockIntro?.();
+            }
+        });
+        if (!found) {
+            alert("No matching headline found.");
+        };
+    });
+
+
+    // Auth button behavior + year
+    window.addEventListener("DOMContentLoaded", () => {
+      const signInBtn = document.querySelector(".SignIn_btn");
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      fetch('api/isLoggedIn', { credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+          signInBtn.innerHTML = `<i class="bi ${data.loggedIn ? "bi-box-arrow-right" : "bi-box-arrow-in-right"}"></i> ${data.loggedIn ? "Log Out" : "Log In"}`;
+          if (data.loggedIn) {
+            signInBtn.onclick = () => { fetch('/logout').then(() => location.reload()); };
+          } else {
+            signInBtn.onclick = () => { window.location.assign('login.html?redirect=' + encodeURIComponent('community.html')); };
+          }
+        })
+        .catch(err => console.error("Login check failed:", err));
+    });
+
+    // Optional: ajax submit delivery form (keeps form action fallback)
+    const form = document.getElementById('deliveryForm');
+    const moduleSelect = document.getElementById("moduleSelect");
+    const versionSelect = document.getElementById("versionSelect");
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (moduleSelect.value === "placeholder" || versionSelect.value === "placeholder") {
+        alert('Please choose a module and a version.');
+        return
+      }
+      const btn = form.querySelector('button[type=submit]');
+      btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Sending...';
+      try {
+        const fd = new FormData(form);
+        const res = await fetch('/api/delivery', { method: 'POST', body: fd, credentials: 'include' });
+        if (!res.ok) throw new Error('Request failed');
+        alert('Request received! Check your email soon.');
+        form.reset();
+      } catch (err) {
+        alert('Could not submit request. You can use the Mail button instead.'); // ***BUG*** We are having this BUG
+        console.log(err); 
+      } finally {
+        btn.disabled = false; btn.innerHTML = '<i class="bi bi-send"></i> Request Delivery';
+      }
+    });
+  </script>
+
+  <script> // Update the Versions available based on module selected
+    // Version data
+    const versionMap = {
+      api_worker: ["v4.0"],
+      core_engine: ["v4.0", "v4.2"],
+      map: ["v4.0"],
+      full_stack: ["v3.0"]
+    };
+
+    moduleSelect.addEventListener("change", function() { // or we can just use "change", () => {} here and then const selected = moduleSelect.value;
+      const selected = this.value;
+      const versions = versionMap[selected] || [];
+
+      // wipe existing options
+      versionSelect.innerHTML = "";
+
+      if (versions.length === 0) {
+        // fallback (shouldn’t happen if all modules have version lists)
+        versionSelect.innerHTML = `<option value="placeholder">-- No Versions --</option>`;
+        return;
+      }
+
+      // populate with versions
+      versions.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        versionSelect.appendChild(opt);
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
