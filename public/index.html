@@ -28,6 +28,9 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <link rel="stylesheet" href="style/style.css">
         <link rel="icon" href="img/APPICON.webp">
+        <!-- preload to reduce/cut off lagging images
+        <link rel="preload" href="img/satellites.webp" as="image" type="image/webp">
+        <link rel="preload" href="img/space.webp" as="image" type="image/webp"> -->
     </head>
     <section id="animation-container" style="display:none">
         <section class="container">
@@ -54,13 +57,13 @@
                 <section class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav flex-even flex-grow-1 order-1 justify-content-evenly me-3 me-xl-0">
                         <li class="nav-item mx-2">
-                            <a class="nav-link" style="color:white" href="#Intro">Introduction</a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="nav-link" style="color:white" href="#Description">Services</a>
+                            <a class="nav-link" style="color:white" href="#Description">Features</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link" style="color:white" href="#Guide">Guidance</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" style="color:white" href="community.html" target="community">Community</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="nav-link" style="color:white" href="#Contact">Contact</a>
@@ -130,6 +133,16 @@
                 <i class="bi bi-chat-dots-fill me-2"></i>
                 <a href="https://mail.google.com/chat/" target="chat" rel="noopener noreferrer" style="color:white; text-decoration: none;" onclick="window.open('', 'chat')"><span>Start Live Chat</span></a>
             </section>
+            <!-- <section class="contact-item d-flex align-items-center">
+                
+            </section>
+
+            <section class="sectionider mx-5">|</section>
+
+            <section class="contact-item d-flex align-items-center">
+                <i class="bi bi-chat-dots-fill me-2"></i>
+                <a href="https://mail.google.com/chat/" target="_blank" rel="noopener noreferrer" style="color:white; text-decoration: none;"><span>Start Live Chat</span></a>
+            </section> -->
         </section>
 
 
@@ -143,7 +156,7 @@
                             Satellite trackers are digital tools that follow artificial objects orbiting Earth — like communication, weather, or research satellites. SPACEAPP is a satellite tracker reimagined for modern users: it collects orbital data from verified databases like NORAD and visualizes the real-time latitude, longitude, altitude, and speed of thousands of active satellites. Users can identify satellites, explore their missions, and even analyze their time spent in space through a clean, user-friendly interface.
                         </p>
                         <button class="btn btn-primary mt-3 headlines" onclick="window.open('freeform.html', 'download')"><i class="bi bi-windows"></i> <h6 class="d-inline-flex mb-0">Let's Get Started!</h6></button>
-                        <p class="mt-3 small">We will retire v3.0 by early December. Now, v4.0/ v4.2/ v5.0 are all available <br><a href="newverintro.html" class="text-white text-decoration-underline" target="newverintro" onclick="window.open('', 'newverintro')">See more here</a>*<br><br><a href="#Guide" class="text-white text-decoration-underline">Click here</a>* to see guidance of using our app.</p>
+                        <p class="mt-3 small">SPACEAPPv3.0 has been retired. Now, v4.0/ v4.2/ v5.0/ v5.0-beta-1 are all available <br><a href="newverintro.html" class="text-white text-decoration-underline" target="newverintro" onclick="window.open('', 'newverintro')">See more here</a>*<br><br><a href="#Guide" class="text-white text-decoration-underline">Click here</a>* to see guidance of using our app.</p>
                     </section>
                     <section class="col col-md-6 text-center ml-5 d-none d-md-block">
                         <a href="https://www.producthunt.com/products/spaceapp?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-spaceapp" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1031908&theme=dark&t=1761728844385" alt="SPACEAPP - Real&#0045;time&#0032;satellite&#0032;tracker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
@@ -228,6 +241,18 @@
             <section class="container text-white z-2">
                 <section class="row align-items-center">
                     <section class="col col-md-4 d-none d-md-block">
+                        <!-- Countdown for v2.5 Availability -->
+                        <!-- <section class="sa-countdown" role="timer" aria-live="polite"
+                            data-deadline="2025-12-01T23:59:59+07:00">
+                            <strong class="sa-title headlines">SPACEAPP v3.0 available for</strong>
+                            <div class="sa-grid">
+                                <div class="sa-cell"><span id="cd-days">0</span><small>Days</small></div>
+                                <div class="sa-cell"><span id="cd-hours">00</span><small>Hours</small></div>
+                                <div class="sa-cell"><span id="cd-mins">00</span><small>Mins</small></div>
+                                <div class="sa-cell d-none d-lg-block"><span id="cd-secs">00</span><small>Secs</small></div>
+                            </div>
+                            <p class="sa-note">Ends on Dec 1, 2025 (GMT+7)</p>
+                        </section> -->
                         <section class="position-relative w-100">
                             <img class="w-100" src="img/priceimg.webp" alt="PricePicture" style="min-height: 600px; border-radius:5px">
                             <button class="btn btn-danger position-absolute bottom-0 start-50 translate-middle-x mb-3 text-nowrap" onclick="window.open('freeform.html', 'download')">
@@ -245,20 +270,6 @@
                         
                         <section class="row">
                             <section class="col col-md-6 Full-Membership ml-0">
-                                <h6 class="headlines mt-3 mb-3">SPACEAPP v3.0 (Basic)</h6>
-                                <p>SPACEAPP v3.0 (BASIC) was our first stable release, offering multi-account support but only single-satellite tracking with no animations or map toggle. Performance is more limited compared to later versions.</p>
-                                <ul>
-                                    <li>Pure plug-and-play: just run the .exe, no .env setup required.</li>
-                                    <li>Register a free API key at <a href="https://www.n2yo.com/api/" target="n2yoapi" style="color: #4A90E2;" onclick="window.open('', 'n2yoapi')">n2yo.com/api</a> and paste it inside the app when prompted.</li>
-                                    <li>Supports multiple accounts for flexibility.</li>
-                                    <li>Single satellite real-time tracking.</li>
-                                    <li>No map toggle, fixed Earth view.</li>
-                                    <li>No animations, focused on core functionality.</li>
-                                    <li>Lightweight but slower compared to newer versions.</li>
-                                </ul>
-                                <p class="mt-2" style="font-size: small;"><strong style="color: rgb(180, 204, 245);">Note: </strong>Best for users who want the simplest version without extra features but please keep in mind that v3.0 has a few known issues (not critical) and will retire in December 2025.</p>
-                            </section>
-                            <section class="col col-md-6 Associate-Membership mr-0">
                                 <h6 class="headlines mt-3 mb-3">SPACEAPP v4.x/v5.x (RECOMMENDED)</h6>
                                 <p>SPACEAPP v4.x &amp v5.0 (PLUS/RECOMMENDED) introduced multi-tracking, smooth animations, and performance improvements while staying fully plug-and-play.</p>
                                 <ul>
@@ -271,6 +282,19 @@
                                 </ul>
                                 <p class="mt-2" style="font-size: small;"><strong style="color: rgb(180, 204, 245);">Note: </strong><strong>v5.0</strong> builds on v4.x with significant performance tweaks and incredible stability. It is the <strong>recommended version</strong> for users internationally.</p>
                             </section>
+                            <section class="col col-md-6 Associate-Membership mr-0">
+                                <h6 class="headlines mt-3 mb-3">SPACEAPP v5.0-beta-x (TOP-TIER)</h6>
+                                <p>SPACEAPP v5.0-beta-x pushes the limits of the v5 architecture with smarter API routing, startup optimizations, real-time checks, and deeper system integration for advanced users.</p>
+                                <ul>
+                                    <li>New intelligent API call system based on satellite type for better speed and efficiency.</li>
+                                    <li>Automatic GitHub check for surveys, patch notes, and important updates.</li>
+                                    <li>Improved first-run setup with cleaner user data initialization and location caching.</li>
+                                    <li>Optimized local database handling with reduced redundancy and faster indexing.</li>
+                                    <li>Better stability for multi-tracking and smoother transitions between satellites.</li>
+                                    <li>Register a free API key at <a href="https://www.n2yo.com/api/" target="n2yoapi" style="color: #4A90E2;" onclick="window.open('', 'n2yoapi')">n2yo.com/api</a> and enter it on first launch.</li>
+                                </ul>
+                                <p class="mt-2" style="font-size: small;"><strong style="color: rgb(180, 204, 245);">Note: </strong><strong>v5.0-beta-x offers cutting-edge improvements ahead</strong> of the next stable release. Ideal for testers and users who want access to the <strong>newest upgrades</strong> before they ship.</p>
+                            </section>
                         </section>
                         <p class="mt-2" style="font-size: small;">
                             <strong style="color: rgb(180, 204, 245);">Note: </strong>All SPACEAPP versions are pure plug-and-play, requiring no configuration — just download, run the executable, register your N2YO API key, and start tracking satellites.
@@ -280,6 +304,56 @@
             </section>
         </section>
 
+        <!-- <section class="container-fluid Price d-flex align-items-center mt-3" id="Price">
+            <section class="overlay"></section>
+            <section class="container text-white z-2">
+                <section class="row align-items-center">
+                    <section class="col col-md-4">
+                        <section class="position-relative w-100">
+                            <img class="w-100" src="img/priceimg.webp" alt="PricePicture" style="max-height: 430px;">
+                            <button class="btn btn-danger position-absolute bottom-0 start-50 translate-middle-x mb-3 text-nowrap" onclick="window.open('form.html', '_blank')">
+                            DOWNLOAD NOW!
+                            </button>
+                        </section>
+                    </section>
+                    <section class="col col-md-8">
+                        <h4 class="headlines mb-4 mt-3">Take a look at our Prices Details</h4>
+                        <section class="row">
+                            <section class="col col-md-6 Full-Membership ml-0">
+                                <h6 class="headlines mt-3 mb-3">Full Package</h6>
+                                <p>Enjoy unrestricted access to every SPACEAPP feature and premium research tools.</p>
+                                <ul>
+                                    <li>Global satellite tracking for over 25,000 active satellites</li>
+                                    <li>Real-time updates and orbit visualization</li>
+                                    <li>Full access to all TLE archives</li>
+                                    <li>High-resolution orbital path mapping</li>
+                                    <li>Downloadable PDF and Excel orbit reports</li>
+                                    <li>Advanced filtering by type, altitude, country</li>
+                                    <li>Developer access to API endpoints (beta)</li>
+                                </ul>
+                                <h6>Rate: $19.99/month</h6>
+                            </section>
+                            <section class="col col-md-6 Associate-Membership mr-0">
+                                <h6 class="headlines mt-3 mb-3">Associate Package</h6>
+                                <p>A budget-friendly plan to explore space at your own pace.</p>
+                                <ul>
+                                    <li>Track up to 500 satellites</li>
+                                    <li>Access real-time positions only (no TLE history)</li>
+                                    <li>Basic search by satellite name</li>
+                                    <li>Standard visualization (2D map only)</li>
+                                    <li>Community Q&A support</li>
+                                </ul>
+                                <h6>Fee: $5.99/month</h6>
+                            </section>
+                        </section>
+                        <p class="mt-2" style="font-size: small;">
+                            Note: SPACEAPP uses proprietary algorithms and external orbital data licensed from official space databases. Source code is partially restricted to protect backend security and database access rights. All prices are billed monthly. You may cancel or switch plans anytime via your profile dashboard. Institutions or schools may apply for educational discounts.
+                        </p>
+                    </section>
+                </section>
+            </section>
+        </section> -->
+
         <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"
             class="btn btn-dark position-fixed bottom-0 end-0 m-4 scrolltotop-btn">
         <i class="bi bi-arrow-up"></i>
@@ -287,8 +361,8 @@
 
         <button onclick="window.open('https://buymeacoffee.com/VoTanBinh', 'buymeacoffee');"
             class="btn btn-warning position-fixed bottom-0 start-0 m-4 buyMeaCoffee-btn d-none d-md-inline-flex" style="z-index: 1000;">
-        <i class="bi bi-cup-fill"></i> 
-        <span>Buy Me a Coffee</span>
+        <img src="https://cdn.buymeacoffee.com/widget/assets/coffee%20cup.svg" alt="coffee cup" width="24" height="24" style="padding-right: 9px;">
+        <span style="font-weight: 500;">Buy Me a Coffee</span>
         </button>
         
         <footer class="bg-dark pt-4 mt-5" id="Contact">
@@ -359,7 +433,7 @@
                     </section>
                 </section>
                 <hr>
-                <p class="headlines mb-0 pb-3 mt-0 text-info">© 2025 SPACE APP Organization by Vo Tan Binh. All rights reserved.</p>
+                <p class="headlines mb-0 pb-3 mt-0 text-info">© <span id="copyright"></span> SPACEAPP Organization by Vo Tan Binh. All rights reserved.</p>
             </section>
         </footer>
     </main>
@@ -371,6 +445,9 @@
                 window.name = NAME; // give this tab a global name
                 }
             })();
+        </script>
+        <script>
+            document.getElementById("copyright").textContent = `${new Date().getFullYear()}`;
         </script>
         <script>
             (() => {
@@ -543,6 +620,47 @@
                 });
             })();
         </script>
+
+        <!-- <script>
+            (() => {
+            const root = document.querySelector('.sa-countdown');
+            if (!root) return;
+            const deadlineStr = root.dataset.deadline;
+            const deadline = new Date(deadlineStr);            // ISO with +07:00 offset
+            const $ = id => root.querySelector(id);
+            const dEl = $('#cd-days'), hEl = $('#cd-hours'), mEl = $('#cd-mins'), sEl = $('#cd-secs');
+
+            const pad = n => String(n).padStart(2, '0');
+
+            function tick() {
+                const now = new Date();
+                let ms = deadline - now;
+                if (ms <= 0) {
+                    clearInterval(timer);
+                    root.innerHTML = `
+                        <strong class="sa-title">SPACEAPP v2.5 availability has ended</strong>
+                        <p class="sa-note">Ended on Sep 14, 2025 (GMT+7)</p>`;
+                    return;
+                }
+                const sec = Math.floor(ms / 1000);
+                const days = Math.floor(sec / 86400);
+                const hours = Math.floor((sec % 86400) / 3600);
+                const mins = Math.floor((sec % 3600) / 60);
+                const secs = sec % 60;
+
+                dEl.textContent = days;
+                hEl.textContent = pad(hours);
+                mEl.textContent = pad(mins);
+                sEl.textContent = pad(secs);
+
+                root.setAttribute('aria-label',
+                `${days} days, ${hours} hours, ${mins} minutes, and ${secs} seconds remaining until September 14, 2025`);
+            }
+
+            tick();
+            const timer = setInterval(tick, 1000);
+            })();
+        </script> -->
 
         <script>
             document.querySelector(".Search_btn").addEventListener("click", function(e) {
