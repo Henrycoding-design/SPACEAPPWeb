@@ -1,0 +1,147 @@
+body {
+    /* background: 
+        radial-gradient(circle at 25% 30%, rgba(100, 28, 103, 0.4), transparent 40%),
+        radial-gradient(circle at 75% 70%, rgba(17, 102, 133, 0.35), transparent 50%),
+        linear-gradient(to bottom right, #050b1e, #0a122d, #04153c); */
+    background-image: url("registerbg.webp");
+    background-size: cover;
+    /* background-blend-mode: overlay; */
+}
+/* @media (min-width: 992px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+  }
+} */
+.Title {
+    background: linear-gradient(
+        60deg,
+        #b2d6fa 0%,        /* lighter bright blue */
+        #85bafe 20%,       /* vibrant blue */
+        #5d99ee 40%,       /* NASA mid-blue */
+        #f25a5a 65%,       /* warmer red */
+        #f86161 85%,       /* bright red */
+        #f98e8e 100%       /* glowing red end */
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-align: center;
+    mix-blend-mode: lighten;
+    font-weight: 600;
+    font-size: 3rem;
+
+    text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.1),
+             1px 1px 10px rgba(30, 60, 120, 0.3);
+
+    border-bottom: 3px solid transparent;
+    z-index: 999;
+
+}
+.card {
+    color:black;
+    background: rgba(245, 245, 247, 0.61);
+    align-self: center;
+    max-width: 95%;
+}
+.label {
+    margin-left: 5px;
+}
+
+.login_btn{
+    color:rgb(19, 78, 120);
+    text-decoration: none;
+}
+.login_btn:hover{
+    color:rgb(12, 56, 88);
+}
+.alert {
+    position: relative;
+}
+
+
+
+/* GG Button Style */
+.google-btn {
+  padding: 0.6rem 1.2rem;
+  width:"100%";
+  /* background-color: #081179; */
+  background-color: #0c7f2b;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.google-btn:hover {
+  background-color: rgb(41, 166, 68);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+}
+
+
+/* Divider Style */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  color: #3f4d59;
+  margin: 1.2rem 0;
+  font-weight: 500;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #4e4c4c;
+}
+.divider:not(:empty)::before {
+  margin-right: .75em;
+}
+.divider:not(:empty)::after {
+  margin-left: .75em;
+}
+
+/* Responsive tweaks for smaller screens */
+@media (max-width: 576px) {
+  .card.auth-card {
+    max-width: 95%;
+    padding: 1.25rem !important;
+    margin: 0 auto;
+  }
+
+  .Title {
+    font-size: 2rem;
+  }
+
+  .form-control,
+  .btn,
+  .form-select {
+    min-height: 2.6rem;
+    font-size: 0.95rem;
+  }
+
+  .google-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .divider {
+    font-size: 0.9rem;
+    margin: 1rem 0;
+  }
+
+  .form-check-label {
+    font-size: 0.9rem;
+  }
+}
+
+

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPACEAPP | Docs</title>
+    <link rel="stylesheet" href="style/community.css">
+    <link rel="icon" href="img/APPICON.webp">
+
+    
+    <style>
+        a {text-decoration: underline; color: #6bb9db;}
+        a:hover {color: #4a90e2;}
+        body, html {font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #181d2c;}
+        /* .accordion {border: 1px solid #444; border-radius: 5px; background-color: #222831; padding: 10px;} */
+        .accordion-item {margin-bottom: 10px;}
+        .accordion-header {cursor: pointer; padding: 10px; background-color: #393e46; color: #eeeeee; border-radius: 3px;}
+        .accordion-body {display: none; padding: 10px; background-color: #222831; color: #dddddd; border-radius: 3px; margin-top: 5px;}
+        .accordion-header:hover {background-color: #303e4d; color: #ffffff;}
+        code {
+            color: #040404 !important; /*there's an filter:invert(1); in the <code> tag in community.css, That's why we are using black so it actually go white*/
+            background: none !important;
+            font-family: "Consolas", "Courier New", monospace;
+        }
+    </style>
+    
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a').forEach(link => {
+                // Skip internal anchor links if you want
+                if (!link.href.startsWith('#')) {
+                link.setAttribute('target', '_blank');
+                }
+            });
+        });
+    </script> -->
+
+    <!-- Status: We have the full structure but the contents are mostly faked or just placeholders -->
+</head>
+<body>
+    <header>
+        <h1>SPACEAPP Documentation</h1>
+        <nav>
+            <ul>
+                <li>Back To:</li>
+                <ul>
+                    <li><a href="index.html" target="main-site">Home</a></li>
+                    <li><a href="community.html" target="community">Community</a></li>
+                </ul>
+                <li><a href="#getstarted">Get Started</a></li>
+                <li><a href="#architect">Architecture</a></li>
+                <li><a href="#api">API</a></li>
+                <li><a href="#open-src">Open Source Model Options</a></li>
+                <li><a href="#troubleshoot">Troubleshooting</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="getstarted">
+            <h2>Getting Started</h2>
+            <p>Welcome to the official <strong>SPACEAPP Documentation</strong>. This guide provides everything you need to set up and run our real-time satellite tracking application from installation to first launch.</p>
+
+            <p>Before running any SPACEAPP model, make sure your environment meets the basic requirements below:</p>
+            <ol>
+                <li>Ensure you have <strong>Python 3.8+</strong> installed and properly configured in your PATH.</li>
+                <li>Clone or download the source code versions via the <a href="community.html" target="community" onclick="window.open('', 'community')">Model Delivery Form</a>. You’ll receive further instructions via email.</li>
+                <li>Review the <a href="index.html" target="main-site" onclick="window.open('', 'main-site')">Main Page</a> for general usage guidelines and system compatibility.</li>
+                <li>Read through this <a href="docs.html">Documentation</a> to understand the setup and architecture before running the application.</li>
+                <li>Install the required dependencies using:
+                   <pre><code>pip install -r requirements.txt</code></pre>
+                </li>
+                <li>Register and generate your API Key from <a href="https://n2yo.com/api" target="_blank" rel="noopener noreferrer">n2yo.com</a>, then configure it following the steps in <code>README.md</code>.</li>
+                <li>Launch SPACEAPP and begin exploring real-time satellite data.</li>
+            </ol>
+
+            <p><em>Note:</em> Although we're currently supporting only <strong>Windows</strong> for the <strong>SPACEAPP installation</strong>, its <strong>Source Codes</strong> we are offering <strong>does not required any specific system.</strong></p>
+        </section>
+
+        <section id="architect">
+            <h2>SPACEAPP Architecture</h2>
+            <p>The following diagrams and explanations describe the architecture used in SPACEAPP versions <strong>prior to v5.0</strong>. These early versions were designed around a lightweight modular structure focused on real-time data retrieval, user responsiveness, and API-based satellite tracking.</p>
+
+            <p><strong>Architecture Overview:</strong></p>
+            <p><!-- [Insert System Overview Chart Here: e.g., flow of data between Frontend, Backend, Database, and External APIs] --></p>
+
+            <ol>
+                <li>
+                    <h3>System Flow</h3>
+                    <p>This diagram demonstrates how SPACEAPP collects satellite data from external APIs, processes it through internal modules, and renders it in the user interface.</p>
+                    <img src="img/SPACEAPSys.png" height="300">
+                    <p><!-- [System Flow Diagram Here] --></p>
+                </li>
+
+                <li>
+                    <h3>Core Components & Modules</h3>
+                    <p>Each module below handled a distinct aspect of SPACEAPP’s data processing pipeline in versions &lt; v5.0:</p>
+                    <ol>
+                        <li><strong>Data Acquisition Module:</strong> Retrieves live satellite data via <code>n2yo</code> API and other real-time sources.</li>
+                        <li><strong>Data Processing Module:</strong> Parses, filters, and formats incoming data for display and analytics.</li>
+                        <li><strong>User Interface Module:</strong> Handles visualization, user interactions, and satellite tracking on the map.</li>
+                    </ol>
+                    <p><!-- [Component Interaction Diagram or Modular Breakdown Image Here] --></p>
+                    <img src="img/SPACEAPPipeline.png" width="800">
+                </li>
+            </ol>
+        </section>
+
+        <section id="api">
+            <h2>API Integration</h2>
+            <p>SPACEAPP leverages the <a href="https://n2yo.com/api" target="_blank" rel="noopener noreferrer">n2yo.com API</a> for real-time satellite tracking data. Below are the key endpoints used:</p>
+            <ul>
+                <li><strong>/satellite/positions:</strong> Retrieves current positions of specified satellites.</li>
+                <li><strong>/satellite/tle:</strong> Fetches Two-Line Element (TLE) data for satellite orbit calculations.</li>
+                <li><strong>/satellite/visualpasses:</strong> Provides information on upcoming visible passes over a given location.</li>
+            </ul>
+            <p>For detailed API documentation, refer to the official <a href="https://n2yo.com/api" target="_blank" rel="noopener noreferrer">n2yo API Docs</a>.</p>
+
+        </section>
+        <section id="open-src">
+            <h2>Open Source Model Options</h2>
+            <p>SPACEAPP offers several open-source model options for users who wish to customize or extend functionality. These models are available on our <a href="community.html#SourceCode" target="community">Community Page</a>.</p>
+            <ul>
+                <li><strong>API Worker (Data Acquisition Module) *Core:</strong> An API Worker module where API calls were handled, how it process different outputs and transfer data. <br><strong>Versions: v4.0</strong></li><br>
+                <li><strong>Core Engine (Data Processing Module: src/ and ui/) *Standard:</strong> How data are modify and process before being displayed to users. We offer separate parts: TLE, Orbit, Basic Sat's Info, Position, Speed<br><strong>Versions: v4.0, v4.2</strong></li></li><br>
+                <li><strong>Map and marker display (QWebEngine Module) *Standard:</strong> How we load the map up, display and sync data to provide real-time updates. There are two parts in this module: Map.html (Available) and the connection Server (Secret).<br><strong>Version: 4.0</strong></li><br>
+                <li><strong>Full Stack (all there modules) *Expert:</strong> The full system of SPACEAPPv3.0: All the 3 modules mentioned above (in _internal/) and the EXE compilation. However, there will little no notes or comments. <br><strong>Version: v3.0</strong></li><br>
+            </ul>
+            <p>Notes: Check the Version tag of each module offered because architecture of modules can changed between versions. The Tags (Core, Standard, Expert) are explained <a href="community.html#SourceCode" target="community">here</a></p>
+            <p>To pull, modify or reuse these models for your purposes, please follow the guidelines provided in the respective repositories.</p>
+        </section>
+
+
+        </section>
+        <section id="troubleshoot">
+            <h2>Troubleshooting</h2>
+            <p>If you encounter any issues while using SPACEAPP, please refer to our troubleshooting guide in README.md or <a href="community.html#Contact" target="community">contact</a> our support team for assistance.</p>
+        </section>
+
+        <section id="faq">
+            <h2>Frequently Asked Questions (FAQ)</h2>
+            <p>Find answers to common questions about SPACEAPP in our FAQ section.</p>
+
+            <div class="accordion">
+                <div class="accordion-item" id="q1">
+                    <h4 class="accordion-header">
+                            How do I obtain an API key?
+                    </h4>
+                    <div class="accordion-body">
+                        <p>You can register for an API key at 
+                            <a href="https://n2yo.com/api" target="_blank" rel="noopener noreferrer">
+                                n2yo.com
+                            </a>.
+                            Follow the instructions on their website to create an account and generate your key.
+                        </p>
+                    </div>
+                </div>
+                <div class="accordion-item" id="q2">
+                    <h4 class="accordion-header">
+                        What are the system requirements for SPACEAPP?
+                    </h4>
+                    <div class="accordion-body">
+                        <p>SPACEAPP requires Python 3.8 or higher, along with the dependencies listed in the <code>requirements.txt</code> file. Ensure your system meets these requirements before further actions.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-header">Can I customize the satellite models?</h4>
+                    <div class="accordion-body">
+                        <p>Yes, SPACEAPP supports open-source model options that you can customize. Visit our <a href="community.html#SourceCode" target="community">Community Page</a> for more information on available models and contribution guidelines.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-header">Where can I find additional documentation?</h4>
+                    <div class="accordion-body">
+                        <p>All additional documentation can be found on our <a href="docs.html">this Documentation Page</a> and the <a href="community.html" target="community">Community Page</a>. These resources provide in-depth guides and support materials.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Remember to update this type of footer for all pages -->
+    <footer>
+        <p>&copy; <span id="copyright"></span> SPACEAPP Team. All rights reserved.</p> 
+    </footer>
+    <script>
+        console.log(window.name)
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const headers = document.querySelectorAll('.accordion-header');
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    header.classList.toggle('active');
+                    const body = header.nextElementSibling;
+                    if (body.style.display === 'block') {
+                        body.style.display = 'none';
+                    } else {
+                        body.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('copyright').textContent = `${new Date().getFullYear()}`;
+    </script>
+</body>
+</html>
