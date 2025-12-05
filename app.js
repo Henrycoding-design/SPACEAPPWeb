@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require("multer");
+const upload = multer();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
@@ -9,12 +11,15 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const { gmailSend } = require('./gmail');
 const { pool } = require('./db');
+const passport = require('passport');
+require('./passport-setup');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ---------- Middleware ----------
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('trust proxy', 1);
@@ -25,6 +30,8 @@ app.use(session({
   saveUninitialized: false,
   cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // ---------- One-time table ensure on boot ----------
 async function ensureSchema() {
@@ -44,6 +51,16 @@ async function ensureSchema() {
       address TEXT,
       city TEXT,
       country TEXT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS delivery_requests (
+      id SERIAL PRIMARY KEY,
+      email TEXT NOT NULL,
+      version TEXT NOT NULL,
+      platform TEXT NOT NULL,
+      use TEXT,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
@@ -253,18 +270,32 @@ app.post('/login', async (req, res) => {
     }
 
     req.session.user = { id: rows[0].id, email: rows[0].email };
-    const next = encodeURIComponent('/');
-    return res.redirect(`/auth-complete.html?next=${next}`);
-    // return res.redirect('/');
+    // const next = encodeURIComponent('/');
+    // return res.redirect(`/auth-complete.html?next=${next}`);
+    return res.redirect('/community.html');
   } catch (e) {
     console.error('Login error:', e);
     return res.redirect('/login.html?error=Server+error');
   }
 });
 
+// ---------- GG AUTH ----------
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/signup?error=login_failed' }),
+  (req, res) => {
+    res.redirect('/community.html');
+  }
+);
+
 // ---------- Session helpers ----------
 app.get('/api/isLoggedIn', (req, res) => {
-  if (req.session.user) {
+  if (req.isAuthenticated()) {
+    // Passport login (Google)
+    res.json({ loggedIn: true, user: req.user });
+  } else if (req.session.user) {
+    // Normal email/password login
     res.json({ loggedIn: true, user: req.session.user });
   } else {
     res.json({ loggedIn: false });
@@ -272,10 +303,12 @@ app.get('/api/isLoggedIn', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie('connect.sid');
-    res.redirect('/');
-  });
+  req.logout(() => { // for passport
+      req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      res.redirect('/');
+    });
+  }); 
 });
 
 // ---------- Email ----------
@@ -291,10 +324,10 @@ app.post('/freeregister', async(req, res) => {
   const country = req.body.inputCountry || '';
 
   const downloadLinks = {
-    'v3.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v3.0/v3.0.noopensrc.zip',
     'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
     'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/SPACEAPPv4.2.zip',
-    'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip'
+    'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip',
+    'v5.0-beta-1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-1/SPACEAPPv5.0-beta-1.zip'
   };
 
   const downloadLink = downloadLinks[versionSelected];
@@ -344,7 +377,7 @@ app.post('/freeregister', async(req, res) => {
 
         <p>If you haven’t yet, remember to register your free API key at 
           <a href="https://www.n2yo.com/api/" target="_blank" style="color: #4A90E2;">n2yo.com/api</a> 
-          and paste it inside your <code>.env</code> file. See more instructions in the README.
+          and paste it inside your app when prompted. See more instructions in the README or on our web.
         </p>
 
         <p>${versionSelected === "v3.0" ? "Please note that SPACEAPP v3.0 is now considered an earlier release, with several components that have not been updated since September 2025. At the time of its publication, a placeholder NASA logo was temporarily used as we had not yet finalized our own branding — we sincerely apologize for this oversight. \nAdditionally, a few known vulnerabilities were later identified in this version. However, since v3.0 does not handle sensitive user data, it remains safe for general use. We plan to continue supporting it until December 2025, after which it will be officially retired in preparation for the upcoming NextGen releases.":""}
@@ -374,6 +407,80 @@ app.post('/freeregister', async(req, res) => {
   } catch (err) {
     console.error('❌ Failed to send registration email:', err?.errors || err);
     return res.status(500).send('Failed to send confirmation email');
+  }
+});
+
+// ---------- Community Page: Direct Delivery ----------
+app.post('/api/delivery', upload.none(), async (req, res) => {
+  try {
+    const { email, module, version, use } = req.body;
+
+    // Basic validation
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!isValidEmail) return res.status(400).send('Invalid email address');
+
+    // Choose the correct download link
+    const downloadLinks = { // fake links, post github repo for opensrc later once ready, v3.0 is currently in-place, work out the BuyMeACoffee Shop setup for the rest
+      'api_worker': {'v4.0': 'https://buymeacoffee.com/VoTanBinh/e/485556'},
+      'core_engine': {'v4.0': 'https://buymeacoffee.com/votanbinh/e/485223', 'v4.2': 'https://buymeacoffee.com/votanbinh/e/485291'},
+      'map': {'v4.0': 'https://buymeacoffee.com/VoTanBinh/e/485562'},
+      'full_stack': {'v3.0':'https://github.com/Henrycoding-design/SpaceappwebOpenSrc'},
+    };
+    const downloadLink = downloadLinks[module][version] || null;
+
+    if (!downloadLinks[module] || !downloadLinks[module][version]){return res.status(400).send('Invalid module/version selection');}
+
+    // Optional: insert into DB for record keeping
+    const q = `
+      INSERT INTO delivery_requests (email, module, version, use)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, created_at
+    `;
+    await pool.query(q, [email, module, version, use || 'N/A']);
+
+    // Build email body
+    const mailOptions = {
+      to: email,
+      subject: `🚀 SPACEAPP ${version} – Delivery: ${module} (${version})`,
+      html: `
+        <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <h2 style="color: #3274e7;">Your SPACEAPP open-src ${module} ${version} is ready!</h2>
+          <p>Thank you for requesting a delivery through the Community Page.</p>
+
+          <p><strong>Module:</strong> ${module}</p>
+          ${use ? `<p><strong>Your note:</strong> ${use}</p>` : ''}
+
+          <p style="font-size:14px;color:#555;">${version=='v3.0' ? 'Click on the button below to get to our Github opensrc repo!':'Click on the button below to get to our BuyMeACoffee payment system and finish your purchase!'}</p>
+          
+          <div style="text-align:center;margin:20px 0;">
+            <a href="${downloadLink}" target="_blank" rel="noopener noreferrer"
+               style="display:inline-block;background-color:#3274e7;color:#fff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:6px;">
+              📦 Go to ${module} version ${version} </>
+            </a>
+          </div>
+
+          <p style="font-size:14px;color:#555;">If the button above doesn’t work, use this link: <br>
+            <a href="${downloadLink}">${downloadLink}</a>
+          </p>
+
+          <p style="font-size:14px;color:#555;">${version=='v3.0' ? `Or you can just clone using Git: git clone ${downloadLink}.git`:''}</p>
+
+          <hr style="border:none;border-top:1px solid #ccc;margin:20px 0;">
+          <p style="font-size:12px;color:#888;margin:0;">— SPACEAPP Team — Vo Tan Binh</p>
+          <p style="font-size:12px;color:#888;">Contact: <a href="mailto:tanbinhvo.hcm@gmail.com" style="color:#3274e7;">tanbinhvo.hcm@gmail.com</a></p>
+        </div>
+      `,
+      replyTo: 'tanbinhvo.hcm@gmail.com'
+    };
+
+    // Send it (using your same gmailSend() helper)
+    await gmailSend(mailOptions);
+
+    console.log(`✅ Direct delivery email sent to ${email}`);
+    res.json({ success: true, message: 'Email sent successfully' });
+  } catch (err) {
+    console.error('❌ Failed to send delivery email:', err);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
 
