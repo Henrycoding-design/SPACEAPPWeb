@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎄 Christmas Celebration — SPACEAPP</title>
+  <link rel="icon" href="img/APPICON.webp" type="image/webp">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Smooth fade-in */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+    background: linear-gradient(#1e1e2e, #2d2d44);
+    color: white;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    padding-bottom: 100px;
+    animation: fadeIn 1s ease-in-out;
+    }
+
+    h1, h2 {
+    margin-top: 40px;
+    }
+
+    .ascii-tree {
+    font-size: 20px;
+    color: #7ddcff;
+    text-shadow: 0 0 10px #5ee7ff;
+    }
+
+    button, .cta-btn {
+    background: #ff4757;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 16px;
+    }
+
+    .cta-btn {
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    }
+
+    button:hover, .cta-btn:hover {
+    opacity: 0.8;
+    }
+
+    #music-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    }
+
+    #fun-facts {
+    list-style-position: inside; 
+    padding: 0;                  
+    margin: 0 auto;               
+    display: inline-block;        
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎄 Merry Christmas from SPACEAPP!</h1>
+    <p class="subtitle">A little festive surprise just for you.</p>
+  </header>
+
+  <section id="tree">
+    <pre class="ascii-tree">
+* 
+*** 
+***** 
+******* 
+********* 
+Merry Christmas!
+    </pre>
+  </section>
+
+
+  <section id="quotes">
+    <h2>✨ Christmas Quotes</h2>
+    <p id="quote-display"></p>
+    <button id="new-quote-btn">New Quote</button>
+  </section>
+
+  <section id="facts">
+    <h2>🎁 Christmas Fun Facts</h2>
+    <ul id="fun-facts"></ul>
+  </section>
+
+  <section id="quiz">
+    <h2>🎅 Quick Christmas Quiz</h2>
+    <div id="quiz-container"></div>
+    <button id="submit-quiz">Submit</button>
+    <p id="quiz-result"></p>
+  </section>
+
+  <section id="promo">
+    <h2>🛍️ BMAC Christmas Sale — 15% OFF</h2>
+    <p>Special discount for the holiday season! Support the creator and grab nice source code ❤️</p>
+    <a href="https://buymeacoffee.com/votanbinh/extras" class="cta-btn" target="_blank">Visit the Shop</a>
+  </section>
+
+  <audio id="bg-music" src="audio/christmasVillage.mp3" loop></audio>
+  <button id="music-toggle">Play Music</button>
+
+  <script>
+    // === Quotes ===
+    const quotes = [
+        "Christmas waves a magic wand over the world. — Norman Vincent Peale",
+        "Peace on earth will come to stay, when we live Christmas every day. — Helen Steiner Rice",
+        "Christmas is joy, love, and hope wrapped in one day. — Unknown",
+        "The best way to spread Christmas cheer is singing loud for all to hear. — Buddy the Elf",
+        "At Christmas, all roads lead home. — Marjorie Holmes",
+        "Christmas isn’t a season. It’s a feeling. — Edna Ferber",
+        "Blessed is the season which engages the whole world in a conspiracy of love. — Hamilton Wright Mabie",
+        "Christmas is doing a little something extra for someone. — Charles M. Schulz",
+        "Gifts of time and love are surely the basic ingredients of a truly merry Christmas. — Peg Bracken",
+        "Seeing is believing, but sometimes the most real things in the world are the things we can’t see. — The Polar Express"
+    ];
+
+    document.getElementById("new-quote-btn").onclick = () => {
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        if (q !== document.getElementById("quote-display").innerText) {
+            document.getElementById("quote-display").innerText = q;
+        } else {
+            document.getElementById("new-quote-btn").onclick();
+        }
+    };
+
+    // === Fun Facts ===
+    const facts = [
+    "Santa Claus was inspired by St. Nicholas, a 4th-century bishop known for secret gift-giving.",
+    "The tallest Christmas tree ever recorded was a 67-meter Douglas fir displayed in Seattle in 1950.",
+    "The tradition of hanging Christmas stockings began when a poor man's daughters received gold coins dropped down their chimney.",
+    "Rudolph the Red-Nosed Reindeer was created in 1939 by a department store as a marketing storybook.",
+    "Japan’s Christmas tradition of eating KFC started from a wildly successful 1974 advertisement campaign."
+    ];
+
+
+    const factsList = document.getElementById("fun-facts");
+    facts.forEach(f => {
+    const li = document.createElement("li");
+    li.textContent = f;
+    factsList.appendChild(li);
+    });
+
+    // === Quiz ===
+    const quizData = [
+    {
+        question: "What color is Santa's suit?",
+        choices: ["Red", "Blue", "Green"],
+        answer: 0
+    },
+    {
+        question: "Which month is Christmas?",
+        choices: ["November", "December", "January"],
+        answer: 1
+    },
+    {
+        question: "Which animal traditionally pulls Santa’s sleigh?",
+        choices: ["Reindeer", "Horses", "Wolves"],
+        answer: 0
+    },
+    {
+        question: "What popular Christmas drink is also called 'milk punch'?",
+        choices: ["Hot chocolate", "Eggnog", "Ginger tea"],
+        answer: 1
+    },
+    {
+        question: "What is Frosty the Snowman’s nose made of?",
+        choices: ["A carrot", "A button", "A stick"],
+        answer: 1
+    },
+    {
+        question: "Which country started the tradition of the Christmas tree?",
+        choices: ["Germany", "USA", "Sweden"],
+        answer: 0
+    },
+    {
+        question: "In 'The Twelve Days of Christmas', how many golden rings are given?",
+        choices: ["Three", "Five", "Seven"],
+        answer: 1
+    }
+    ];
+
+
+    const quizContainer = document.getElementById("quiz-container");
+    quizData.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+        <p>${q.question}</p>
+        ${q.choices.map((c, idx) => `
+        <label>
+            <input type="radio" name="q${i}" value="${idx}">
+            ${c}
+        </label><br>
+        `).join("")}
+    `;
+    quizContainer.appendChild(div);
+    });
+
+    document.getElementById("submit-quiz").onclick = () => {
+    let score = 0;
+    quizData.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+    });
+    document.getElementById("quiz-result").innerText = `You scored ${score}/${quizData.length}!`;
+    };
+
+    // === Music Toggle ===
+    const music = document.getElementById("bg-music");
+    const toggleBtn = document.getElementById("music-toggle");
+    document.getElementById("music-toggle").onclick = () => { // we can use function() here and then later use 'this' keyword to change innerText but arrow function is more modern and senior-level
+    if (music.paused) {
+        music.play();
+        toggleBtn.innerText = "Pause Music";
+    } else {
+        music.pause();
+        toggleBtn.innerText = "Play Music";
+    }
+    };
+
+  </script>
+</body>
+</html>
