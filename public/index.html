@@ -5,21 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- SEO Meta -->
-        <meta name="description" content="SPACEAPP is a real-time satellite tracking and orbital data visualization tool built for students, enthusiasts, and researchers." />
-        <meta name="keywords" content="spaceappweb, spapp, spaceapp, satellite tracker, NORAD ID, orbital data, space app, space visualization, live satellite position" />
-        <meta name="author" content="Vo Tan Binh from SPACEAPP Team" />
+        <meta name="description" content="SPACEAPP is a fast, real-time satellite tracker and orbital visualization tool for students, space enthusiasts, and researchers. View live satellite positions, NORAD data, ISS tracking, and detailed orbital paths." />
+        <meta name="keywords" content="SPACEAPP, satellite tracker, space app, spaceapp, spaceappweb, real-time satellite map, ISS tracker, NORAD lookup, orbital data viewer, space visualization, TLE tracking, live satellite position" />
+        <meta name="author" content="SPACEAPP Team" />
 
-        <!-- Open Graph Meta (for Facebook, LinkedIn) -->
+        <!-- Open Graph Meta (Social Sharing) -->
         <meta property="og:title" content="SPACEAPP – Real-Time Satellite Tracker" />
-        <meta property="og:description" content="Track satellites live, explore orbital mechanics, and discover detailed TLE data with SPACEAPP." />
-        <meta property="og:image" content="https://spaceappweb.onrender.com/img/web-img-preview.png" /> <!-- Replace with hosted image -->
-        <meta property="og:url" content="" />
+        <meta property="og:description" content="Track satellites live, monitor orbit paths, explore TLE data, and visualize real-time space traffic with SPACEAPP." />
+        <meta property="og:image" content="https://spaceappweb.onrender.com/img/web-img-preview.png" />
+        <meta property="og:url" content="https://spaceappweb.onrender.com" />
         <meta property="og:type" content="website" />
 
         <!-- Twitter Meta -->
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SPACEAPP – Real-Time Satellite Tracker" />
-        <meta name="twitter:description" content="Monitor live satellite positions, velocity, and orbit data with SPACEAPP." />
+        <meta name="twitter:description" content="Explore real-time satellite tracking, ISS position, orbital mechanics, and detailed space visualization tools with SPACEAPP." />
         <meta name="twitter:image" content="https://spaceappweb.onrender.com/img/web-img-preview.png" />
 
         <title>SPACEAPP | Real-Time Satellite Tracker</title>
@@ -28,9 +28,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <link rel="stylesheet" href="style/style.css">
         <link rel="icon" href="img/APPICON.webp">
-        <!-- preload to reduce/cut off lagging images
-        <link rel="preload" href="img/satellites.webp" as="image" type="image/webp">
-        <link rel="preload" href="img/space.webp" as="image" type="image/webp"> -->
     </head>
     <section id="animation-container" style="display:none">
         <section class="container">
@@ -520,9 +517,6 @@
                         isUnlocked = true;
                         hasAnimated = true;
                         goUpBtn.style.display = 'block';
-                        // console.log(scrollPos);
-                        // console.log(introContent);
-                        // console.log(isUnlocked);
 
                     
                         // SCROLL to hash manually after scroll is unlocked
@@ -585,8 +579,6 @@
                 .then(data => {
                     signInBtn.innerHTML = `<i class="bi ${data.loggedIn ? "bi-box-arrow-right" : "bi-box-arrow-in-right"}"></i> ${data.loggedIn ? "Log Out" : "Log In"}`;
                     if (data.loggedIn) {
-                        // signInBtn.classList.remove("btn-outline-danger");
-                        // signInBtn.classList.add("btn-outline-warning");
                         signInBtn.onclick = () => {
                             fetch('/logout')
                             .then(() => location.reload());
@@ -600,5 +592,4 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
-
 
