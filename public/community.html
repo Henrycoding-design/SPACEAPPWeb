@@ -31,23 +31,54 @@
 
   <!-- Simple front-end gate: redirect to login if not authenticated -->
   <script>
-    (async function gate() {
+    (async function authGate() {
+      let loggedIn = false;
+
       try {
         const res = await fetch('api/isLoggedIn', { credentials: 'include' });
         const data = await res.json();
-        if (!data?.loggedIn) {
-          const redir = encodeURIComponent('community.html');
-          window.location.replace(`login.html?redirect=${redir}`);
-        }
-      } catch (e) {
-        console.warn('Login check failed; staying on page (dev mode).', e);
+        loggedIn = !!data.loggedIn;
+      } catch {}
+
+      if (!loggedIn) {
+        // Blur main content
+        document.querySelector("main")?.classList.add("locked");
+
+        // Show overlay
+        const overlay = document.getElementById("login-overlay");
+        overlay.classList.remove("d-none");
+
+        // Redirect on click
+        document.getElementById("loginNowBtn").onclick = () => {
+          location.href = "login.html?redirect=" + encodeURIComponent("community.html");
+        };
+
+        // Disable all form submits & buttons
+        document.querySelectorAll("form, button, a.btn").forEach(el => {
+          el.addEventListener("click", e => {
+            e.preventDefault();
+            overlay.classList.remove("d-none");
+          });
+        });
       }
     })();
   </script>
-  <!-- Status: Structure and backend logics are in place, but contents may need adjustment and polishing-->
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#navbarNav" data-bs-offset="90" tabindex="0">
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay" class="login-overlay d-none">
+    <div class="login-modal glass text-center p-4 rounded-3">
+      <h4 class="mb-2">Login Required</h4>
+      <p class="mb-3 text-nowrap">
+        Please login to interact with the SPACEAPP Community.
+      </p>
+      <button class="btn btn-danger" id="loginNowBtn">
+        <i class="bi bi-box-arrow-in-right"></i> Log In
+      </button>
+    </div>
+  </div>
+
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg NavBar sticky-top" style="min-height:64px;">
     <section class="container-fluid">
@@ -461,6 +492,16 @@
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Check auth, guard against programmatic submits: rare but possible
+      const auth = await fetch('api/isLoggedIn', { credentials: 'include' })
+        .then(res => res.json())
+        .catch(() => ({ loggedIn: false }));
+      if (!auth.loggedIn) {
+        document.getElementById("login-overlay")?.classList.remove("d-none");
+        return;
+      }
+
       if (moduleSelect.value === "placeholder" || versionSelect.value === "placeholder") {
         alert('Please choose a module and a version.');
         return
@@ -474,7 +515,7 @@
         alert('Request received! Check your email soon.');
         form.reset();
       } catch (err) {
-        alert('Could not submit request. You can use the Mail button instead.'); // ***BUG*** We are having this BUG
+        alert('Could not submit request. You can use the Mail button instead.');
         console.log(err); 
       } finally {
         btn.disabled = false; btn.innerHTML = '<i class="bi bi-send"></i> Request Delivery';
