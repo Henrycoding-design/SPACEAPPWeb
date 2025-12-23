@@ -13,6 +13,7 @@ const { gmailSend } = require('./gmail');
 const { pool } = require('./db');
 const passport = require('passport');
 require('./passport-setup');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,14 +25,40 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('trust proxy', 1);
 app.use(cookieParser());
+if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET is required");
+}
 app.use(session({
   secret: process.env.SESSION_SECRET || 'spaceapp_super_secret',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: process.env.NODE_ENV === 'production' }
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'lax'
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// ---------- Rate Limiter ----------
+const authLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,   // 5 minutes in ms
+  max: 10,                    // max 5 attempts per window
+  message: 'Too many attempts, please wait a few minutes.'
+});
+
+const otpLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 5,
+  message: 'Too many OTP requests, please wait a few minutes.'
+});
+
+const verifyLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,   // 5 minutes
+  max: 5,                    // 5 OTP attempts
+  message: 'Too many OTP attempts. Please request a new code.'
+});
 
 // ---------- One-time table ensure on boot ----------
 async function ensureSchema() {
@@ -58,8 +85,8 @@ async function ensureSchema() {
     CREATE TABLE IF NOT EXISTS delivery_requests (
       id SERIAL PRIMARY KEY,
       email TEXT NOT NULL,
+      module TEXT NOT NULL,
       version TEXT NOT NULL,
-      platform TEXT NOT NULL,
       use TEXT,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
@@ -70,28 +97,10 @@ ensureSchema().catch(err => {
   process.exit(1);
 });
 
-// // ---------- Nodemailer setup with SendGrid ----------
-// const transporter = nodemailer.createTransport({
-//   host: 'smtp.sendgrid.net',
-//   port: 2525,
-//   secure: false,
-//   auth: {
-//     user: 'apikey',
-//     pass: process.env.SENDGRID_API_KEY
-//   },
-//   logger: true,
-//   debug: true
-// });
-// // ---------- Nodemailer (SendGrid) ensure on boot ----------
-// transporter.verify()
-//   .then(() => console.log('📮 SendGrid ready'))
-//   .catch(e => console.error('📮 SendGrid not ready:', e?.response?.body || e)); //e.response.body is just in case of switching into SendGrid Web API, for now we are just using SMTP
-
-
 let otpStore = {};
 
 // ---------- SIGNUP ----------
-app.post('/signup', async (req, res) => {
+app.post('/signup', authLimiter, async (req, res) => {
   const { email = '', password = '' } = req.body;
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -168,7 +177,7 @@ app.post('/signup', async (req, res) => {
 });
 
 // ---------- RESEND OTP ----------
-app.get('/resend-otp', async (req, res) => {
+app.get('/resend-otp', otpLimiter, async (req, res) => {
   const email = req.session.pendingEmail;
   if (!email) return res.redirect('/signup.html?error=No pending email');
 
@@ -219,7 +228,7 @@ app.get('/resend-otp', async (req, res) => {
 });
 
 // ---------- VERIFY ----------
-app.post('/verify', async (req, res) => {
+app.post('/verify', verifyLimiter, async (req, res) => {
   const { otp } = req.body;
   const email = req.session.pendingEmail;
 
@@ -252,7 +261,7 @@ app.post('/verify', async (req, res) => {
 });
 
 // ---------- LOGIN ----------
-app.post('/login', async (req, res) => {
+app.post('/login', authLimiter, async (req, res) => {
   const { email = '', password = '' } = req.body;
 
   try {
@@ -317,7 +326,7 @@ app.post('/freeregister', async(req, res) => {
   const firstName = req.body.inputFirstName || '';
   const lastName = req.body.inputLastName || '';
   const name = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : 'User';
-  const versionSelected = req.body.flexRadioDefault || 'v4.2';
+  const versionSelected = req.body.flexRadioDefault || 'v5.0';
 
   const address = req.body.inputAddress || '';
   const city = req.body.inputCity || '';
@@ -327,7 +336,8 @@ app.post('/freeregister', async(req, res) => {
     'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
     'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/SPACEAPPv4.2.zip',
     'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip',
-    'v5.0-beta-1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-1/SPACEAPPv5.0-beta-1.zip'
+    'v5.0-beta-1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-1/SPACEAPPv5.0-beta-1.zip',
+    'v5.0-beta-5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-5/SPACEAPP-v5.0-beta-5-Installer-x64.exe'
   };
 
   const downloadLink = downloadLinks[versionSelected];
@@ -361,17 +371,17 @@ app.post('/freeregister', async(req, res) => {
         </h1>
 
         <h2 style="color: #333; font-size: 20px; margin-top: 0;">
-          🌌 Thank you for registering!
+          🌌 Thank you for downloading!
         </h2>
 
         <p>You chose SPACEAPP <strong>${versionSelected}</strong>. 
-        ${versionSelected === 'v5.0' ? "You’ve chosen SPACEAPP v5.0: the most refined and internationally capable build to date, engineered for precision and endurance." : "You're all set to begin your journey tracking real-time satellites from Earth."}
+        ${versionSelected === 'v5.0' ? "SPACEAPP v5.0 is the most refined and internationally capable build to date, engineered for precision and endurance." : "You're all set to begin your journey tracking real-time satellites from Earth."}
         </p>
 
         <div style="text-align: center; margin: 20px 0;">
           <a href="${downloadLink}" target="_blank" rel="noopener noreferrer"
             style="display: inline-block; background-color: #4A90E2; color: #fff; text-decoration: none; font-size: 18px; font-weight: bold; padding: 12px 20px; border-radius: 6px;">
-            📦 Download SPACEAPP ZIP (${versionSelected})
+            📦 Download SPACEAPP (${versionSelected})
           </a>
         </div>
 
@@ -380,7 +390,7 @@ app.post('/freeregister', async(req, res) => {
           and paste it inside your app when prompted. See more instructions in the README or on our web.
         </p>
 
-        <p>${versionSelected === "v3.0" ? "Please note that SPACEAPP v3.0 is now considered an earlier release, with several components that have not been updated since September 2025. At the time of its publication, a placeholder NASA logo was temporarily used as we had not yet finalized our own branding — we sincerely apologize for this oversight. \nAdditionally, a few known vulnerabilities were later identified in this version. However, since v3.0 does not handle sensitive user data, it remains safe for general use. We plan to continue supporting it until December 2025, after which it will be officially retired in preparation for the upcoming NextGen releases.":""}
+        <p>${versionSelected === "v3.0" ? "Please note that SPACEAPP v3.0 is now considered an earlier release, with several components that have not been updated since September 2025. At the time of its publication, a placeholder NASA logo was temporarily used as we had not yet finalized our own branding — we sincerely apologize for this oversight. \nAdditionally, a few known vulnerabilities were later identified in this version. However, since v3.0 does not handle sensitive user data, it remains safe for general use. We plan to continue supporting it until December 2025, after which it will be officially retired in preparation for the upcoming releases.":""}
         Feel free to contact us with any questions. Enjoy exploring the stars!</p>
 
         <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
