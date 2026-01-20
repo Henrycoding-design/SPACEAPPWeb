@@ -28,9 +28,9 @@
                         <thead class="table-dark">
                             <tr>
                             <th scope="col">Feature</th>
-                            <th scope="col">v4.x</th>
-                            <th scope="col">v5.0</th>
-                            <th scope="col">v5.0-beta-x</th>
+                            <th scope="col" class="vheader">v5.0</th>
+                            <th scope="col" class="vheader">v5.0-beta-x</th>
+                            <th scope="col" class="v55-col v55-top">v5.5</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,16 +38,9 @@
                             <th scope="row">API</th>
                             <td>
                                 <ul class="mb-0">
-                                <li>Two API modes for better accessibility.</li>
-                                <li>Multiple accounts & API keys supported.</li>
-                                <li>Switch by logging out/in.</li>
-                                </ul>
-                            </td>
-                            <td>
-                                <ul class="mb-0">
-                                    <li>All features from v4.x but more reliable.</li>
-                                    <li>No scary logs & fewer API interruptions.</li>
-                                    <li>Adaptive key rotation; smoother fallbacks.</li>
+                                    <li>Dual API access with improved reliability.</li>
+                                    <li>Cleaner logging with fewer API interruptions.</li>
+                                    <li>Adaptive API key rotation with smooth fallback handling.</li>
                                 </ul>
                             </td>
                             <td>
@@ -57,21 +50,21 @@
                                     <li>Optimized API usage tailored to each satellite type.</li>
                                 </ul>
                             </td>
+                            <td  class="v55-col">
+                                <ul class="mb-0">
+                                    <li>All previous API optimizations retained.</li>
+                                    <li>Smart API reduction for non-Starlink (MEO/GEO) satellites.</li>
+                                    <li>Automatic interval skipping reduces API calls by ~25%.</li>
+                                </ul>
+                            </td>
                             </tr>
                             <tr>
                             <th scope="row">Number of satellites</th>
                             <td>
                                 <ul class="mb-0">
-                                <li>Multiple satellites at once.</li>
-                                <li>Recommended 8–10 sats per session.</li>
-                                <li>API Efficient mode: ~7 sats for ~20 mins continuous.</li>
-                                </ul>
-                            </td>
-                            <td>
-                                <ul class="mb-0">
-                                    <li>Smarter multi-sat load control.</li>
-                                    <li>More stable long sessions.</li>
-                                    <li>Self-updating sat DB to avoid decayed entries.</li>
+                                    <li>Smarter multi-satellite load control.</li>
+                                    <li>Stable long-duration tracking sessions.</li>
+                                    <li>Self-updating satellite database to prevent decayed entries.</li>
                                 </ul>
                             </td>
                             <td>
@@ -81,21 +74,21 @@
                                     <li>Better performance when tracking many satellites.</li>
                                 </ul>
                             </td>
+                            <td  class="v55-col">
+                                <ul class="mb-0">
+                                    <li>Supports larger satellite sets with lower API pressure.</li>
+                                    <li>More efficient handling of mixed LEO/MEO/GEO tracking.</li>
+                                    <li>Improved stability during long multi-satellite sessions.</li>
+                                </ul>
+                            </td>
                             </tr>
                             <tr>
                             <th scope="row">View & navigation</th>
                             <td>
                                 <ul class="mb-0">
-                                <li>Toggle: detail panel ↔ full map screen.</li>
-                                <li>Smooth fly-to navigation to tracked satellites.</li>
-                                <li>JS tracking ring animation.</li>
-                                </ul>
-                            </td>
-                            <td>
-                                <ul class="mb-0">
-                                    <li>All previous map features.</li>
-                                    <li>Optimized performance for smoothness.</li>
-                                    <li>Improved ring effects & navigation speed.</li>
+                                    <li>Interactive global map with satellite focus navigation.</li>
+                                    <li>Optimized rendering for smoother panning and zooming.</li>
+                                    <li>Improved tracking ring visuals and transition speed.</li>
                                 </ul>
                             </td>
                             <td>
@@ -105,22 +98,21 @@
                                     <li>Refined animations & transitions.</li>
                                 </ul>
                             </td>
+                            <td  class="v55-col">
+                                <ul class="mb-0">
+                                    <li>All previous navigation and visualization features.</li>
+                                    <li>Satellite orbital path visualization added.</li>
+                                    <li>Last known positions available for better context.</li>
+                                </ul>
+                            </td>
                             </tr>
                             <tr>
                                 <th scope="row">Performance & stability</th>
                                 <td>
                                     <ul class="mb-0">
-                                    <li>Improved performance for multi-sat tracking.</li>
-                                    <li>Reduced lags & freezes.</li>
-                                    <li>Better memory management.</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul class="mb-0">
-                                        <li>Further optimized for speed & responsiveness.</li>
-                                        <li>Minimized crashes & memory leaks.</li>
-                                        <li>Smoother user experience overall.</li>
-                                        <li>Alot more stable and internationally ready</li>
+                                        <li>Optimized core runtime for speed and responsiveness.</li>
+                                        <li>Reduced crashes and memory leaks.</li>
+                                        <li>Improved international stability and environment readiness.</li>
                                     </ul>
                                 </td>
                                 <td>
@@ -128,6 +120,13 @@
                                         <li>All previous performance improvements.</li>
                                         <li>Enhanced stability under heavy loads.</li>
                                         <li>Ongoing optimizations for best experience.</li>
+                                    </ul>
+                                </td>
+                                <td class="v55-col v55-bottom">
+                                    <ul class="mb-0">
+                                        <li>Further optimized background processing.</li>
+                                        <li>More resilient database and pipeline handling.</li>
+                                        <li>Improved reliability under extended usage.</li>
                                     </ul>
                                 </td>
                             </tr>
@@ -140,18 +139,21 @@
                     <div class="col-12 col-lg-5 col-xl-5">
                         <h2 class="mb-3">Roadmap &amp; Availability</h2>
                         <p class="mb-2">
-                        <strong>v3.0 (Open-Source: Free)</strong> is the basic version of SPACEAPP and will remain available until December 2025 before being retired in favor of the upcoming v5.x releases.</a>
+                        <strong>v3.0 (Open-Source: Free) <span class="px-1 py-0" style="background: rgb(100, 116, 139); border-radius: 5px; color: rgb(241, 245, 249)">Legacy</span></strong> is the basic version of SPACEAPP and will remain available until December 2025 before being retired in favor of the upcoming v5.x releases.</a>
                         </p>
                         <p class="mb-2">
-                        <strong>v4.0 (Open-Source: Charged)</strong> is the plus version of SPACEAPP, with more features and improvements.
+                        <strong>v4.0 (Open-Source: Charged) <span class="px-1 py-0" style="background: rgb(100, 116, 139); border-radius: 5px; color: rgb(241, 245, 249)">Legacy</span></strong> is the plus version of SPACEAPP, with more features and improvements.
                         <p class="mb-2">
-                            <strong>v4.2 (Open-Source: Charged)</strong> is the Vietnam-supported-only version of SPACEAPP, with all the features of v4.0 plus some bug fixes and performance improvements.
+                            <strong>v4.2 (Open-Source: Charged) <span class="px-1 py-0" style="background: rgb(100, 116, 139); border-radius: 5px; color: rgb(241, 245, 249)">Legacy</span></strong> is the Vietnam-supported-only version of SPACEAPP, with all the features of v4.0 plus some bug fixes and performance improvements.
                         </p>
                         <p class="mb-2">
-                            <strong>v5.0 (Closed-Source) is SPACEAPP's best version</strong>: higher reliability and adaptability — cleaner logs, fewer API interruptions, and a self-updating satellite list and user location for better accuracy. Ready for international users!
+                            <strong>v5.0 (Closed-Source) <span class="px-1 py-0" style="background: rgb(13, 110, 253); border-radius: 5px;">Stable</span> <span class="px-1 py-0" style="background: rgba(56, 189, 248, 0.18); border-radius: 5px; color:rgb(186, 230, 253);"><i class="bi bi-globe"></i></span></strong>: higher reliability and adaptability — cleaner logs, fewer API interruptions, and a self-updating satellite list and user location for better accuracy.
                         </p>
                         <p class="mb-2">
-                            <strong>v5.x-beta (Closed-Source)</strong> is the cutting-edge beta version of SPACEAPP, with all the features of v5.0 plus dynamic user location and optimized API usage tailored to each satellite type. Now available for early adopters!
+                            <strong>v5.x-beta (Closed-Source) <span class="px-1 py-0" style="background: linear-gradient(135deg, #06b6d4, #22d3ee); border-radius: 5px; color: #041744">Beta</span></strong> is the cutting-edge beta version of SPACEAPP, with all the features of v5.0 plus dynamic user location and optimized API usage tailored to each satellite type. Now available for early adopters!
+                        </p>
+                        <p class="mb-2">
+                            <strong>v5.5 (Closed-Source) <span class="px-1 py-0" style="background: rgb(13, 110, 253); border-radius: 5px;">Stable</span> <span class="px-1 py-0" style="background: linear-gradient(135deg, #6f7cff, #8b5cf6); border-radius: 5px;">Best</span> <span class="px-1 py-0" style="background: rgba(56, 189, 248, 0.18); border-radius: 5px; color:rgb(186, 230, 253);"><i class="bi bi-globe"></i></span></strong> introduces a refined system architecture with smarter API usage, pre-indexed cloud-assisted satellite search, orbital path prediction, and a dedicated x64 installer. Designed for long-term reliability, scalability, and improved analytical tracking.
                         </p>
                         <p class="mb-4">
                         Love SPACEAPP? Download it, enjoy it, and support our journey to build the future of satellite tracking!
