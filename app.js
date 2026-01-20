@@ -25,11 +25,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('trust proxy', 1);
 app.use(cookieParser());
-if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+const SESSION_SECRET =
+  process.env.SESSION_SECRET ||
+  (process.env.NODE_ENV !== 'production'
+    ? 'spaceapp_super_secret'
+    : null);
+if (process.env.NODE_ENV === 'production' && !SESSION_SECRET) {
   throw new Error("SESSION_SECRET is required");
 }
+// remember to check prod env ensure SESSION_SECRET is there. if not generate locally and then push: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'spaceapp_super_secret',
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: { 
@@ -96,6 +102,24 @@ ensureSchema().catch(err => {
   console.error('Failed to ensure schema:', err);
   process.exit(1);
 });
+
+// // ---------- Nodemailer setup with SendGrid ----------
+// const transporter = nodemailer.createTransport({
+//   host: 'smtp.sendgrid.net',
+//   port: 2525,
+//   secure: false,
+//   auth: {
+//     user: 'apikey',
+//     pass: process.env.SENDGRID_API_KEY
+//   },
+//   logger: true,
+//   debug: true
+// });
+// // ---------- Nodemailer (SendGrid) ensure on boot ----------
+// transporter.verify()
+//   .then(() => console.log('📮 SendGrid ready'))
+//   .catch(e => console.error('📮 SendGrid not ready:', e?.response?.body || e)); //e.response.body is just in case of switching into SendGrid Web API, for now we are just using SMTP
+
 
 let otpStore = {};
 
@@ -332,28 +356,31 @@ app.post('/freeregister', async(req, res) => {
   const city = req.body.inputCity || '';
   const country = req.body.inputCountry || '';
 
+  const { spaceKnowledgeLevel , spaceappMotivation} = req.body;
+
   const downloadLinks = {
-    'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
+    // 'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
     'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/SPACEAPPv4.2.zip',
     'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip',
-    'v5.0-beta-1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-1/SPACEAPPv5.0-beta-1.zip',
-    'v5.0-beta-5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-5/SPACEAPP-v5.0-beta-5-Installer-x64.exe'
+    // 'v5.0-beta-1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-1/SPACEAPPv5.0-beta-1.zip',
+    'v5.0-beta-5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-5/SPACEAPP-v5.0-beta-5-Installer-x64.exe',
+    'v5.5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.5/SPACEAPP-Stable-v5-5-Installer-x64.exe'
   };
 
-  const downloadLink = downloadLinks[versionSelected];
+  const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.5'];
 
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!isValidEmail) return res.status(400).send('Invalid email address');
 
   const q = `
-      INSERT INTO register (email, name, address, city, country)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO register (email, name, address, city, country, space_knowledge_level, spaceapp_motivation)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (email) DO NOTHING
       RETURNING id, email, name, created_at
     `;
 
-  const { rows } = await pool.query(q, [email, name, address, city, country]);
+  const { rows } = await pool.query(q, [email, name, address, city, country, spaceKnowledgeLevel, spaceappMotivation]);
   if (rows.length === 0) {
     console.log('Email already registered:', email);
   }
@@ -375,7 +402,7 @@ app.post('/freeregister', async(req, res) => {
         </h2>
 
         <p>You chose SPACEAPP <strong>${versionSelected}</strong>. 
-        ${versionSelected === 'v5.0' ? "SPACEAPP v5.0 is the most refined and internationally capable build to date, engineered for precision and endurance." : "You're all set to begin your journey tracking real-time satellites from Earth."}
+        ${versionSelected === 'v5.5' ? "SPACEAPP v5.5 is the most refined and internationally capable build to date, engineered for precision and endurance." : "You're all set to begin your journey tracking real-time satellites from Earth."}
         </p>
 
         <div style="text-align: center; margin: 20px 0;">
@@ -390,7 +417,7 @@ app.post('/freeregister', async(req, res) => {
           and paste it inside your app when prompted. See more instructions in the README or on our web.
         </p>
 
-        <p>${versionSelected === "v3.0" ? "Please note that SPACEAPP v3.0 is now considered an earlier release, with several components that have not been updated since September 2025. At the time of its publication, a placeholder NASA logo was temporarily used as we had not yet finalized our own branding — we sincerely apologize for this oversight. \nAdditionally, a few known vulnerabilities were later identified in this version. However, since v3.0 does not handle sensitive user data, it remains safe for general use. We plan to continue supporting it until December 2025, after which it will be officially retired in preparation for the upcoming releases.":""}
+        <p>${versionSelected === "v4.2" ? "Please note that SPACEAPP v4.2 & v4.0 is now considered an earlier release, with several components that have not been updated since October 2025. These versions will be retired and no longer supported after March 2026.":""}
         Feel free to contact us with any questions. Enjoy exploring the stars!</p>
 
         <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
