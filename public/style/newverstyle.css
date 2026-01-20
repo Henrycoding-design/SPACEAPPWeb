@@ -16,3 +16,33 @@ body{
     );
     z-index: 1;
 }
+.v55-col {
+  border-left: 3.5px solid rgb(56, 189, 248) !important;
+  border-right: 3.5px solid rgb(56, 189, 248) !important;
+  box-shadow:
+    inset 0 0 14px rgba(56, 189, 248, 0.35),
+    0 0 18px rgba(56, 189, 248, 0.25);
+  background: rgba(56, 189, 248, 0.03);
+}
+
+.v55-top {
+  text-align: center;
+  border-top: 3.5px solid rgb(56, 189, 248) !important;
+  /* border-top-left-radius: 14px;
+  border-top-right-radius: 14px; */
+}
+
+.v55-bottom {
+  border-bottom: 3.5px solid rgb(56, 189, 248) !important;
+  /* border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px; */
+}
+
+th.v55-col {
+  font-weight: 815;
+  text-shadow: 0 0 18px rgba(56, 189, 248, 1);
+}
+
+.vheader {
+    text-align: center;
+}
