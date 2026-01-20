@@ -66,6 +66,11 @@ body {
   opacity: 0.7;
 }
 
+a {
+  white-space: nowrap;
+}
+
+
 
 /* GG Button Style */
 .google-btn {
@@ -144,7 +149,10 @@ body {
   .form-check-label {
     font-size: 0.9rem;
   }
+  
+  textarea {
+    min-height: 120px;
+  }
 }
-
 
 
