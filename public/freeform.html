@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Vo Tan Binh from SPACEAPP Team" />
         <meta name="description" content="Package Registration Page">
-        <title>SPACEAPP | Free Registration</title>
+        <title>SPACEAPP | Free Download</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="style/formstyle.css">
@@ -23,29 +23,25 @@
                             <h4 class="card-title label mb-3">Information</h4>
 
                             <form class="needs-validation" novalidate action="/freeregister" method="post">
-                            <p class="mb-2">Which version would you like to have?</p>
+                            <p class="mb-2">Which version would you like to have? <a href="#" style="color:#091b57;">See more versions!</a></p>
 
-                            <div class="d-flex flex-column flex-sm-row gap-3 mb-3" role="radiogroup" aria-label="Version selection">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="v4.0" name="flexRadioDefault" value="v4.0">
-                                    <label class="form-check-label text-muted" for="v4.0">v4.0</label>
-                                </div>
+                            <div class="d-flex flex-wrap gap-3 mb-3" role="radiogroup" aria-label="Version selection">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" id="v4.2" name="flexRadioDefault" value="v4.2">
-                                    <label class="form-check-label" for="v4.2">v4.2</label>
+                                    <label class="form-check-label text-muted" for="v4.2">v4.2</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="v5.0" name="flexRadioDefault" value="v5.0" checked>
+                                    <input class="form-check-input" type="radio" id="v5.0" name="flexRadioDefault" value="v5.0">
                                     <label class="form-check-label" for="v5.0">v5.0 <span class="badge bg-primary">Stable</span></label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="v5.0-beta-1" name="flexRadioDefault" value="v5.0-beta-1">
-                                    <label class="form-check-label text-muted" for="v5.0-beta-1">v5.0-beta.1</label>
+                                    <input class="form-check-input" type="radio" id="v5.0-beta-5" name="flexRadioDefault" value="v5.0-beta-5">
+                                    <label class="form-check-label" for="v5.0-beta-5">v5.0-beta.5 <span class="badge" style="background: linear-gradient(135deg, #06b6d4, #22d3ee); color:#041744;">Preview</span></label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="v5.0-beta-5" name="flexRadioDefault" value="v5.0-beta-5">
-                                    <label class="form-check-label" for="v5.0-beta-5">v5.0-beta.5 <span class="badge bg-secondary">Preview</span></label>
-                                </div>
+                                    <input class="form-check-input" type="radio" id="v5.5" name="flexRadioDefault" value="v5.5" checked>
+                                    <label class="form-check-label" for="v5.5">v5.5 <span class="badge" style="background: linear-gradient(135deg, #6f7cff, #8b5cf6);;">Newest</span></label>
+                                </div>                                
                             </div>
 
                             <div class="row g-3">
@@ -72,33 +68,49 @@
                                 </div>
 
                                 <div class="col-12 col-md-6">
-                                <label class="label" for="inputAddress">Address (optional)</label>
+                                <label class="label" for="inputAddress">Address</label>
                                 <input type="text" class="form-control" id="inputAddress" name="inputAddress"
                                         placeholder="1234 Main St" autocomplete="address-line1">
                                 </div>
                                 <div class="col-12 col-md-6">
-                                <label class="label" for="inputCity">City (optional)</label>
+                                <label class="label" for="inputCity">City</label>
                                 <input type="text" class="form-control" id="inputCity" name="inputCity"
                                         placeholder="Los Angeles" autocomplete="address-level2">
                                 </div>
 
-                                <div class="col-12 col-sm-6 col-md-4">
-                                <label class="label" for="inputCountry">Country (optional)</label>
+                                <div class="col-12 col-md-6">
+                                <label class="label" for="inputCountry">Country</label>
                                 <input type="text" class="form-control" id="inputCountry" name="inputCountry"
                                         placeholder="USA" autocomplete="country-name">
                                 </div>
-                                <div class="col-12 col-sm-6 col-md-4">
-                                <label class="label" for="inputState">State (optional)</label>
-                                <select id="inputState" name="inputState" class="form-select" autocomplete="address-level1">
-                                    <option value="">Choose…</option>
-                                    <option>California</option>
-                                    <!-- other options here -->
-                                </select>
-                                </div>
-                                <div class="col-12 col-sm-6 col-md-4">
-                                <label class="label" for="inputZip">Zip (optional)</label>
-                                <input type="text" class="form-control" id="inputZip" name="inputZip"
-                                        inputmode="numeric" autocomplete="postal-code" minlength="5" maxlength="9">
+                                <!-- UI not very good here -->
+                                <div class="col-12 col-md-6">
+                                    <label class="label" for="spaceKnowledgeLevel">
+                                        How much do you know about space?
+                                    </label>
+                                    <select
+                                        id="spaceKnowledgeLevel"
+                                        name="spaceKnowledgeLevel"
+                                        class="form-select"
+                                    >
+                                        <option value="">Prefer not to say</option>
+                                        <option value="beginner">Beginner</option>
+                                        <option value="intermediate">Intermediate</option>
+                                        <option value="expert">Expert</option>
+                                    </select>
+                                    </div>
+
+                                    <div class="col-12">
+                                    <label class="label" for="spaceappMotivation">
+                                        Why SpaceAPP?
+                                    </label>
+                                    <textarea
+                                        id="spaceappMotivation"
+                                        name="spaceappMotivation"
+                                        class="form-control"
+                                        rows="3"
+                                        placeholder="Curiosity, learning, research, building cool space stuff…"
+                                    ></textarea>
                                 </div>
                             </div>
 
@@ -106,7 +118,7 @@
                                 <input class="form-check-input" type="checkbox" id="gridCheck" name="agree" required>
                                 <label class="form-check-label" for="gridCheck">
                                 You agree with our
-                                <a href="PrivatePolicy.html" target="policy" class="text-decoration-none" onclick="window.open('', 'policy')">Terms</a>
+                                <a href="PrivatePolicy.html" target="policy" class="text-decoration-underline" onclick="window.open('', 'policy')" style="color:#091b57;">Terms</a>
                                 </label>
                                 <div class="invalid-feedback">You must agree to continue.</div>
                             </div>
