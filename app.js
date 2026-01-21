@@ -66,6 +66,12 @@ const verifyLimiter = rateLimit({
   message: 'Too many OTP attempts. Please request a new code.'
 });
 
+const downloadLimiter = rateLimit({ // unreasonable traffic
+  windowMs: 1 * 60 * 1000,
+  max: 10, 
+  message: 'Too many Download requests per minute. Please wait.'
+})
+
 // ---------- One-time table ensure on boot ----------
 async function ensureSchema() {
   await pool.query(`
@@ -345,7 +351,7 @@ app.get('/logout', (req, res) => {
 });
 
 // ---------- Email ----------
-app.post('/freeregister', async(req, res) => {
+app.post('/freeregister', downloadLimiter, async(req, res) => {
   const email = req.body.inputEmail || '';
   const firstName = req.body.inputFirstName || '';
   const lastName = req.body.inputLastName || '';
@@ -448,7 +454,7 @@ app.post('/freeregister', async(req, res) => {
 });
 
 // ---------- Community Page: Direct Delivery ----------
-app.post('/api/delivery', upload.none(), async (req, res) => {
+app.post('/api/delivery', downloadLimiter, upload.none(),  async (req, res) => {
   try {
     const { email, module, version, use } = req.body;
 
