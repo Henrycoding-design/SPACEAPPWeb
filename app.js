@@ -67,7 +67,7 @@ const verifyLimiter = rateLimit({
 });
 
 const downloadLimiter = rateLimit({ // unreasonable traffic
-  windowMs: 1 * 60 * 1000,
+  windowMs: 5 * 60 * 1000,
   max: 10, 
   message: 'Too many Download requests per minute. Please wait.'
 })
