@@ -47,10 +47,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ---------- Rate Limiter ----------
+// ---------- Rate Limiter (DDos and DoS attacks best-effort prevent) ----------
 const authLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,   // 5 minutes in ms
-  max: 10,                    // max 5 attempts per window
+  max: 10,                    // max 10 attempts per window
   message: 'Too many attempts, please wait a few minutes.'
 });
 
@@ -69,8 +69,32 @@ const verifyLimiter = rateLimit({
 const downloadLimiter = rateLimit({ // unreasonable traffic
   windowMs: 5 * 60 * 1000,
   max: 10, 
-  message: 'Too many Download requests per minute. Please wait.'
+  message: 'Too many download requests. Please wait a few minutes.'
 })
+
+const deliveryRequestsLimiter = rateLimit({ // unreasonable traffic
+  windowMs: 5 * 60 * 1000,
+  max: 10, 
+  message: 'Too many download requests. Please wait a few minutes.'
+})
+
+// ---------- Casual protection for email queries ----------
+const deliveryCooldown = new Map();
+// email -> timestamp
+const COOLDOWN_MS = 10 * 60 * 1000;
+
+// cleanup Map
+function cleanupCooldown() {
+  if (deliveryCooldown.size < 100) return;
+
+  const now = Date.now();
+  for (const [email, ts] of deliveryCooldown) {
+    if (now - ts > COOLDOWN_MS) {
+      deliveryCooldown.delete(email);
+    }
+  }
+}
+
 
 // ---------- One-time table ensure on boot ----------
 async function ensureSchema() {
@@ -375,9 +399,25 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
 
   const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.5'];
 
-
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!isValidEmail) return res.status(400).send('Invalid email address');
+
+  // prevent casual pings on website
+
+  const now = Date.now();
+
+  const lastRequest = deliveryCooldown.get(email);
+  if (lastRequest && now - lastRequest < COOLDOWN_MS) {
+    const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000);
+    return res.status(429).json({
+      error: `Please wait ${waitSec}s before requesting again.`
+    });
+  }
+
+  // mark cooldown
+  deliveryCooldown.set(email, now);
+
+  cleanupCooldown(); // clean up
 
   const q = `
       INSERT INTO register (email, name, address, city, country, space_knowledge_level, spaceapp_motivation)
@@ -454,13 +494,30 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
 });
 
 // ---------- Community Page: Direct Delivery ----------
-app.post('/api/delivery', downloadLimiter, upload.none(),  async (req, res) => {
+app.post('/api/delivery', deliveryRequestsLimiter, upload.none(),  async (req, res) => {
   try {
     const { email, module, version, use } = req.body;
 
     // Basic validation
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isValidEmail) return res.status(400).send('Invalid email address');
+
+    // prevent casual pings on website
+
+    const now = Date.now();
+
+    const lastRequest = deliveryCooldown.get(email);
+    if (lastRequest && now - lastRequest < COOLDOWN_MS) {
+      const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000);
+      return res.status(429).json({
+        error: `Please wait ${waitSec}s before requesting again.`
+      });
+    }
+
+    // mark cooldown
+    deliveryCooldown.set(email, now);
+
+    cleanupCooldown();
 
     // Choose the correct download link
     const downloadLinks = { // fake links, post github repo for opensrc later once ready, v3.0 is currently in-place, work out the BuyMeACoffee Shop setup for the rest
