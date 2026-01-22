@@ -81,7 +81,7 @@ const deliveryRequestsLimiter = rateLimit({ // unreasonable traffic
 // ---------- Casual protection for email queries ----------
 const deliveryCooldown = new Map();
 // email -> timestamp
-const COOLDOWN_MS = 10 * 60 * 1000;
+const COOLDOWN_MS = 3 * 60 * 1000;
 
 // cleanup Map
 function cleanupCooldown() {
@@ -114,6 +114,8 @@ async function ensureSchema() {
       address TEXT,
       city TEXT,
       country TEXT,
+      space_knowledge_level TEXT, 
+      spaceapp_motivation TEXT,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
@@ -408,10 +410,12 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
 
   const lastRequest = deliveryCooldown.get(email);
   if (lastRequest && now - lastRequest < COOLDOWN_MS) {
-    const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000);
-    return res.status(429).json({
-      error: `Please wait ${waitSec}s before requesting again.`
-    });
+    const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000 / 60);
+    return res.redirect(
+      `/freeform.html?error=${encodeURIComponent(
+        `Please wait ${waitSec}s before requesting again.`
+      )}`
+    );
   }
 
   // mark cooldown
