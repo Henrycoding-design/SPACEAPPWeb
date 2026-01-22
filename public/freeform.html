@@ -20,7 +20,11 @@
 
                         <div class="card rounded-3 shadow mt-2 p-3 p-md-4 mx-auto">
                         <div class="card-body">
-                            <h4 class="card-title label mb-3">Information</h4>
+                            <h4 class="card-title label mb-3">Download</h4>
+                            <section id="error-box" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+                                <span id="error-text"></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </section>
 
                             <form class="needs-validation" novalidate action="/freeregister" method="post">
                             <p class="mb-2">Which version would you like to have? <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases" style="color:#091b57;">See more versions!</a></p>
@@ -124,7 +128,7 @@
                             </div>
 
                             <div class="d-grid gap-3 mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-cart-check"></i> Continue to Checkout</button>
+                                <button id="downloadBtn" type="submit" class="btn btn-primary btn-lg"><i class="bi bi-download"></i> Download Now!</button>
                             </div>
 
                             <p class="mt-5 text-center">
@@ -155,6 +159,37 @@
                 })
             })();
         </script>
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const error = params.get("error");
+            const match = error.match(/(\d+)s/);
+            const waitMs = match ? Number(match[1]) * 1000 * 60 : 5000;
+
+            if (params.has("error")) {
+                const box = document.getElementById("error-box");
+                const text = document.getElementById("error-text");
+                const button = document.getElementById("downloadBtn");
+
+                box.classList.remove("d-none");
+                box.classList.add("show");
+                text.textContent = decodeURIComponent(error);
+
+                button.disabled = true;
+                button.classList.add("disabled");
+
+                setTimeout(() => {
+                    box.classList.remove("show");
+                    button.disabled = false;
+                    button.classList.remove("disabled");
+
+                    setTimeout(() => {
+                        box.classList.add("d-none");
+                    }, 200);
+                }, waitMs);
+                // Prevent error from reappearing on refresh
+                history.replaceState(null, "", location.pathname);
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
-
