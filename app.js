@@ -115,7 +115,6 @@ async function ensureSchema() {
       city TEXT,
       country TEXT,
       space_knowledge_level TEXT, 
-      spaceapp_motivation TEXT,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
@@ -388,7 +387,7 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
   const city = req.body.inputCity || '';
   const country = req.body.inputCountry || '';
 
-  const { spaceKnowledgeLevel , spaceappMotivation} = req.body;
+  const { spaceKnowledgeLevel } = req.body;
 
   const downloadLinks = {
     // 'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
@@ -424,13 +423,13 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
   cleanupCooldown(); // clean up
 
   const q = `
-      INSERT INTO register (email, name, address, city, country, space_knowledge_level, spaceapp_motivation)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO register (email, name, address, city, country, space_knowledge_level)
+      VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (email) DO NOTHING
       RETURNING id, email, name, created_at
     `;
 
-  const { rows } = await pool.query(q, [email, name, address, city, country, spaceKnowledgeLevel, spaceappMotivation]);
+  const { rows } = await pool.query(q, [email, name, address, city, country, spaceKnowledgeLevel]);
   if (rows.length === 0) {
     console.log('Email already registered:', email);
   }
