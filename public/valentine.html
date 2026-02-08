@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💖 Valentine’s Day — SPACEAPP</title>
+  <link rel="icon" href="img/APPICON.webp" type="image/webp">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      background: linear-gradient(135deg, #2b0f1f, #4a1633);
+      color: white;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      padding-bottom: 120px;
+      animation: fadeIn 1s ease-in-out;
+      overflow-x: hidden;
+    }
+
+    h1, h2 { margin-top: 40px; }
+
+    .ascii-heart {
+      font-size: 18px;
+      color: #ff9acb;
+      text-shadow: 0 0 12px #ff5fa2;
+      white-space: pre;
+    }
+
+    button, .cta-btn {
+      background: #ff4d6d;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    button:hover, .cta-btn:hover { opacity: 0.85; }
+
+    .cta-btn {
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    #music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+
+    #share-btn {
+    background: linear-gradient(135deg, #ff4d6d, #ff85a1);
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
+    }
+
+    #fun-facts {
+      list-style-position: inside;
+      padding: 0;
+      margin: 0 auto;
+      display: inline-block;
+    }
+
+    #quote-display {
+      min-height: 60px;
+      transition: opacity 0.6s ease;
+    }
+    .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    }
+
+    /* Icon inherits text color */
+    .icon-btn i {
+    color: currentColor;
+    font-size: 1.1em;
+    }
+
+    .icon-btn:hover i {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+    }
+
+    .or-text {
+    padding: 15px 0 0 0;
+    margin: 10px 0;
+    opacity: 0.8;
+    }
+
+
+    /* ===== Flying Hearts ===== */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      color: #ff7aa2;
+      animation: floatUp linear forwards;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-110vh) translateX(var(--drift));
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>💖 Happy Valentine’s Day from SPACEAPP</h1>
+  <p>Just a little love, sent your way.</p>
+</header>
+
+<!-- Spacing -->
+<section style="height: 10px;"></section>
+
+<section id="heart">
+<pre class="ascii-heart">
+  **   **  
+ ***** ***** 
+*************
+ *********** 
+  *********  
+    *****    
+      *      
+Love is universal ❤️
+</pre>
+</section>
+
+<!-- Spacing -->
+<section style="height: 40px;"></section>
+
+<section id="quotes">
+  <h2>✨ Love Quotes</h2>
+  <p id="quote-display"></p>
+</section>
+
+<!-- Spacing -->
+<section style="height: 40px;"></section>
+
+<section id="facts">
+  <h2>💘 Valentine Fun Facts</h2>
+  <ul id="fun-facts"></ul>
+</section>
+
+<!-- Spacing -->
+<section style="height: 40px;"></section>
+
+<section id="quiz">
+  <h2>💕 Quick Love Quiz</h2>
+  <div id="quiz-container"></div>
+  <button id="submit-quiz">Submit</button>
+  <p id="quiz-result"></p>
+</section>
+
+<!-- Spacing -->
+<section style="height: 40px;"></section>
+
+<section id="promo">
+  <h2>🚀 Spread the Love</h2>
+  <p>Send this page to someone special 💌</p>
+
+  <button id="share-btn" class="icon-btn">
+    <i class="bi bi-share-fill"></i>
+    <span>Spread the Love</span>
+  </button>
+
+  <p class="or-text">or</p>
+
+  <button
+    onclick="window.open('https://buymeacoffee.com/votanbinh', '_blank')"
+    class="cta-btn icon-btn"
+  >
+    <span>💖 Support the Creator</span>
+  </button>
+</section>
+
+<audio id="bg-music" src="audio/UntilIFoundYou.mp3" loop></audio>
+<button id="music-toggle">Play Music</button>
+
+<script>
+  // === Flying Hearts Background ===
+  const createHeart = () => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = 16 + Math.random() * 20 + "px";
+    heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+    heart.style.setProperty("--drift", (Math.random() * 100 - 50) + "px");
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+  };
+
+  setInterval(createHeart, 400);
+
+  // === Quotes ===
+const quotes = [
+  "Love is composed of a single soul inhabiting two bodies. — Aristotle",
+  "Where there is love there is life. — Mahatma Gandhi",
+  "To love and be loved is to feel the sun from both sides. — David Viscott",
+  "The best thing to hold onto in life is each other. — Audrey Hepburn",
+  "Love recognizes no barriers. — Maya Angelou",
+  "We loved with a love that was more than love. — Edgar Allan Poe",
+  "Being deeply loved by someone gives you strength, while loving someone deeply gives you courage. — Lao Tzu"
+];
+
+
+  const quoteEl = document.getElementById("quote-display");
+    let quoteIndex = 0;
+
+    // Base timing config
+    const BASE_TIME = 2000;        // minimum display time (ms)
+    const TIME_PER_CHAR = 50;     // extra time per character
+
+    function showNextQuote() {
+        // Fade out
+        quoteEl.style.opacity = 0;
+
+        setTimeout(() => {
+            const quote = quotes[quoteIndex];
+            quoteEl.innerText = quote;
+            quoteEl.style.opacity = 1;
+
+            // Calculate wait time based on length
+            const waitTime = BASE_TIME + quote.length * TIME_PER_CHAR;
+
+            // Move to next quote (loop)
+            quoteIndex = (quoteIndex + 1) % quotes.length;
+
+            setTimeout(showNextQuote, waitTime);
+        }, 600); // match CSS fade duration (wait for fade out before move to next quote)
+    }
+
+    // Start on load
+    showNextQuote();
+
+  // === Fun Facts ===
+  const facts = [
+    "Valentine’s Day started in ancient Rome — and it was way wilder than cards and chocolates 👀",
+    "The human brain reacts to love almost the same way it reacts to certain stimulants. Science said so 🧠❤️",
+    "Chocolate triggers dopamine and serotonin — your brain literally celebrates when you eat it 🍫✨",
+    "Astronauts report feeling more emotional when seeing Earth from space. Distance hits different 🌍💫",
+    "Your heart doesn’t actually look like a heart — but somehow the symbol still works. Emotional accuracy > anatomy 💖"
+  ];
+
+
+  const factsList = document.getElementById("fun-facts");
+  facts.forEach(f => {
+    const li = document.createElement("li");
+    li.textContent = f;
+    factsList.appendChild(li);
+  });
+
+  // === Quiz ===
+  const quizData = [
+    {
+        question: "What color is most associated with Valentine’s Day?",
+        choices: ["Red", "Pink", "White"],
+        answer: 0
+    },
+    {
+        question: "Which Roman god is linked to love?",
+        choices: ["Mars", "Cupid", "Apollo"],
+        answer: 1
+    },
+    {
+        question: "Why does chocolate make people feel more 'in love'?",
+        choices: [
+        "It raises body temperature",
+        "It releases feel-good chemicals",
+        "It increases heart rate permanently"
+        ],
+        answer: 1
+    },
+    {
+        question: "Which planet is often called the 'planet of love'?",
+        choices: ["Mars", "Venus", "Neptune"],
+        answer: 1
+    }
+  ];
+
+
+  const quizContainer = document.getElementById("quiz-container");
+  quizData.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <p>${q.question}</p>
+      ${q.choices.map((c, idx) => `
+        <label>
+          <input type="radio" name="q${i}" value="${idx}">
+          ${c}
+        </label><br>
+      `).join("")}
+    `;
+    quizContainer.appendChild(div);
+  });
+
+  document.getElementById("submit-quiz").onclick = () => {
+    let score = 0;
+
+    quizData.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && +selected.value === q.answer) score++;
+    });
+
+    const result = document.getElementById("quiz-result");
+    const total = quizData.length;
+
+    let message = "";
+
+    if (score === total) {
+        message = "💖 Perfect score! Cupid just sent you a friend request 😏✨";
+    } else if (score >= total - 1) {
+        message = "💕 Almost flawless! Your love IQ is dangerously high 🔥";
+    } else if (score >= Math.ceil(total / 2)) {
+        message = "💘 Not bad at all! Love is in the air… you’re catching it 👀";
+    } else if (score > 0) {
+        message = "💌 Love is mysterious — and you’re still decoding it 😄";
+    } else {
+        message = "💀 Cupid missed… but hey, love respawns 😂";
+    }
+
+    result.innerText = `You scored ${score}/${total}. ${message}`;
+  };
+
+
+  // === Music Toggle ===
+  const music = document.getElementById("bg-music");
+  const toggleBtn = document.getElementById("music-toggle");
+
+  toggleBtn.onclick = () => {
+    if (music.paused) {
+      music.play();
+      toggleBtn.innerText = "Pause Music";
+    } else {
+      music.pause();
+      toggleBtn.innerText = "Play Music";
+    }
+  };
+
+  // === Share Button ===
+  document.getElementById("share-btn").onclick = async () => {
+    const shareData = {
+      title: "Happy Valentine’s Day 💖",
+      text: "A little cosmic love from SPACEAPP 🚀❤️",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link copied! Share the love 💌");
+    }
+  };
+</script>
+
+</body>
+</html>
