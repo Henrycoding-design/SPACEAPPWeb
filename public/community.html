@@ -241,7 +241,7 @@
                 </section>
               </form>
 
-              <small class="d-block mt-3" style="color: #b8c2e0">We’ll send you a response in 12–48 hours for Mail request options.</small>
+              <small class="d-block mt-3" style="color: #b8c2e0">We’ll send you a response in 12–48 hours for 'Mail instead' option.</small>
             </section>
           </article>
         </section>
@@ -508,17 +508,59 @@
       }
       const btn = form.querySelector('button[type=submit]');
       btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Sending...';
+      let isCooldown = false;
+      let cooldownInterval = null;
       try {
         const fd = new FormData(form);
-        const res = await fetch('/api/delivery', { method: 'POST', body: fd, credentials: 'include' });
-        if (!res.ok) throw new Error('Request failed');
+        const res = await fetch('/api/delivery', { 
+          method: 'POST', 
+          body: fd, 
+          credentials: 'include' 
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+
+          if (res.status === 429 && data.error?.includes("Please wait")) {
+            const waitSec = parseInt(data.error.match(/(\d+)s/)?.[1] || 60);
+
+            isCooldown = true;
+            btn.disabled = true;
+
+            let remaining = waitSec;
+            btn.innerHTML = `Cooldown: ${remaining}s`;
+
+            if (cooldownInterval) clearInterval(cooldownInterval);
+
+            cooldownInterval = setInterval(() => {
+              remaining--;
+              btn.innerHTML = `Cooldown: ${remaining}s`;
+
+              if (remaining <= 0) {
+                clearInterval(cooldownInterval);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-send"></i> Request Delivery';
+              }
+            }, 1000);
+
+            return;
+          }
+
+          throw new Error('Request failed');
+        }
+
         alert('Request received! Check your email soon.');
         form.reset();
+
       } catch (err) {
-        alert('Could not submit request. You can use the Mail button instead.');
-        console.log(err); 
+        alert('Could not submit request.');
+        console.log(err);
+
       } finally {
-        btn.disabled = false; btn.innerHTML = '<i class="bi bi-send"></i> Request Delivery';
+        if (!isCooldown) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="bi bi-send"></i> Request Delivery';
+        }
       }
     });
   </script>
