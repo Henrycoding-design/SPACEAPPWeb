@@ -81,7 +81,7 @@ const deliveryRequestsLimiter = rateLimit({ // unreasonable traffic
 // ---------- Casual protection for email queries ----------
 const deliveryCooldown = new Map();
 // email -> timestamp
-const COOLDOWN_MS = 3 * 60 * 1000;
+const COOLDOWN_MS = 1 * 60 * 1000;
 
 // cleanup Map
 function cleanupCooldown() {
@@ -409,7 +409,7 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
 
   const lastRequest = deliveryCooldown.get(email);
   if (lastRequest && now - lastRequest < COOLDOWN_MS) {
-    const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000 / 60);
+    const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000);
     return res.redirect(
       `/freeform.html?error=${encodeURIComponent(
         `Please wait ${waitSec}s before requesting again.`
