@@ -395,7 +395,7 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
     'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip',
     // 'v5.0-beta-1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-1/SPACEAPPv5.0-beta-1.zip',
     'v5.0-beta-5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-5/SPACEAPP-v5.0-beta-5-Installer-x64.exe',
-    'v5.5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.5.2/SPACEAPP-Stable-v5-5-2-Installer-x64.exe'
+    'v5.5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.5.4/SPACEAPP-Stable-v5-5-4-Installer-x64.exe'
   };
 
   const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.5'];
