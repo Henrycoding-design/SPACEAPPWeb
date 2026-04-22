@@ -264,7 +264,7 @@ transition: opacity 1s ease;
     transform: translateX(-100%);
     opacity: 0;
     transition: transform 0.4s ease, opacity 0.4s ease;
-    margin-left: 5px; /*Space between icon and text*/
+    margin-left: 3px; /*Space between icon and text*/
 }
 
 .buyMeaCoffee-btn:hover {
