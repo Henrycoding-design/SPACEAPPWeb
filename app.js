@@ -496,55 +496,7 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
   }
 });
 
-// ---------- Community Page: Direct Delivery ----------
-app.post('/api/delivery', deliveryRequestsLimiter, upload.none(),  async (req, res) => {
-  try {
-    const { email, module, version, use } = req.body;
-
-    // Basic validation
-    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!isValidEmail) return res.status(400).send('Invalid email address');
-
-    // prevent casual pings on website
-
-    const now = Date.now();
-
-    const lastRequest = deliveryCooldown.get(email);
-    if (lastRequest && now - lastRequest < COOLDOWN_MS) {
-      const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000);
-      return res.status(429).json({
-        error: `Please wait ${waitSec}s before requesting again.`
-      });
-    }
-
-    // mark cooldown
-    deliveryCooldown.set(email, now);
-
-    cleanupCooldown();
-
-    // Choose the correct download link
-    const downloadLinks = { // fake links, post github repo for opensrc later once ready, v3.0 is currently in-place, work out the BuyMeACoffee Shop setup for the rest
-      'api_worker': {'v4.0': 'https://buymeacoffee.com/VoTanBinh/e/485556'},
-      'core_engine': {'v4.0': 'https://buymeacoffee.com/votanbinh/e/485223', 'v4.2': 'https://buymeacoffee.com/votanbinh/e/485291'},
-      'map': {'v4.0': 'https://buymeacoffee.com/VoTanBinh/e/485562'},
-      'full_stack': {'v3.0':'https://github.com/Henrycoding-design/SpaceappwebOpenSrc'},
-    };
-    const downloadLink = downloadLinks[module][version] || null;
-
-    if (!downloadLinks[module] || !downloadLinks[module][version]){return res.status(400).send('Invalid module/version selection');}
-
-    // Optional: insert into DB for record keeping
-    const q = `
-      INSERT INTO delivery_requests (email, module, version, use)
-      VALUES ($1, $2, $3, $4)
-      RETURNING id, created_at
-    `;
-    await pool.query(q, [email, module, version, use || 'N/A']);
-
-    // Build email body
-    const mailOptions = {
-      to: email,
-      subject: `🚀 SPACEAPP ${version} – Delivery: ${module} (${version})`,
+PP ${version} – Delivery: ${module} (${version})`,
       html: `
         <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
           <h2 style="color: #3274e7;">Your SPACEAPP open-src ${module} ${version} is ready!</h2>
@@ -553,7 +505,7 @@ app.post('/api/delivery', deliveryRequestsLimiter, upload.none(),  async (req, r
           <p><strong>Module:</strong> ${module}</p>
           ${use ? `<p><strong>Your note:</strong> ${use}</p>` : ''}
 
-          <p style="font-size:14px;color:#555;">${version=='v3.0' ? 'Click on the button below to get to our Github opensrc repo!':'Click on the button below to get to our BuyMeACoffee payment system and finish your purchase!'}</p>
+          <p style="font-size:14px;color:#555;">${version=='v3.0' ? 'Click on the button below to get to our Github opensrc repo!':'Click on the button below to get to our Ko-fi payment system and finish your purchase!'}</p>
           
           <div style="text-align:center;margin:20px 0;">
             <a href="${downloadLink}" target="_blank" rel="noopener noreferrer"
