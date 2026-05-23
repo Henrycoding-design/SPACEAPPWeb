@@ -240,8 +240,18 @@ transition: opacity 1s ease;
 .navbar-nav.flex-even > .nav-item { flex: 1, 1, 0; }
 .navbar-nav.flex-even > .nav-item .nav-link {text-align: center;}
 
-.custom-toggler .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+#menuToggleIcon {
+    font-size: 1.8rem;
+    color: white;
+    display: inline-block;
+    /* This handles the rotation both going forward and coming backward */
+    transition: transform 0.5s ease-in-out; 
+}
+
+/* When active, lock the rotation at 180 degrees */
+#menuToggleIcon.is-active {
+    /* font-size: 1.5rem; */
+    transform: rotate(180deg);
 }
 
 /* buyMeaCoffee button */
