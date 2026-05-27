@@ -48,24 +48,27 @@
                     <img src="img/SPACEAPPicon.webp" alt="Logo" width="200" height="30" class="d-inline-block align-text-center mt-2" style="margin-right: 0px;">
                     <span class="badge bg-danger mb-3" style="margin-left: 0px; font-size: 0.8rem;">.Inc</span>
                 </a>
+                
                 <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="bi bi-list" id="menuToggleIcon"></i>
                 </button>
+
                 <section class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav flex-even flex-grow-1 order-1 justify-content-evenly me-3 me-xl-0">
-                        <li class="nav-item mx-2">
+                    
+                    <ul class="navbar-nav flex-even flex-grow-1 order-1 justify-content-evenly me-3 me-xl-0 text-center text-lg-start my-3 my-lg-0">
+                        <li class="nav-item mx-2 py-2 py-lg-0">
                             <a class="nav-link" style="color:white" href="#Description">Features</a>
                         </li>
-                        <li class="nav-item mx-2">
+                        <li class="nav-item mx-2 py-2 py-lg-0">
                             <a class="nav-link" style="color:white" href="#Guide">Guidance</a>
                         </li>
-                        <li class="nav-item mx-2">
+                        <li class="nav-item mx-2 py-2 py-lg-0">
                             <a class="nav-link" style="color:white" href="community.html" target="community">Community</a>
                         </li>
-                        <li class="nav-item mx-2">
+                        <li class="nav-item mx-2 py-2 py-lg-0">
                             <a class="nav-link" style="color:white" href="#Contact">Contact</a>
                         </li>
-                        <li class="mx-2 no-underline d-none d-lg-block">
+                        <li class="mx-2 no-underline d-lg-block py-2 py-lg-0">
                             <a class="nav-link" href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases" rel="noopener noreferrer" target="githubrepo" onclick="window.open('', 'githubrepo')">
                                 <i class="bi bi-github GithubIcon"></i>
                             </a>
@@ -77,13 +80,22 @@
                         <button class="btn Search_btn" type="submit" autocomplete="off">Search</button>
                     </form>
 
-                    <section class="order-3 d-flex ms-auto ms-xl-5 align-items-center justify-content-center me-3 me-xl-2">
-                        <button class="btn btn-outline-danger me-3 SignIn_btn" type="button" style="text-wrap: nowrap;" onclick="window.open('login.html', 'login')"><i class="bi bi-box-arrow-in-right"></i> Log In</button>
-                        <button class="btn btn-primary SignUp_btn" type="button" style="white-space: nowrap;" 
-                            onclick="window.open('freeform.html', 'download')">
-                            <i class="bi bi-windows"></i> <h6 class="d-inline-flex mb-0" style="color:white">Download</h6>
+                    <section class="order-3 d-flex flex-column flex-lg-row ms-auto ms-xl-5 align-items-stretch align-items-lg-center justify-content-center me-3 me-xl-2 pt-3 pt-lg-0 border-top border-secondary gap-2 gap-lg-0" style="--bs-border-opacity: 1; border-top-style: solid; border-top-width: 1px;">
+                        <style>
+                            /* A tiny style block to cleanly handle the responsive border reset without breaking classes */
+                            @media (min-width: 992px) {
+                                .collapse .order-3 { border-top: none !important; }
+                            }
+                        </style>
+                        <button class="btn btn-outline-danger me-lg-3 SignIn_btn w-100 w-lg-auto mb-2 mb-lg-0" type="button" style="text-wrap: nowrap;" onclick="window.open('login.html', 'login')">
+                            <i class="bi bi-box-arrow-in-right"></i> Log In
+                        </button>
+                        <button class="btn btn-primary SignUp_btn w-100 w-lg-auto d-flex align-items-center justify-content-center gap-2" type="button" style="white-space: nowrap;" onclick="window.open('freeform.html', 'download')">
+                            <i class="bi bi-windows"></i> 
+                            <span style="color:white; font-weight: 500;">Download</span>
                         </button>
                     </section>
+
                 </section>
             </section>
         </nav>
