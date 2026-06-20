@@ -376,38 +376,41 @@ app.get('/logout', (req, res) => {
 });
 
 // ---------- Email ----------
-app.post('/freeregister', downloadLimiter, async(req, res) => {
+app.post('/freeregister', downloadLimiter, async (req, res) => {
   const email = req.body.inputEmail || '';
   const firstName = req.body.inputFirstName || '';
   const lastName = req.body.inputLastName || '';
   const name = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : 'User';
-  const versionSelected = req.body.flexRadioDefault || 'v5.0';
+
+  // NEW STRUCTURED INPUT
+  const platform = req.body.platform || 'Windows';
+  const versionSelected = req.body.version || 'v5.5';
 
   const address = req.body.inputAddress || '';
   const city = req.body.inputCity || '';
   const country = req.body.inputCountry || '';
-
   const { spaceKnowledgeLevel } = req.body;
 
   const downloadLinks = {
-    // 'v4.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.0/SPACEAPPv4.0.zip',
     'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/SPACEAPPv4.2.zip',
     'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip',
-    // 'v5.0-beta-1': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-1/SPACEAPPv5.0-beta-1.zip',
     'v5.0-beta-5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-5/SPACEAPP-v5.0-beta-5-Installer-x64.exe',
-    'v5.5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.5.4/SPACEAPP-Stable-v5-5-4-Installer-x64.exe'
+    'v5.5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.5.4/SPACEAPP-Stable-v5-5-4-Installer-x64.exe',
+
+    // 🧪 PLACEHOLDER FOR FUTURE BUILD
+    'v5.6': platform === 'Mac'
+      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6/SPACEAPP-macOS.zip'
+      : 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6/SPACEAPP-Stable-v5-6-Installer-x64.exe'
   };
 
-  const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.5'];
+  const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.6'];
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!isValidEmail) return res.status(400).send('Invalid email address');
 
-  // prevent casual pings on website
-
   const now = Date.now();
-
   const lastRequest = deliveryCooldown.get(email);
+
   if (lastRequest && now - lastRequest < COOLDOWN_MS) {
     const waitSec = Math.ceil((COOLDOWN_MS - (now - lastRequest)) / 1000);
     return res.redirect(
@@ -417,75 +420,116 @@ app.post('/freeregister', downloadLimiter, async(req, res) => {
     );
   }
 
-  // mark cooldown
   deliveryCooldown.set(email, now);
-
-  cleanupCooldown(); // clean up
+  cleanupCooldown();
 
   const q = `
-      INSERT INTO register (email, name, address, city, country, space_knowledge_level)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      ON CONFLICT (email) DO NOTHING
-      RETURNING id, email, name, created_at
-    `;
+    INSERT INTO register (email, name, address, city, country, space_knowledge_level)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    ON CONFLICT (email) DO NOTHING
+    RETURNING id, email, name, created_at
+  `;
 
-  const { rows } = await pool.query(q, [email, name, address, city, country, spaceKnowledgeLevel]);
-  if (rows.length === 0) {
+  const { rows } = await pool.query(q, [
+    email,
+    name,
+    address,
+    city,
+    country,
+    spaceKnowledgeLevel
+  ]);
+
+
+  const isNew = rows.length !== 0;
+
+  if (!isNew) {
     console.log('Email already registered:', email);
   }
 
   const mailOptions = {
-    // from: `${process.env.FROM_NAME || 'SPACEAPP'} <${process.env.FROM_EMAIL}>`,
-    // from: "SPACEAPP <tanbinhvo.hcm@gmail.com>",
     to: email,
-    subject: '🚀 Welcome to SPACEAPP!',
+    subject: isNew ? '🚀 Welcome to SPACEAPP!' : '🚀 Hi again, from SPACEAPP!',
     html: `
-      <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; color: #333333; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 30px 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
 
-        <h1 style="color: #4A90E2; font-size: 24px; margin-bottom: 10px;">
-          Welcome to SPACEAPP, ${name}!
+        <!-- Header -->
+        <h1 style="color: #4A90E2; margin-top: 0; font-size: 26px;">
+          ${isNew ? `Welcome to SPACEAPP, ${name}!` : `Your Download Link, ${name}!`}
         </h1>
+        <p style="font-size: 18px; color: #555555; margin-bottom: 24px;">🌌 Thank you for downloading!</p>
 
-        <h2 style="color: #333; font-size: 20px; margin-top: 0;">
-          🌌 Thank you for downloading!
-        </h2>
+        <!-- System Details -->
+        <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; background-color: #f8fafc; padding: 15px; border-radius: 6px;">
+          <li><strong>Platform detected:</strong> ${platform}</li>
+          <li><strong>Version chosen:</strong> ${versionSelected}</li>
+        </ul>
 
-        <p>You chose SPACEAPP <strong>${versionSelected}</strong>. 
-        ${versionSelected === 'v5.5' ? "SPACEAPP v5.5 is the most refined and internationally capable build to date, engineered for precision and endurance." : "You're all set to begin your journey tracking real-time satellites from Earth."}
+        <!-- Dynamic Welcome Message -->
+        <p style="margin-bottom: 24px;">
+          ${versionSelected === 'v5.6'
+            ? "SPACEAPP v5.6 is the most advanced and globally scalable version of SPACEAPP yet."
+            : "You're all set to begin your journey exploring satellites from Earth."
+          }
         </p>
 
-        <div style="text-align: center; margin: 20px 0;">
-          <a href="${downloadLink}" target="_blank" rel="noopener noreferrer"
-            style="display: inline-block; background-color: #4A90E2; color: #fff; text-decoration: none; font-size: 18px; font-weight: bold; padding: 12px 20px; border-radius: 6px;">
+        <!-- Action Buttons -->
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${downloadLink}" target="_blank"
+            style="display: inline-block; background: #4A90E2; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 4px rgba(74,144,226,0.2);">
             📦 Download SPACEAPP (${versionSelected})
           </a>
+          ${platform === "Mac" ? `
+            <br />
+            <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6/models.zip" target="_blank"
+              style="display: inline-block; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 12px; box-shadow: 0 2px 4px rgba(109,40,217,0.2);">
+              🧊 Download 3D Models (.zip)
+            </a>
+          ` : ""}
         </div>
 
-        <p>If you haven’t yet, remember to register your free API key at 
-          <a href="https://www.n2yo.com/api/" target="_blank" style="color: #4A90E2;">n2yo.com/api</a> 
-          and paste it inside your app when prompted. See more instructions in the README or on our web.
-        </p>
+        ${platform === "Mac" ? `
+          <p style="font-size:14px;color:#666; margin-bottom: 20px;">
+            For macOS, download both SPACEAPP and the Models package.
+            Extract models.zip and place the models folder beside SPACEAPP before first launch.
+          </p>
+          ` : ""}
+        
+        <!-- Deprecation Warning (if applicable) -->
+        ${versionSelected === "v4.2" ? `
+          <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+            <p style="margin: 0; color: #b45309; font-size: 14px;">
+              <strong>Please note:</strong> SPACEAPP v4.2 & v4.0 are older releases. Several components have not been updated since October 2025. These versions will be retired and unsupported after March 2026.
+            </p>
+          </div>
+        ` : ""}
 
-        <p>${versionSelected === "v4.2" ? "Please note that SPACEAPP v4.2 & v4.0 is now considered an earlier release, with several components that have not been updated since October 2025. These versions will be retired and no longer supported after March 2026.":""}
-        Feel free to contact us with any questions. Enjoy exploring the stars!</p>
+        <!-- Actionable Instructions -->
+        <div style="background-color: #f0f7ff; border-left: 4px solid #4A90E2; padding: 15px; margin-bottom: 24px; border-radius: 4px;">
+          <p style="margin: 0; font-size: 15px;">
+            🔑 <strong>Next Step:</strong> Remember to get your API/Developer Key from <a href="https://www.n2yo.com/login/edit/" style="color: #4A90E2; text-decoration: underline;">N2YO Login</a> and configure it inside the app.
+          </p>
+        </div>
 
-        <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
+        <p style="margin-bottom: 30px;">Feel free to contact us with any questions. Enjoy exploring the stars!</p>
 
-        <p style="font-size: 12px; color: #888; margin: 0;">— SPACEAPP Team — Vo Tan Binh</p>
-        <p style="font-size: 12px; color: #888;">Visit us at <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2;">spaceappweb.onrender.com</a></p>
-        <p style="font-size: 12px; color: #888;">Contact: <a href="mailto:tanbinhvo.hcm@gmail.com" style="color: #4A90E2;">tanbinhvo.hcm@gmail.com</a></p>
+        <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0;" />
+
+        <!-- Footer -->
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+          <tr>
+            <td style="font-size: 12px; color: #888888; line-height: 1.5;">
+              <strong style="color: #555555;">— SPACEAPP Team — Vo Tan Binh</strong><br />
+              Web: <a href="https://spaceappweb.onrender.com/" style="color: #4A90E2; text-decoration: none;">spaceappweb.onrender.com</a><br />
+              Support: <a href="mailto:tanbinhvo.hcm@gmail.com" style="color: #4A90E2; text-decoration: none;">tanbinhvo.hcm@gmail.com</a>
+            </td>
+          </tr>
+        </table>
+
+      </div>
     `,
     replyTo: 'tanbinhvo.hcm@gmail.com'
   };
 
-  // transporter.sendMail(mailOptions, (err, info) => {
-  //   if (err) {
-  //     console.error('❌ Failed to send registration email:', err);
-  //     return res.status(500).send('Failed to send confirmation email');
-  //   }
-  //   console.log('✅ Registration email sent:', info.response);
-  //   res.redirect('/thankyou.html');
-  // });
   try {
     await gmailSend(mailOptions);
     console.log('✅ Registration email sent');
@@ -547,26 +591,34 @@ app.post('/api/delivery', deliveryRequestsLimiter, upload.none(),  async (req, r
       subject: `🚀 SPACEAPP ${version} – Delivery: ${module} (${version})`,
       html: `
         <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-          <h2 style="color: #3274e7;">Your SPACEAPP open-src ${module} ${version} is ready!</h2>
+          <h2 style="color: #3274e7;">Your SPACEAPP ${module} ${version} is ready!</h2>
           <p>Thank you for requesting a delivery through the Community Page.</p>
 
           <p><strong>Module:</strong> ${module}</p>
           ${use ? `<p><strong>Your note:</strong> ${use}</p>` : ''}
 
-          <p style="font-size:14px;color:#555;">${version=='v3.0' ? 'Click on the button below to get to our Github opensrc repo!':'Click on the button below to get to our Kofi payment system and finish your purchase!'}</p>
+          <p style="font-size:14px;color:#555;">
+            ${
+              version === 'v3.0' 
+                ? 'Click on the button below to get to our GitHub open-source repository!' 
+                : 'Click on the button below to get to our Ko-fi payment system and finish your premium version purchase!'
+            }
+          </p>
           
           <div style="text-align:center;margin:20px 0;">
             <a href="${downloadLink}" target="_blank" rel="noopener noreferrer"
                style="display:inline-block;background-color:#3274e7;color:#fff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:6px;">
-              📦 Go to ${module} version ${version}
+               📦 Go to ${module} version ${version}
             </a>
           </div>
 
           <p style="font-size:14px;color:#555;">If the button above doesn’t work, use this link: <br>
-            <a href="${downloadLink}">${downloadLink}</a>
+            <a href="${downloadLink}" style="color:#3274e7;">${downloadLink}</a>
           </p>
 
-          <p style="font-size:14px;color:#555;">${version=='v3.0' ? `Or you can just clone using Git: git clone ${downloadLink}.git`:''}</p>
+          <p style="font-size:14px;color:#555;">
+            ${version === 'v3.0' ? `Or you can just clone using Git:<br><code style="background:#f4f4f4;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:5px;">git clone ${downloadLink}.git</code>` : ''}
+          </p>
 
           <hr style="border:none;border-top:1px solid #ccc;margin:20px 0;">
           <p style="font-size:12px;color:#888;margin:0;">— SPACEAPP Team — Vo Tan Binh</p>
