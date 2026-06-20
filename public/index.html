@@ -90,8 +90,7 @@
                         <button class="btn btn-outline-danger me-lg-3 SignIn_btn w-100 w-lg-auto mb-2 mb-lg-0" type="button" style="text-wrap: nowrap;" onclick="window.open('login.html', 'login')">
                             <i class="bi bi-box-arrow-in-right"></i> Log In
                         </button>
-                        <button class="btn btn-primary SignUp_btn w-100 w-lg-auto d-flex align-items-center justify-content-center gap-2" type="button" style="white-space: nowrap;" onclick="window.open('freeform.html', 'download')">
-                            <i class="bi bi-windows"></i> 
+                        <button id="downloadBtn" class="btn btn-primary SignUp_btn w-100 w-lg-auto d-flex align-items-center justify-content-center gap-2" type="button" style="white-space: nowrap;" onclick="window.open('freeform.html', 'download')">
                             <span style="color:white; font-weight: 500;">Download</span>
                         </button>
                     </section>
@@ -110,9 +109,11 @@
                 </section>
                 <section class="row justify-content-center" style="margin-top: 222px;">
                     <section class="col-md-6 mt-5 mb-3">
-                        <h3 class="text-center text-nowrap mb-3" style="opacity: 1;">Introducing <strong class="blue-text">SPACEAPP v5.5</strong></h3>
-                        <img src="img/Introscrollimg.webp" alt="Rescue Run to the Riverside" class="img-fluid rounded mb-3" style="opacity: 0.8;">
-                        <p class="text-center" style="opacity: 1;">Introducing <strong>SPACEAPP v5.5</strong>: a major stability and capability upgrade focused on performance, scalability, and usability. This release builds on the solid foundation of v5.0 while introducing significant improvements to satellite search, tracking efficiency, database handling, and distribution.</p>
+                        <h3 class="text-center text-nowrap mb-3" style="opacity: 1;">Introducing <strong class="blue-text">SPACEAPP v5.6</strong></h3>
+                        <img src="img/Introscrollimg.webp" alt="SPACEAPP Intro" class="img-fluid rounded mb-3" style="opacity: 0.8;">
+                        <p class="text-center" style="opacity: 1;">
+                            Introducing <strong>SPACEAPP v5.6</strong>: a major platform and capability upgrade focused on performance, visualization, and experience. v5.6 builds on the solid foundation of v5.5 while introducing significant improvements to satellite rendering, efficiency, system reliability, and distribution.
+                        </p>                        
                         <button class="btn btn-secondary w-100" type="button" style="opacity: 0.8; margin-top: 5px;" onclick="window.open('newverintro.html', 'newverintro')"><h6 class="d-inline-flex mb-0" style="color:white">See More!</h6></button>
                     </section>
                 </section>
@@ -150,12 +151,14 @@
             <section class="container text-white z-2">
                 <section class="row align-items-center">
                     <section class="col col-md-6">
-                        <h2 class="fw-bold mb-4 headlines">What is SPACEAPP & What does it Do?</h2>
+                        <h2 class="fw-bold mb-4 headlines">What is SPACEAPP?</h2>
                         <p>
                             Satellite trackers are digital tools that follow artificial objects orbiting Earth — like communication, weather, or research satellites. SPACEAPP is a satellite tracker reimagined for modern users: it collects orbital data from verified databases like NORAD and visualizes the real-time latitude, longitude, altitude, and speed of thousands of active satellites. Users can identify satellites, explore their missions, and even analyze their time spent in space through a clean, user-friendly interface.
                         </p>
-                        <button class="btn btn-primary mt-3 headlines" onclick="window.open('freeform.html', 'download')"><i class="bi bi-windows"></i> <h6 class="d-inline-flex mb-0">Let's Get Started!</h6></button>
-                        <p class="mt-3 small">SPACEAPP v4.0 & v4.2 are legacy versions. Users are recommended to switch to newer versions: v5.0, v5.0-beta-x, and v5.5<br><a href="newverintro.html" class="text-white text-decoration-underline" target="newverintro" onclick="window.open('', 'newverintro')">See more here</a>*<br><br><a href="#Guide" class="text-white text-decoration-underline">Click here</a>* to see guidance of using our app.</p>
+                        <button id="downloadBtn2" class="btn btn-primary mt-3 headlines" onclick="window.open('freeform.html', 'download')">
+                            <h6 class="d-inline-flex mb-0">Get started with Windows</h6>
+                        </button>
+                        <p class="mt-3 small">SPACEAPP v4.0 & v4.2 are legacy versions. Users are recommended to switch to newer stable versions: v5.0, v5.5.x, and v5.6.x<br><a href="newverintro.html" class="text-white text-decoration-underline" target="newverintro" onclick="window.open('', 'newverintro')">See more here</a>*<br><br><a href="#Guide" class="text-white text-decoration-underline">Click here</a>* to see guidance of using our app.</p>
                     </section>
                     <section class="col col-md-6 text-center ml-5 d-none d-md-block">
                         <a href="https://www.producthunt.com/products/spaceapp?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-spaceapp" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1031908&theme=dark&t=1761728844385" alt="SPACEAPP - Real&#0045;time&#0032;satellite&#0032;tracker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
@@ -232,6 +235,17 @@
                         </section>
                     </section>
                 </section>
+                <section class="row row-cols-1 g-4 my-4">
+                    <section class="col-12">
+                        <section class="card h-100 rounded-4 shadow service-card">
+                            <img src="img/3d-visualization.webp" class="card-img-top rounded-4" alt="Interactive 3D Spacecraft Visualization Feature" style="object-fit: cover; max-height: 250px;">
+                            <section class="card-body">
+                                <h5 class="headlines card-title purple-text" style="font-weight: bold; color: #8b5cf6;">Interactive 3D Spacecraft Visualization</h5>
+                                <p class="card-text">Step beyond simple tracking maps into an immersive orbital canvas. SPACEAPP v5.6 introduces high-fidelity 3D structural rendering for key astronomical structures, including the International Space Station (ISS), Tiangong, Hubble, and the James Webb Space Telescope. Inspect structural details, solar panel configurations, and spatial geometry in real time while tracking live telemetry pipelines.<br></p>
+                            </section>
+                        </section>
+                    </section>
+                </section>
             </section>
         </section>
 
@@ -241,9 +255,9 @@
                 <section class="row align-items-center">
                     <section class="col col-md-4 d-none d-md-block">
                         <section class="position-relative w-100">
-                            <img class="w-100" src="img/priceimg.webp" alt="PricePicture" style="min-height: 600px; border-radius:5px">
-                            <button class="btn btn-danger position-absolute bottom-0 start-50 translate-middle-x mb-3 text-nowrap" onclick="window.open('freeform.html', 'download')">
-                            <i class="bi bi-windows"></i> <h6 class="d-inline-flex mb-0">Download Now!</h6>
+                            <img class="w-100" src="img/priceimg.webp" alt="PricePicture" style="min-height: 750px; border-radius:5px">
+                            <button id="downloadBtn3" class="btn btn-danger position-absolute bottom-0 start-50 translate-middle-x mb-3 text-nowrap" onclick="window.open('freeform.html', 'download')">
+                                <h6 class="d-inline-flex mb-0">Download Now!</h6>
                             </button>
                         </section>
                     </section>
@@ -257,34 +271,34 @@
                         
                         <section class="row">
                             <section class="col col-md-6 Full-Membership ml-0">
-                                <h6 class="headlines mt-3 mb-3">SPACEAPP v5.0 (STABLE)</h6>
-                                <p>SPACEAPP v5.0 (STABLE) introduced multi-tracking, smooth animations, and performance improvements while staying fully plug-and-play.</p>
+                                <h6 class="headlines mt-3 mb-3">SPACEAPP v5.6 (macOS / EXPERIMENTAL)</h6>
+                                <p>SPACEAPP v5.6 introduces the first official macOS environment, featuring interactive 3D spacecraft visualization, AI mission summaries, and comprehensive analytical research views.</p>
                                 <ul>
-                                    <li>Run instantly from the .exe, no extra setup files.</li>
-                                    <li>Register a free API key at <a href="https://www.n2yo.com/api/" target="n2yoapi" style="color: #4A90E2;" onclick="window.open('', 'n2yoapi')">n2yo.com/api</a> and paste it inside the app when prompted.</li>
-                                    <li>Multi-account support with real-time satellite list monitoring.</li>
-                                    <li>Track multiple satellites simultaneously.</li>
-                                    <li>Smooth flying animations between selected satellites.</li>
-                                    <li>Dual API modes (efficient 8s/call or faster 3s/call) and map toggle.</li>
+                                    <li>Download both <strong>SPACEAPP-macOS.zip</strong> and <strong>models.zip</strong> files.</li>
+                                    <li>Extract both archives and place the extracted <code>models/</code> folder directly beside <code>SPACEAPP.app</code>.</li>
+                                    <li>Do not move the <code>models/</code> directory inside the application bundle; it must remain beside it to load 3D assets.</li>
+                                    <li>Register a free Dev/API key at <a href="https://www.n2yo.com/login/edit" target="n2yoapi" style="color: #4A90E2;" onclick="window.open('', 'n2yoapi')">n2yo.com</a> and enter it on first launch.</li>
+                                    <li>Explore the Next-Generation Workspace with responsive side panels and dedicated research tools.</li>
+                                    <li>Features AI-assisted mission intelligence, lifespan estimations, and RAG-driven spacecraft summaries.</li>
                                 </ul>
-                                <p class="mt-2" style="font-size: small;"><strong style="color: rgb(180, 204, 245);">Note: </strong><strong>v5.0</strong> builds on v4.x with significant performance tweaks and incredible stability. It is the <strong>recommended version</strong> for users internationally.</p>
+                                <p class="mt-2" style="font-size: small;"><strong style="color: rgb(180, 204, 245);">Note: </strong>The macOS build is currently <strong>experimental</strong>. While fully functional, platform-specific stability updates will continue to evolve throughout the v5.6.x patch cycles.</p>
                             </section>
                             <section class="col col-md-6 Associate-Membership mr-0">
-                                <h6 class="headlines mt-3 mb-3">SPACEAPP v5.5 (TOP-TIER/RECOMMENDED)</h6>
-                                <p>SPACEAPP v5.5 pushes the limits of the v5.0 architecture with smarter API routing, startup optimizations, real-time checks, and deeper system integration for advanced users.</p>
+                                <h6 class="headlines mt-3 mb-3">SPACEAPP v5.6 (WINDOWS / STABLE)</h6>
+                                <p>The flagship Windows release pushes tracking capabilities further with full Supabase satellite database synchronization, trajectory propagation engine tweaks, and streamlined installer configurations.</p>
                                 <ul>
-                                    <li>New intelligent API call system based on satellite type for better speed and efficiency.</li>
-                                    <li>Automatic GitHub check for surveys, patch notes, and important updates.</li>
-                                    <li>Improved first-run setup with cleaner user data initialization and location caching.</li>
-                                    <li>Optimized local database handling with Supabase-backed indexing and faster lookup.</li>
-                                    <li>Better stability for multi-tracking and smoother transitions between satellites.</li>
-                                    <li>Register a free API key at <a href="https://www.n2yo.com/api/" target="n2yoapi" style="color: #4A90E2;" onclick="window.open('', 'n2yoapi')">n2yo.com/api</a> and enter it on first launch.</li>
+                                    <li>Download and open the dedicated setup package: <strong>SPACEAPP-Stable-v5.6-Installer-x64.exe</strong>.</li>
+                                    <li>Complete the clean Inno Setup wizard steps to smoothly install the application on your computer.</li>
+                                    <li>Register a free Dev/API key at <a href="https://www.n2yo.com/login/edit" target="n2yoapi" style="color: #4A90E2;" onclick="window.open('', 'n2yoapi')">n2yo.com</a> and complete initialization.</li>
+                                    <li>Enjoy alias-aware fast searches and background updates powered by integrated Supabase infrastructure.</li>
+                                    <li>Analyze orbital geometry patterns, coverage radius metrics, and track high-precision trajectories safely.</li>
+                                    <li>Optimized back-end telemetry controls drastically reduce overall network overhead and API call stress.</li>
                                 </ul>
-                                <p class="mt-2" style="font-size: small;"><strong style="color: rgb(180, 204, 245);">Note: </strong><strong>v5.0-beta-x offers cutting-edge improvements ahead</strong> of the next stable release. Ideal for testers and users who want access to the <strong>newest upgrades</strong> before they ship.</p>
+                                <p class="mt-2" style="font-size: small;"><strong style="color: rgb(180, 204, 245);">Note: </strong>The Windows x64 version is <strong>highly stable</strong> and packaged for general users. Once your N2YO API key is saved, it automatically logs you in on subsequent runs.</p>
                             </section>
                         </section>
                         <p class="mt-2" style="font-size: small;">
-                            <strong style="color: rgb(180, 204, 245);">Note: </strong>All SPACEAPP versions are pure plug-and-play, requiring no configuration — just download, run the executable, register your N2YO API key, and start tracking satellites.
+                            <strong style="color: rgb(180, 204, 245);">Note: </strong>All SPACEAPP versions require an active N2YO API key configuration during first-time setup to pull active global tracking streams, interface elements, and orbital mechanics data into your workspace.
                         </p>
                     </section>
                 </section>
@@ -300,7 +314,7 @@
             class="btn btn-info position-fixed bottom-0 start-0 m-4 buyMeaCoffee-btn d-none d-md-inline-flex" style="z-index: 1000;">
         <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="coffee cup" width="34" height="22" style="padding-right: 9px; padding-left: 0px; margin-left: -4px;">
         <span style="font-weight: 500;">Support on Ko-fi</span>
-        </button>     
+        </button>       
         
         <footer class="bg-dark pt-4 mt-5" id="Contact">
             <section class="container">
@@ -364,7 +378,7 @@
                 <section class="d-flex justify-content-between mt-3">
                     <h5 class="headlines text-info">SPACE APP Organization</h5>
                     <section class="d-flex flex-wrap text-align-center gap-2 gap-md-0">
-                        <a href="PrivatePolicy.html" class="headlines text-decoration-none me-3 text-nowrap" target="policy" onclick="window.open('', 'policy')">Privacy Policy</a>
+                        <a href="PrivatePolicy.html#Privacy" class="headlines text-decoration-none me-3 text-nowrap" target="policy" onclick="window.open('', 'policy')">Privacy Policy</a>
                         <a href="PrivatePolicy.html" class="headlines text-decoration-none me-3 text-nowrap" target="policy" onclick="window.open('', 'policy')">Terms of Service</a>
                         <!-- <a href="mailto:tanbinhvo.hcm@gmail.com" class="headlines text-decoration-none text-nowrap">Email Us</a> or can use style="white-space: nowrap" -->
                     </section>
@@ -594,6 +608,8 @@
                 .then(data => {
                     signInBtn.innerHTML = `<i class="bi ${data.loggedIn ? "bi-box-arrow-right" : "bi-box-arrow-in-right"}"></i> ${data.loggedIn ? "Log Out" : "Log In"}`;
                     if (data.loggedIn) {
+                        // signInBtn.classList.remove("btn-outline-danger");
+                        // signInBtn.classList.add("btn-outline-warning");
                         signInBtn.onclick = () => {
                             fetch('/logout')
                             .then(() => location.reload());
@@ -626,8 +642,33 @@
                 }, 250);
             });
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const platformString =
+                    navigator.userAgentData?.platform ||
+                    navigator.platform ||
+                    "";
+
+                const uaPlatform = platformString.includes("Mac")
+                    ? "Mac"
+                    : "Windows";
+
+                const downloadBtn = document.getElementById("downloadBtn");
+                const downloadBtn2 = document.getElementById("downloadBtn2")
+                const downloadBtn3 = document.getElementById("downloadBtn3");
+
+                downloadBtn.innerHTML = 
+                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : "bi-windows"}"></i> <span style="color:white; font-weight: 500;">Download</span>`
+
+                downloadBtn3.innerHTML = 
+                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Download Now!</h6>`
+                
+                downloadBtn2.innerHTML = 
+                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Get started with ${uaPlatform === "Mac" ? "Mac" : "Windows"}</h6>`
+                
+            });
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
-
 
