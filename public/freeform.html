@@ -20,13 +20,24 @@
 
                         <div class="card rounded-3 shadow mt-2 p-3 p-md-4 mx-auto">
                         <div class="card-body">
-                            <h4 class="card-title label mb-3">Download</h4>
+                            <h4 class="card-title label mb-3" id="downloadTitle">Download</h4>
                             <section id="error-box" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
                                 <span id="error-text"></span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </section>
 
                             <form class="needs-validation" novalidate action="/freeregister" method="post">
+                            <input type="hidden" name="platform" id="platformInput">
+                            <input type="hidden" name="version" id="versionInput">
+
+                            <div class="mb-3">
+                                <label class="label">Platform</label>
+                                <select id="platformSelect" class="form-select">
+                                    <option value="Windows">Windows</option>
+                                    <option value="Mac">Mac</option>
+                                </select>
+                            </div>
+
                             <p class="mb-2">Which version would you like to have? <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases" style="color:#091b57;">See more versions!</a></p>
 
                             <div class="d-flex flex-wrap gap-3 mb-3" role="radiogroup" aria-label="Version selection">
@@ -43,9 +54,13 @@
                                     <label class="form-check-label" for="v5.0-beta-5">v5.0-beta.5 <span class="badge" style="background: linear-gradient(135deg, #06b6d4, #22d3ee); color:#041744;">Preview</span></label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="v5.5" name="flexRadioDefault" value="v5.5" checked>
-                                    <label class="form-check-label" for="v5.5">v5.5 <span class="badge" style="background: linear-gradient(135deg, #6f7cff, #8b5cf6);;">Newest</span></label>
-                                </div>                                
+                                    <input class="form-check-input" type="radio" id="v5.5" name="flexRadioDefault" value="v5.5">
+                                    <label class="form-check-label" for="v5.5">v5.5 <span class="badge bg-primary">Stable</span></label>
+                                </div>               
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="v5.6" name="flexRadioDefault" value="v5.6">
+                                    <label class="form-check-label" for="v5.6">v5.6 <span class="badge" style="background: linear-gradient(135deg, #6f7cff, #8b5cf6);;">Newest</span></label>
+                                </div>                   
                             </div>
 
                             <div class="row g-3">
@@ -148,33 +163,115 @@
         <script>
             const params = new URLSearchParams(window.location.search);
             const error = params.get("error");
-            const match = error.match(/(\d+)s/);
-            const waitMs = match ? Number(match[1]) * 1000 : 5000;
+            if (error) {
+                const match = error.match(/(\d+)s/);
+                const waitMs = match ? Number(match[1]) * 1000 : 5000;
 
-            if (params.has("error")) {
-                const box = document.getElementById("error-box");
-                const text = document.getElementById("error-text");
-                const button = document.getElementById("downloadBtn");
+                if (params.has("error")) {
+                    const box = document.getElementById("error-box");
+                    const text = document.getElementById("error-text");
+                    const button = document.getElementById("downloadBtn");
 
-                box.classList.remove("d-none");
-                box.classList.add("show");
-                text.textContent = decodeURIComponent(error);
+                    box.classList.remove("d-none");
+                    box.classList.add("show");
+                    text.textContent = decodeURIComponent(error);
 
-                button.disabled = true;
-                button.classList.add("disabled");
-
-                setTimeout(() => {
-                    box.classList.remove("show");
-                    button.disabled = false;
-                    button.classList.remove("disabled");
+                    button.disabled = true;
+                    button.classList.add("disabled");
 
                     setTimeout(() => {
-                        box.classList.add("d-none");
-                    }, 200);
-                }, waitMs);
-                // Prevent error from reappearing on refresh
-                history.replaceState(null, "", location.pathname);
+                        box.classList.remove("show");
+                        button.disabled = false;
+                        button.classList.remove("disabled");
+
+                        setTimeout(() => {
+                            box.classList.add("d-none");
+                        }, 200);
+                    }, waitMs);
+                    // Prevent error from reappearing on refresh
+                    history.replaceState(null, "", location.pathname);
+                }
             }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const uaPlatform = 
+                    navigator.userAgentData?.platform ||
+                    navigator.platform ||
+                    "Windows";
+
+                const platformSelect = document.getElementById("platformSelect");
+                const title = document.getElementById("downloadTitle");
+
+                const versionRadios = document.querySelectorAll('input[name="flexRadioDefault"]');
+
+                const platformInput = document.getElementById("platformInput");
+                const versionInput = document.getElementById("versionInput");
+
+                // Normalize detection
+                let detected = uaPlatform.includes("Mac") ? "Mac" : "Windows";
+
+                // Set dropdown default
+                platformSelect.value = detected;
+
+                function updateUI(platform) {
+                    title.textContent = `Download for ${platform}`;
+
+                    versionRadios.forEach(radio => {
+                        const wrapper = radio.closest(".form-check");
+
+                        const version = radio.value;
+
+                        // RULE ENGINE
+                        const isV56 = version === "v5.6";
+
+                        const isAllowed =
+                            isV56 ? true : platform === "Windows";
+
+                        // SHOW / HIDE instead of disable
+                        if (!isAllowed) {
+                            wrapper.style.display = "none";
+                            radio.checked = false;
+                        } else {
+                            wrapper.style.display = "block";
+                        }
+                    });
+
+                    // AUTO SELECT LOGIC
+                    const visibleRadios = [...versionRadios].filter(r => {
+                        return r.closest(".form-check").style.display !== "none";
+                    });
+
+                    // pick newest available
+                    const defaultVersion = "v5.6"
+
+                    const fallback = visibleRadios.find(r => r.value === defaultVersion)
+                        || visibleRadios[visibleRadios.length - 1];
+
+                    if (fallback) fallback.checked = true;
+                }
+
+                // initial render
+                updateUI(detected);
+
+                // manual override
+                platformSelect.addEventListener("change", (e) => {
+                    updateUI(e.target.value);
+                });
+
+                // capture submit data
+                document.querySelector("form").addEventListener("submit", () => {
+                    const selectedPlatform = platformSelect.value;
+
+                    let selectedVersion = "v5.6";
+                    versionRadios.forEach(r => {
+                        if (r.checked) selectedVersion = r.value;
+                    });
+
+                    platformInput.value = selectedPlatform;
+                    versionInput.value = selectedVersion;
+                });
+            });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
