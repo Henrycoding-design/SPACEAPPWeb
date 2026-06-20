@@ -16,11 +16,15 @@
             <section class="container text-center">
                 <h1 class="mb-4">Welcome to SPACEAPP <strong>v5.x</strong></h1>
                 <p class="lead mb-4">A faster, more flexible satellite tracker is out now!</p>
-                <a class="btn btn-primary" href="freeform.html" target="download" role="button"><i class="bi bi-windows" onclick="window.open('', 'download')"></i> <strong>Download Now!</strong></a>
+                <a class="btn btn-primary" href="freeform.html" target="download" role="button" onclick="window.open('', 'download')">
+                    <span class="me-2">
+                        <i class="bi bi-windows" style="margin-right: 1.5px;"></i> &middot; <i class="bi bi-apple"></i>
+                    </span>
+                    <strong>Download Now!</strong>
+                </a>
             </section>
             <section class="container-xxl my-4" id="v4-comparison">
                 <div class="row g-4 align-items-start">
-                    <!-- LEFT: table (lg: 8/12, xl: 9/12) -->
                     <div class="col-12 col-lg-7 col-xl-7">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered align-middle caption-top">
@@ -29,8 +33,8 @@
                             <tr>
                             <th scope="col">Feature</th>
                             <th scope="col" class="vheader">v5.0</th>
-                            <th scope="col" class="vheader">v5.0-beta-x</th>
-                            <th scope="col" class="v55-col v55-top">v5.5</th>
+                            <th scope="col" class="vheader">v5.5</th>
+                            <th scope="col" class="v55-col v55-top">v5.6</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,13 +52,14 @@
                                     <li>All previous API improvements.</li>
                                     <li>Dynamic user location for better accuracy.</li>
                                     <li>Optimized API usage tailored to each satellite type.</li>
+                                    <li>Automatic interval skipping reduces API calls by ~25%.</li>
                                 </ul>
                             </td>
-                            <td  class="v55-col">
+                            <td class="v55-col">
                                 <ul class="mb-0">
-                                    <li>All previous API optimizations retained.</li>
-                                    <li>Smart API reduction for non-Starlink (MEO/GEO) satellites.</li>
-                                    <li>Automatic interval skipping reduces API calls by ~25%.</li>
+                                    <li>All historical API adjustments and optimizations fully retained.</li>
+                                    <li>Smart API Optimization tailored to back-end telemetry systems.</li>
+                                    <li>Synchronized and indexed satellite databases through Supabase cloud clusters.</li>
                                 </ul>
                             </td>
                             </tr>
@@ -69,16 +74,16 @@
                             </td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>All previous satellite handling features.</li>
-                                    <li>Improved sat list accuracy & freshness.</li>
-                                    <li>Better performance when tracking many satellites.</li>
-                                </ul>
-                            </td>
-                            <td  class="v55-col">
-                                <ul class="mb-0">
                                     <li>Supports larger satellite sets with lower API pressure.</li>
                                     <li>More efficient handling of mixed LEO/MEO/GEO tracking.</li>
                                     <li>Improved stability during long multi-satellite sessions.</li>
+                                </ul>
+                            </td>
+                            <td class="v55-col">
+                                <ul class="mb-0">
+                                    <li>Alias-aware lightning-fast searches powered by real-time cloud data indexing.</li>
+                                    <li>Expanded catalog tracking capacity with accurate multi-trajectory propagation.</li>
+                                    <li>Enhanced TLE string parsing engine maximizing NORAD search parameters.</li>
                                 </ul>
                             </td>
                             </tr>
@@ -93,16 +98,16 @@
                             </td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>All previous view & navigation features.</li>
-                                    <li>Further enhanced smoothness & responsiveness.</li>
-                                    <li>Refined animations & transitions.</li>
-                                </ul>
-                            </td>
-                            <td  class="v55-col">
-                                <ul class="mb-0">
-                                    <li>All previous navigation and visualization features.</li>
                                     <li>Satellite orbital path visualization added.</li>
                                     <li>Last known positions available for better context.</li>
+                                    <li>Refined view animations and layout transitions.</li>
+                                </ul>
+                            </td>
+                            <td class="v55-col">
+                                <ul class="mb-0">
+                                    <li>Interactive 3D Spacecraft Visualization for major configurations (ISS, JWST, Hubble).</li>
+                                    <li>Next-Generation Workspace featuring dynamic splitters and resizable side panels.</li>
+                                    <li>Integrated ground footprint projection and analytical coverage radius boundaries.</li>
                                 </ul>
                             </td>
                             </tr>
@@ -117,16 +122,16 @@
                                 </td>
                                 <td>
                                     <ul class="mb-0">
-                                        <li>All previous performance improvements.</li>
-                                        <li>Enhanced stability under heavy loads.</li>
-                                        <li>Ongoing optimizations for best experience.</li>
+                                        <li>Further optimized background processing.</li>
+                                        <li>More resilient database and pipeline handling.</li>
+                                        <li>Improved reliability under extended usage.</li>
                                     </ul>
                                 </td>
                                 <td class="v55-col v55-bottom">
                                     <ul class="mb-0">
-                                        <li>Further optimized background processing.</li>
-                                        <li>More resilient database and pipeline handling.</li>
-                                        <li>Improved reliability under extended usage.</li>
+                                        <li>Highly reduced network overhead via centralized request monitoring loops.</li>
+                                        <li>Comprehensive Research View separating analytical data from baseline telemetry displays.</li>
+                                        <li>Reliable multi-hour tracking coverage without processing degradation.</li>
                                     </ul>
                                 </td>
                             </tr>
@@ -135,14 +140,14 @@
                     </div>
                     </div>
 
-                    <!-- RIGHT: title + summary + button (lg: 4/12, xl: 4/12) -->
                     <div class="col-12 col-lg-5 col-xl-5">
                         <h2 class="mb-3">Roadmap &amp; Availability</h2>
                         <p class="mb-2">
-                        <strong>v3.0 (Open-Source: Free) <span class="px-1 py-0" style="background: rgb(100, 116, 139); border-radius: 5px; color: rgb(241, 245, 249)">Legacy</span></strong> is the basic version of SPACEAPP and will remain available until December 2025 before being retired in favor of the upcoming v5.x releases.</a>
+                        <strong>v3.0 (Open-Source: Free) <span class="px-1 py-0" style="background: rgb(100, 116, 139); border-radius: 5px; color: rgb(241, 245, 249)">Legacy</span></strong> is the basic version of SPACEAPP and will remain available until December 2025 before being retired in favor of the upcoming v5.x releases.
                         </p>
                         <p class="mb-2">
                         <strong>v4.0 (Open-Source: Charged) <span class="px-1 py-0" style="background: rgb(100, 116, 139); border-radius: 5px; color: rgb(241, 245, 249)">Legacy</span></strong> is the plus version of SPACEAPP, with more features and improvements.
+                        </p>
                         <p class="mb-2">
                             <strong>v4.2 (Open-Source: Charged) <span class="px-1 py-0" style="background: rgb(100, 116, 139); border-radius: 5px; color: rgb(241, 245, 249)">Legacy</span></strong> is the Vietnam-supported-only version of SPACEAPP, with all the features of v4.0 plus some bug fixes and performance improvements.
                         </p>
@@ -150,10 +155,10 @@
                             <strong>v5.0 (Closed-Source) <span class="px-1 py-0" style="background: rgb(13, 110, 253); border-radius: 5px;">Stable</span> <span class="px-1 py-0" style="background: rgba(56, 189, 248, 0.18); border-radius: 5px; color:rgb(186, 230, 253);"><i class="bi bi-globe"></i></span></strong>: higher reliability and adaptability — cleaner logs, fewer API interruptions, and a self-updating satellite list and user location for better accuracy.
                         </p>
                         <p class="mb-2">
-                            <strong>v5.x-beta (Closed-Source) <span class="px-1 py-0" style="background: linear-gradient(135deg, #06b6d4, #22d3ee); border-radius: 5px; color: #041744">Beta</span></strong> is the cutting-edge beta version of SPACEAPP, with all the features of v5.0 plus dynamic user location and optimized API usage tailored to each satellite type. Now available for early adopters!
+                            <strong>v5.5 (Closed-Source) <span class="px-1 py-0" style="background: rgb(13, 110, 253); border-radius: 5px;">Stable</span> <span class="px-1 py-0" style="background: rgba(56, 189, 248, 0.18); border-radius: 5px; color:rgb(186, 230, 253);"><i class="bi bi-globe"></i></span></strong> introduces a refined system architecture with smarter API usage, pre-indexed cloud-assisted satellite search, orbital path prediction, and a dedicated x64 installer. Designed for long-term reliability, scalability, and improved analytical tracking.
                         </p>
                         <p class="mb-2">
-                            <strong>v5.5 (Closed-Source) <span class="px-1 py-0" style="background: rgb(13, 110, 253); border-radius: 5px;">Stable</span> <span class="px-1 py-0" style="background: linear-gradient(135deg, #6f7cff, #8b5cf6); border-radius: 5px;">Best</span> <span class="px-1 py-0" style="background: rgba(56, 189, 248, 0.18); border-radius: 5px; color:rgb(186, 230, 253);"><i class="bi bi-globe"></i></span></strong> introduces a refined system architecture with smarter API usage, pre-indexed cloud-assisted satellite search, orbital path prediction, and a dedicated x64 installer. Designed for long-term reliability, scalability, and improved analytical tracking.
+                            <strong>v5.6 (Closed-Source) <span class="px-1 py-0" style="background: rgb(13, 110, 253); border-radius: 5px;">Stable</span> <span class="px-1 py-0" style="background: linear-gradient(135deg, #6f7cff, #8b5cf6); border-radius: 5px;">Best</span> <span class="px-1 py-0" style="background: rgba(56, 189, 248, 0.18); border-radius: 5px; color:rgb(186, 230, 253);"><i class="bi bi-globe"></i></span></strong> marks a milestone structural leap with the delivery of the first official macOS environment package alongside the classic Windows pipeline. Features immersive interactive 3D spacecraft structural inspectors, AI-assisted mission summaries, full orbital lifespan metrics, coverage footprint estimators, and an updated RAG-driven background synchronization framework.
                         </p>
                         <p class="mb-4">
                         Love SPACEAPP? Download it, enjoy it, and support our journey to build the future of satellite tracking!
