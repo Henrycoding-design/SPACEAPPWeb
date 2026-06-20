@@ -384,7 +384,7 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
 
   // NEW STRUCTURED INPUT
   const platform = req.body.platform || 'Windows';
-  const versionSelected = req.body.version || 'v5.5';
+  const versionSelected = req.body.version || 'v5.6';
 
   const address = req.body.inputAddress || '';
   const city = req.body.inputCity || '';
