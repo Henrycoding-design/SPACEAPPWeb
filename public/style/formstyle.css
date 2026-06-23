@@ -3,7 +3,7 @@ body {
         radial-gradient(circle at 25% 30%, rgba(100, 28, 103, 0.4), transparent 40%),
         radial-gradient(circle at 75% 70%, rgba(17, 102, 133, 0.35), transparent 50%),
         linear-gradient(to bottom right, #050b1e, #0a122d, #04153c); */
-    background-image: url("registerbg.webp");
+    background-image: url("satellites.webp");
     background-size: cover;
     /* background-blend-mode: overlay; */
 }
@@ -17,30 +17,47 @@ body {
   }
 } */
 .Title {
+    /* Tells the element to only take up as much width as its content needs */
+    display: block; 
+    width: fit-content;
+    
+    /* Your solid background color */
+    background-color: #041b33; 
+    
+    /* Control your spacing here: 10px top/bottom, 24px left/right */
+    padding: 10px 24px; 
+    
+    /* Smooth out the corners of the background box so it looks premium */
+    border-radius: 8px; 
+
+    /* Keeps it centered if the parent container uses text-align: center */
+    margin: 0 auto; 
+    
+    border-bottom: 3px solid transparent;
+    z-index: 999;
+}
+
+.Title span {
+    /* This inner element handles the text gradient exclusively */
     background: linear-gradient(
         60deg,
-        #b2d6fa 0%,        /* lighter bright blue */
-        #85bafe 20%,       /* vibrant blue */
-        #5d99ee 40%,       /* NASA mid-blue */
-        #f25a5a 65%,       /* warmer red */
-        #f86161 85%,       /* bright red */
-        #f98e8e 100%       /* glowing red end */
+        #b2d6fa 0%,
+        #85bafe 20%,
+        #5d99ee 40%,
+        #f25a5a 65%,
+        #f86161 85%,
+        #f98e8e 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    text-align: center;
     mix-blend-mode: lighten;
     font-weight: 600;
     font-size: 3rem;
 
     text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.1),
-             1px 1px 10px rgba(30, 60, 120, 0.3);
-
-    border-bottom: 3px solid transparent;
-    z-index: 999;
-
+                 1px 1px 10px rgba(30, 60, 120, 0.3);
 }
 .card {
     color:black;
