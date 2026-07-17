@@ -62,7 +62,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" id="v5.6" name="flexRadioDefault" value="v5.6">
                                     <label class="form-check-label" for="v5.6">v5.6 <span class="badge" style="background: linear-gradient(135deg, #6f7cff, #8b5cf6);;">Newest</span></label>
-                                </div>                   
+                                </div>                      
                             </div>
 
                             <div class="row g-3">
@@ -216,6 +216,8 @@
                 // Set dropdown default
                 platformSelect.value = detected;
 
+                let crossPlatformVersions = ["v5.6", "v5.7"];
+
                 function updateUI(platform) {
                     title.textContent = `Download for ${platform}`;
 
@@ -225,10 +227,10 @@
                         const version = radio.value;
 
                         // RULE ENGINE
-                        const isV56 = version === "v5.6";
+                        const isCrossPlatform = crossPlatformVersions.some(v => version.startsWith(v));
 
                         const isAllowed =
-                            isV56 ? true : platform === "Windows";
+                            isCrossPlatform || platform === "Windows";
 
                         // SHOW / HIDE instead of disable
                         if (!isAllowed) {
@@ -245,7 +247,7 @@
                     });
 
                     // pick newest available
-                    const defaultVersion = "v5.6"
+                    const defaultVersion = "v5.6" // update if newer releases are out
 
                     const fallback = visibleRadios.find(r => r.value === defaultVersion)
                         || visibleRadios[visibleRadios.length - 1];
