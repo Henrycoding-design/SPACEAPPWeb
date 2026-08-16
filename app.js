@@ -399,8 +399,10 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
 
     // 🧪 PLACEHOLDER FOR FUTURE BUILD
     'v5.6': platform === 'Mac'
-      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.2/SPACEAPP-macOS.zip'
-      : 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.2/SPACEAPP-Stable-v5-6-2-Installer-x64.exe'
+      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/SPACEAPP-macOS.zip'
+      : platform === 'Linux'
+      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/SPACEAPP-Linux.zip'
+      : 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/SPACEAPP-Stable-v5-6-5-Installer-x64.exe'
   };
 
   const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.6'];
@@ -478,9 +480,9 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
             style="display: inline-block; background: #4A90E2; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 4px rgba(74,144,226,0.2);">
             📦 Download SPACEAPP (${versionSelected})
           </a>
-          ${platform === "Mac" ? `
+          ${platform !== "Windows" ? `
             <br />
-            <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.2/models.zip" target="_blank"
+            <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/models.zip" target="_blank"
               style="display: inline-block; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 12px; box-shadow: 0 2px 4px rgba(109,40,217,0.2);">
               🧊 Download 3D Models (.zip)
             </a>
