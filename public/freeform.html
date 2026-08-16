@@ -37,6 +37,7 @@
                                 <select id="platformSelect" class="form-select">
                                     <option value="Windows">Windows</option>
                                     <option value="Mac">Mac</option>
+                                    <option value="Linux">Linux</option>
                                 </select>
                             </div>
 
@@ -200,7 +201,7 @@
                 const uaPlatform = 
                     navigator.userAgentData?.platform ||
                     navigator.platform ||
-                    "Windows";
+                    "Windows".toLowerCase();
 
                 const platformSelect = document.getElementById("platformSelect");
                 const title = document.getElementById("downloadTitle");
@@ -211,12 +212,14 @@
                 const versionInput = document.getElementById("versionInput");
 
                 // Normalize detection
-                let detected = uaPlatform.includes("Mac") ? "Mac" : "Windows";
+                let detected = uaPlatform.includes("mac") ? "Mac" 
+                                : uaPlatform.includes("linux") ? "Linux" 
+                                : "Windows";
 
                 // Set dropdown default
                 platformSelect.value = detected;
 
-                let crossPlatformVersions = ["v5.6", "v5.7"];
+                let crossPlatformVersions = ["v5.6"];
 
                 function updateUI(platform) {
                     title.textContent = `Download for ${platform}`;
