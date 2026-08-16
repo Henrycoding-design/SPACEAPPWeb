@@ -802,7 +802,7 @@
                     `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Download Now!</h6>`
                 
                 downloadBtn2.innerHTML = 
-                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Get started with ${uaPlatform === "Mac" ? "Mac" : "Windows"}</h6>`
+                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Get started with ${uaPlatform === "Mac" ? "Mac" : uaPlatform === "Linux" ? "Linux" : "Windows"}</h6>`
                 
             });
         </script>
