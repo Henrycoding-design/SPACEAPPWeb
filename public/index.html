@@ -798,9 +798,13 @@
                 const downloadBtn = document.getElementById("downloadBtn");
                 const downloadBtn2 = document.getElementById("downloadBtn2")
                 const downloadBtn3 = document.getElementById("downloadBtn3");
+                const downloadBtnMobile = document.getElementById("downloadBtnMobile");
 
                 downloadBtn.innerHTML = 
                     `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <span style="color:white; font-weight: 500;">Download</span>`
+
+                downloadBtnMobile.innerHTML = 
+                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0 text-nowrap">Download Now!</h6>`
 
                 downloadBtn3.innerHTML = 
                     `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Download Now!</h6>`
