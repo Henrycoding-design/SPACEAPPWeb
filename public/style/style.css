@@ -331,22 +331,32 @@ transition: opacity 1s ease;
 .Intro > * { position: relative; z-index: 2; }
 
 .btn-group-responsive {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    display: flex;
+    flex-direction: column; /* Force vertical stacking */
+    align-items: center;    /* Center both buttons relative to each other */
+    justify-content: center;
+    gap: 15px;
 }
 
-@media (max-width: 412px) {
-    .btn-group-responsive {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-    }
+/* Give both elements matching constraints */
+#downloadBtnMobile {
+    height: 44px;           /* Match the height of Product Hunt badge */
+    max-width: 250px;
+    width: 100%;
+    justify-self: center;
+}
 
-    .btn-group-responsive button, 
-    .btn-group-responsive a {
-        width: 100%;
-        text-align: center;
+.ph-btn img {
+    max-width: 150;
+    width: 100%;
+    height: 44px;
+    object-fit: contain;
+}
+
+/* side-by-side on larger mobile/tablet screens before d-lg-none kicks in */
+@media (min-width: 450px) {
+    .btn-group-responsive {
+        flex-direction: row;
     }
 }
 
