@@ -784,34 +784,45 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const platformString =
+                console.log(navigator.userAgentData?.platform, navigator.platform);
+                const platformString = (
                     navigator.userAgentData?.platform ||
                     navigator.platform ||
-                    "".toLowerCase();
+                    ""
+                ).toLowerCase();
+
+                console.log(platformString);
 
                 const uaPlatform = platformString.includes("mac")
                     ? "Mac"
-                    : platformString.includes("linux")
+                    : platformString.includes("linux") || platformString.includes("android")
                     ? "Linux"
                     : "Windows";
 
+                console.log(uaPlatform);
+
                 const downloadBtn = document.getElementById("downloadBtn");
-                const downloadBtn2 = document.getElementById("downloadBtn2")
+                const downloadBtn2 = document.getElementById("downloadBtn2");
                 const downloadBtn3 = document.getElementById("downloadBtn3");
                 const downloadBtnMobile = document.getElementById("downloadBtnMobile");
 
-                downloadBtn.innerHTML = 
-                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <span style="color:white; font-weight: 500;">Download</span>`
+                const icon = uaPlatform === "Mac"
+                    ? "bi-apple"
+                    : uaPlatform === "Linux"
+                    ? "bi-tux"
+                    : "bi-windows";
 
-                downloadBtnMobile.innerHTML = 
-                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0 text-nowrap">Download Now!</h6>`
+                downloadBtn.innerHTML =
+                    `<i class="bi ${icon}"></i> <span style="color:white; font-weight:500;">Download</span>`;
 
-                downloadBtn3.innerHTML = 
-                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Download Now!</h6>`
-                
-                downloadBtn2.innerHTML = 
-                    `<i class="bi ${uaPlatform === "Mac" ? "bi-apple" : uaPlatform === "Linux" ? "bi-tux" : "bi-windows"}"></i> <h6 class="d-inline-flex mb-0">Get started with ${uaPlatform === "Mac" ? "Mac" : uaPlatform === "Linux" ? "Linux" : "Windows"}</h6>`
-                
+                downloadBtnMobile.innerHTML =
+                    `<i class="bi ${icon}"></i> <h6 class="d-inline-flex mb-0 text-nowrap">Download Now!</h6>`;
+
+                downloadBtn3.innerHTML =
+                    `<i class="bi ${icon}"></i> <h6 class="d-inline-flex mb-0">Download Now!</h6>`;
+
+                downloadBtn2.innerHTML =
+                    `<i class="bi ${icon}"></i> <h6 class="d-inline-flex mb-0">Get started with ${uaPlatform}</h6>`;
             });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
