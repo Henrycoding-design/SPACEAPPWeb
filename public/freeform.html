@@ -198,10 +198,13 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const uaPlatform = 
+                const uaPlatform = (
                     navigator.userAgentData?.platform ||
                     navigator.platform ||
-                    "Windows".toLowerCase();
+                    ""
+                ).toLowerCase();
+
+                console.log(uaPlatform);
 
                 const platformSelect = document.getElementById("platformSelect");
                 const title = document.getElementById("downloadTitle");
@@ -213,7 +216,7 @@
 
                 // Normalize detection
                 let detected = uaPlatform.includes("mac") ? "Mac" 
-                                : uaPlatform.includes("linux") ? "Linux" 
+                                : uaPlatform.includes("linux") || uaPlatform.includes("android") ? "Linux" 
                                 : "Windows";
 
                 // Set dropdown default
