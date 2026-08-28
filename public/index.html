@@ -784,14 +784,13 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                console.log(navigator.userAgentData?.platform, navigator.platform);
                 const platformString = (
                     navigator.userAgentData?.platform ||
                     navigator.platform ||
                     ""
                 ).toLowerCase();
 
-                console.log(platformString);
+                // console.log(platformString);
 
                 const uaPlatform = platformString.includes("mac")
                     ? "Mac"
@@ -799,7 +798,7 @@
                     ? "Linux"
                     : "Windows";
 
-                console.log(uaPlatform);
+                // console.log(uaPlatform);
 
                 const downloadBtn = document.getElementById("downloadBtn");
                 const downloadBtn2 = document.getElementById("downloadBtn2");
