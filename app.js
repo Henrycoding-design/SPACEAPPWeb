@@ -394,15 +394,15 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
   const downloadLinks = {
     'v4.2': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v4.2/SPACEAPPv4.2.zip',
     'v5.0': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0/SPACEAPPv5.0.zip',
-    'v5.0-beta-5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-5/SPACEAPP-v5.0-beta-5-Installer-x64.exe',
+    // 'v5.0-beta-5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.0-beta-5/SPACEAPP-v5.0-beta-5-Installer-x64.exe',
     'v5.5': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.5.4/SPACEAPP-Stable-v5-5-4-Installer-x64.exe',
 
     // 🧪 PLACEHOLDER FOR FUTURE BUILD
     'v5.6': platform === 'Mac'
-      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/SPACEAPP-macOS.zip'
+      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.6/SPACEAPP-macOS.zip'
       : platform === 'Linux'
-      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/SPACEAPP-Linux.zip'
-      : 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/SPACEAPP-Stable-v5-6-5-Installer-x64.exe'
+      ? 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.6/SPACEAPP-Linux-AppImage.zip'
+      : 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.6/SPACEAPP-Stable-v5-6-6-Installer-x64.exe'
   };
 
   const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.6'];
@@ -489,10 +489,10 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
           ` : ""}
         </div>
 
-        ${platform === "Mac" ? `
+        ${platform === "Mac" || platform === "Linux" ? `
           <p style="font-size:14px;color:#666; margin-bottom: 20px;">
-            For macOS, download both SPACEAPP and the Models package.
-            Extract models.zip and place the models folder beside SPACEAPP before first launch.
+            For ${platform === "Mac" ? "macOS" : "Linux"}, download both SPACEAPP and the Models package.
+            Extract models.zip and place the models folder beside SPACEAPP executable before first launch.
           </p>
           ` : ""}
         
