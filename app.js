@@ -405,13 +405,15 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
       : 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.6/SPACEAPP-Stable-v5-6-6-Installer-x64.exe'
   };
 
-  const modelsApplicableVersions = ['v5.6'];
+  const modelsLinks = {
+    'v5.6': 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.6/models.zip', // update this to latest release on v5.6.x family
+    // future releases (v5.7)
+  };
 
-  const requiresModels =
-    modelsApplicableVersions.includes(versionSelected) &&
-    ['Mac', 'Linux'].includes(platform);
+  const resolvedVersion = downloadLinks[versionSelected] ? versionSelected : 'v5.6';
 
-  const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.6'];
+  const downloadLink = downloadLinks[resolvedVersion];
+  const requiresModels = resolvedVersion in modelsLinks && ['Mac', 'Linux'].includes(platform);
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!isValidEmail) return res.status(400).send('Invalid email address');
@@ -469,12 +471,12 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
         <!-- System Details -->
         <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; background-color: #f8fafc; padding: 15px; border-radius: 6px;">
           <li><strong>Platform detected:</strong> ${platform}</li>
-          <li><strong>Version chosen:</strong> ${versionSelected}</li>
+          <li><strong>Version chosen:</strong> ${resolvedVersion}</li>
         </ul>
 
         <!-- Dynamic Welcome Message -->
         <p style="margin-bottom: 24px;">
-          ${versionSelected === 'v5.6'
+          ${resolvedVersion === 'v5.6'
             ? "SPACEAPP v5.6 is the most advanced and globally scalable version of SPACEAPP yet."
             : "You're all set to begin your journey exploring satellites from Earth."
           }
@@ -484,11 +486,11 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
         <div style="text-align: center; margin: 30px 0;">
           <a href="${downloadLink}" target="_blank"
             style="display: inline-block; background: #4A90E2; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 4px rgba(74,144,226,0.2);">
-            📦 Download SPACEAPP (${versionSelected})
+            📦 Download SPACEAPP (${resolvedVersion})
           </a>
           ${requiresModels ? `
             <br />
-            <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/latest/download/models.zip" target="_blank"
+            <a href="${modelsLinks[resolvedVersion]}" target="_blank"
               style="display: inline-block; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 12px; box-shadow: 0 2px 4px rgba(109,40,217,0.2);">
               🧊 Download 3D Models (.zip)
             </a>
@@ -503,7 +505,7 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
           ` : ""}
         
         <!-- Deprecation Warning (if applicable) -->
-        ${versionSelected === "v4.2" ? `
+        ${resolvedVersion === "v4.2" ? `
           <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
             <p style="margin: 0; color: #b45309; font-size: 14px;">
               <strong>Please note:</strong> SPACEAPP v4.2 & v4.0 are older releases. Several components have not been updated since October 2025. These versions will be retired and unsupported after March 2026.
