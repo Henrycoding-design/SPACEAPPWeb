@@ -405,6 +405,12 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
       : 'https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.6/SPACEAPP-Stable-v5-6-6-Installer-x64.exe'
   };
 
+  const modelsApplicableVersions = ['v5.6'];
+
+  const requiresModels =
+    modelsApplicableVersions.includes(versionSelected) &&
+    ['Mac', 'Linux'].includes(platform);
+
   const downloadLink = downloadLinks[versionSelected] || downloadLinks['v5.6'];
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -480,16 +486,16 @@ app.post('/freeregister', downloadLimiter, async (req, res) => {
             style="display: inline-block; background: #4A90E2; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 4px rgba(74,144,226,0.2);">
             📦 Download SPACEAPP (${versionSelected})
           </a>
-          ${platform !== "Windows" ? `
+          ${requiresModels ? `
             <br />
-            <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/download/v5.6.5/models.zip" target="_blank"
+            <a href="https://github.com/Henrycoding-design/SPACEAPPEXE/releases/latest/download/models.zip" target="_blank"
               style="display: inline-block; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 12px; box-shadow: 0 2px 4px rgba(109,40,217,0.2);">
               🧊 Download 3D Models (.zip)
             </a>
           ` : ""}
         </div>
 
-        ${platform === "Mac" || platform === "Linux" ? `
+        ${requiresModels ? `
           <p style="font-size:14px;color:#666; margin-bottom: 20px;">
             For ${platform === "Mac" ? "macOS" : "Linux"}, download both SPACEAPP and the Models package.
             Extract models.zip and place the models folder beside SPACEAPP executable before first launch.
